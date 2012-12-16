@@ -40,7 +40,7 @@ public class InitServlet extends HttpServlet {
 
 		PrintWriter out = response.getWriter();
 		out.println("<html><title>Databse Initializzation</title>" +
-				"<body><h1>Inserting some user</h1>");
+				"<body><h1>Inserting something ...</h1>");
 
 		try {
 				Hashtable<String,String> env = new Hashtable<String,String>();
@@ -53,7 +53,7 @@ public class InitServlet extends HttpServlet {
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
-		out.println("Inserted!</body></html>");
+		out.println(" <p>... Inserted!</p></body></html>");
 	}
 
 

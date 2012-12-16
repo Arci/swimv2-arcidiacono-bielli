@@ -1,5 +1,11 @@
 package it.polimi.swim.enums;
 
+/**
+ * This class define the type of user
+ * 
+ * @author Arcidiacono Fabio, Bielli Stefano
+ * 
+ */
 public enum UserType {
 
 	ADMIN {
@@ -15,5 +21,5 @@ public enum UserType {
 		}
 
 	};
-	
+
 }
