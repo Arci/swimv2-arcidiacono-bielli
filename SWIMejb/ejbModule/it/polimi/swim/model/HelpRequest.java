@@ -12,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -32,12 +33,15 @@ public class HelpRequest implements Serializable {
 	private int id;
 
 	@ManyToOne
+	@JoinColumn(name = "userID", nullable = false)
 	private User user;
 
 	@ManyToOne
+	@JoinColumn(name = "helperID", nullable = false)
 	private User helper;
 
 	@OneToOne
+	@JoinColumn(name = "abilityID", nullable = false)
 	private Ability ability;
 
 	@Column(name = "opening_date", nullable = false)

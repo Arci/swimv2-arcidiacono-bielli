@@ -51,6 +51,12 @@ public class User implements Serializable {
 	@Column(name = "password", nullable = false)
 	private String password;
 
+	@Column(name = "city")
+	private String city;
+
+	@Column(name = "phone")
+	private int phone;
+	
 	@ManyToMany
 	@JoinTable(name = "user_abilities",
 		joinColumns = @JoinColumn(name = "userID"),
@@ -75,12 +81,6 @@ public class User implements Serializable {
 	 */
 	@OneToMany(mappedBy = "user")
 	private List<AbilityRequest> abilityRequest;
-
-	@Column(name = "city")
-	private String city;
-
-	@Column(name = "phone")
-	private int phone;
 
 	public int getId() {
 		return id;

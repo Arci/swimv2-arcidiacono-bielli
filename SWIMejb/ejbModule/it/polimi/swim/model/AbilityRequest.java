@@ -11,6 +11,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -28,10 +29,11 @@ public class AbilityRequest implements Serializable {
 	private int id;
 
 	@ManyToOne
+	@JoinColumn(name = "userID", nullable = false)
 	private User user;
 
 	@Column(name = "text", nullable = false)
-	private String openingDate;
+	private String text;
 
 	@Column(name = "state", nullable = false)
 	@Enumerated(EnumType.STRING)
@@ -53,12 +55,12 @@ public class AbilityRequest implements Serializable {
 		this.user = user;
 	}
 
-	public String getOpeningDate() {
-		return openingDate;
+	public String getText() {
+		return text;
 	}
 
-	public void setOpeningDate(String openingDate) {
-		this.openingDate = openingDate;
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	public RequestState getState() {
