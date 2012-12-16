@@ -3,6 +3,7 @@ package it.polimi.swim.model;
 import it.polimi.swim.enums.UserType;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -15,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -50,13 +52,29 @@ public class User implements Serializable {
 	private String password;
 
 	@ManyToMany
-	@JoinTable(name = "user_abilities", 
-		joinColumns = @JoinColumn(name = "userID"), 
+	@JoinTable(name = "user_abilities",
+		joinColumns = @JoinColumn(name = "userID"),
 		inverseJoinColumns = @JoinColumn(name = "abilityID")
 	)
 	private Set<Ability> abilities;
 
-	// TODO private List<User> friends;
+	/**
+	 * List of help request in which user appear as applicant user
+	 */
+	@OneToMany(mappedBy = "user")
+	private List<HelpRequest> helpRequest;
+
+	/**
+	 * List of help request in witch user appear as helper user
+	 */
+	@OneToMany(mappedBy = "helper")
+	private List<HelpRequest> helpRequestAsHelper;
+
+	/**
+	 * List of ability request created
+	 */
+	@OneToMany(mappedBy = "user")
+	private List<AbilityRequest> abilityRequest;
 
 	@Column(name = "city")
 	private String city;
@@ -64,11 +82,11 @@ public class User implements Serializable {
 	@Column(name = "phone")
 	private int phone;
 
-	public int getID() {
+	public int getId() {
 		return id;
 	}
 
-	public void setID(int id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -120,6 +138,38 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
+	public Set<Ability> getAbilities() {
+		return abilities;
+	}
+
+	public void setAbilities(Set<Ability> abilities) {
+		this.abilities = abilities;
+	}
+
+	public List<HelpRequest> getHelpRequest() {
+		return helpRequest;
+	}
+
+	public void setHelpRequest(List<HelpRequest> helpRequest) {
+		this.helpRequest = helpRequest;
+	}
+
+	public List<HelpRequest> getHelpRequestAsHelper() {
+		return helpRequestAsHelper;
+	}
+
+	public void setHelpRequestAsHelper(List<HelpRequest> helpRequestAsHelper) {
+		this.helpRequestAsHelper = helpRequestAsHelper;
+	}
+
+	public List<AbilityRequest> getAbilityRequest() {
+		return abilityRequest;
+	}
+
+	public void setAbilityRequest(List<AbilityRequest> abilityRequest) {
+		this.abilityRequest = abilityRequest;
+	}
+
 	public String getCity() {
 		return city;
 	}
@@ -135,25 +185,5 @@ public class User implements Serializable {
 	public void setPhone(int phone) {
 		this.phone = phone;
 	}
-
-	public Set<Ability> getAbilities() {
-		return abilities;
-	}
-
-	public void addAbility(Ability ability) {
-		this.abilities.add(ability);
-	}
-
-	public void removeAbility(Ability ability) {
-		this.abilities.remove(ability);
-	}
-
-	/*
-	 * public List<User> getFriends() { return friends; }
-	 * 
-	 * public void addFriend(User friend) { this.friends.add(friend); }
-	 * 
-	 * public void removeFriend(User friend) { this.friends.remove(friend); }
-	 */
 
 }

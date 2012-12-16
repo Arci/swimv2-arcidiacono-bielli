@@ -26,7 +26,7 @@ public class UserManager implements UserManagerRemote, UserManagerLocal {
 		Ability ability2 = new Ability();
 		ability2.setName("imbianchino");
 		database.persist(ability2);
-		//user with 2 ability
+		// user with 2 ability
 		User user1 = new User();
 		user1.setType(UserType.ADMIN);
 		user1.setName("mikey");
@@ -37,7 +37,7 @@ public class UserManager implements UserManagerRemote, UserManagerLocal {
 		user1.setCity("Milano");
 		user1.setPhone(1234567890);
 		database.persist(user1);
-		//user with 1 ability
+		// user with 1 ability
 		User user2 = new User();
 		user2.setType(UserType.ADMIN);
 		user2.setName("paperino");
@@ -46,7 +46,7 @@ public class UserManager implements UserManagerRemote, UserManagerLocal {
 		user2.setEmail("papera@fattoria.com");
 		user2.setPassword("segreto_papera");
 		database.persist(user2);
-		//user without ability
+		// user without ability
 		User user3 = new User();
 		user3.setType(UserType.ADMIN);
 		user3.setName("pluto");
