@@ -25,6 +25,17 @@ public class InitServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		initialization(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		initialization(request, response);
+	}
+	
+	private void initialization(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("text/html");
 
 		PrintWriter out = response.getWriter();
@@ -38,18 +49,11 @@ public class InitServlet extends HttpServlet {
 				InitialContext jndiContext = new InitialContext(env);
 				Object ref = jndiContext.lookup("UserManager/remote");
 				UserManagerRemote userManager = (UserManagerRemote) ref;
-
 				userManager.initDb();
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
 		out.println("Inserted!</body></html>");
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	}
 
 
