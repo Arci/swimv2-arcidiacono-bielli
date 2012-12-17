@@ -56,7 +56,7 @@ public class User implements Serializable {
 
 	@Column(name = "phone")
 	private int phone;
-	
+
 	@ManyToMany
 	@JoinTable(name = "user_abilities",
 		joinColumns = @JoinColumn(name = "userID"),
@@ -81,6 +81,12 @@ public class User implements Serializable {
 	 */
 	@OneToMany(mappedBy = "user")
 	private List<AbilityRequest> abilityRequest;
+
+	/**
+	 * List of friends
+	 */
+	@OneToMany(mappedBy = "friend")
+	private List<Friendship> friends;
 
 	public int getId() {
 		return id;
@@ -138,6 +144,22 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public int getPhone() {
+		return phone;
+	}
+
+	public void setPhone(int phone) {
+		this.phone = phone;
+	}
+
 	public Set<Ability> getAbilities() {
 		return abilities;
 	}
@@ -170,20 +192,12 @@ public class User implements Serializable {
 		this.abilityRequest = abilityRequest;
 	}
 
-	public String getCity() {
-		return city;
+	public List<Friendship> getFriends() {
+		return friends;
 	}
 
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public int getPhone() {
-		return phone;
-	}
-
-	public void setPhone(int phone) {
-		this.phone = phone;
+	public void setFriends(List<Friendship> friends) {
+		this.friends = friends;
 	}
 
 }

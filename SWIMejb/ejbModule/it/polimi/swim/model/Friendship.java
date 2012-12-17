@@ -1,9 +1,13 @@
 package it.polimi.swim.model;
 
-import java.util.Date;
+import it.polimi.swim.enums.RequestState;
+
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,12 +16,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "message")
-public class Message {
+@Table(name = "friendship")
+public class Friendship implements Serializable {
+
+	private static final long serialVersionUID = 8018447569861394482L;
 
 	@Id
 	@SequenceGenerator(name = "Sequence", sequenceName = "SEQ_CUSTOM_WD")
@@ -25,20 +29,17 @@ public class Message {
 	@Column(name = "ID")
 	private int id;
 
-	@Column(name = "text", nullable = false)
-	private String text;
-
-	@Column(name = "timestamp", nullable = false)
-	@Temporal(TemporalType.DATE)
-	private Date timestamp;
+	@ManyToOne
+	@JoinColumn(name = "friendID", nullable = false)
+	private User friend;
 
 	@OneToOne
 	@JoinColumn(name = "userID", nullable = false)
 	private User user;
 
-	@ManyToOne
-	@JoinColumn(name = "helpID", nullable = false)
-	private HelpRequest helpRequest;
+	@Column(name = "state", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private RequestState state;
 
 	public int getId() {
 		return id;
@@ -48,20 +49,12 @@ public class Message {
 		this.id = id;
 	}
 
-	public String getText() {
-		return text;
+	public User getFriend() {
+		return friend;
 	}
 
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	public Date getTimestamp() {
-		return timestamp;
-	}
-
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
+	public void setFriend(User friend) {
+		this.friend = friend;
 	}
 
 	public User getUser() {
@@ -72,12 +65,12 @@ public class Message {
 		this.user = user;
 	}
 
-	public HelpRequest getHelpRequest() {
-		return helpRequest;
+	public RequestState getState() {
+		return state;
 	}
 
-	public void setHelpRequest(HelpRequest helpRequest) {
-		this.helpRequest = helpRequest;
+	public void setState(RequestState state) {
+		this.state = state;
 	}
 
 }
