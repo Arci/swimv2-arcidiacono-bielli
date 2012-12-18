@@ -1,10 +1,13 @@
 package it.polimi.swim.servlet;
 
+import it.polimi.swim.model.Ability;
+import it.polimi.swim.model.User;
 import it.polimi.swim.session.AdminManagerRemote;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Hashtable;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -14,11 +17,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class InitServlet extends HttpServlet {
+public class ListServlet extends HttpServlet {
 
-	private static final long serialVersionUID = 2321291269229546120L;
+	private static final long serialVersionUID = -8417343838002808981L;
 
-	public InitServlet() {
+	public ListServlet() {
 		super();
 	}
 
@@ -45,8 +48,8 @@ public class InitServlet extends HttpServlet {
 		response.setContentType("text/html");
 
 		PrintWriter out = response.getWriter();
-		out.println("<html><title>Initialize</title>"
-				+ "<body><h1>Inserting something:</h1>");
+		out.println("<html><title>Get list</title>"
+				+ "<body><h1>Database records:</h1>");
 
 		try {
 			Hashtable<String, String> env = new Hashtable<String, String>();
@@ -56,9 +59,25 @@ public class InitServlet extends HttpServlet {
 			InitialContext jndiContext = new InitialContext(env);
 			Object ref = jndiContext.lookup("AdminManager/remote");
 			AdminManagerRemote adminManager = (AdminManagerRemote) ref;
-			adminManager.initDb();
-			out.println("<p>inserted <b>abilities</b></br>");
-			out.println("inserted <b>users</b></p>");
+			List<Ability> abilities = adminManager.getAbilities();
+			out.println("Abilities:</br>");
+			out.println("<ol>");
+			for (Ability ability : abilities) {
+				out.println("<li><a href='./ability.html?name="
+						+ ability.getName() + "'>" + ability.getName()
+						+ "</a></li>");
+			}
+			out.println("</ol>");
+			out.println("Users:</br>");
+			List<User> users = adminManager.getUsers();
+			out.println("<ol>");
+			for (User user : users) {
+				out.println("<li><a href='./users.html?name="
+						+ user.getUsername() + "'>" + user.getName() + " "
+						+ user.getSurname() + "</a></li>");
+			}
+			out.println("</ol>");
+
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
