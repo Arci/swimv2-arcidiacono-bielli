@@ -7,7 +7,6 @@ import it.polimi.swim.session.AdminManagerRemote;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Hashtable;
-import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -17,11 +16,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ListServlet extends HttpServlet {
+public class AddAbilityServlet extends HttpServlet {
 
-	private static final long serialVersionUID = -8417343838002808981L;
+	private static final long serialVersionUID = -7715945730586850060L;
 
-	public ListServlet() {
+	public AddAbilityServlet() {
 		super();
 	}
 
@@ -31,7 +30,6 @@ public class ListServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		showList(request, response);
 	}
 
 	/**
@@ -40,17 +38,11 @@ public class ListServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		showList(request, response);
-	}
-
-	private void showList(HttpServletRequest request,
-			HttpServletResponse response) throws IOException {
 		response.setContentType("text/html");
 
 		PrintWriter out = response.getWriter();
-		out.println("<html><title>Get list</title>"
-				+ "<body><h1>Database records:</h1>");
-
+		out.println("<html><title>Inserting</title>"
+				+ "<body><h1>Inserting an ability to a user:</h1>");
 		try {
 			Hashtable<String, String> env = new Hashtable<String, String>();
 			env.put(Context.INITIAL_CONTEXT_FACTORY,
@@ -59,32 +51,25 @@ public class ListServlet extends HttpServlet {
 			InitialContext jndiContext = new InitialContext(env);
 			Object ref = jndiContext.lookup("AdminManager/remote");
 			AdminManagerRemote adminManager = (AdminManagerRemote) ref;
-			List<Ability> abilities = adminManager.getAbilities();
-			out.println("Abilities:</br>");
-			out.println("<ol>");
-			for (Ability ability : abilities) {
-				out.println("<li><a href='./ability.html?name="
-						+ ability.getName() + "'>" + ability.getName()
-						+ "</a></li>");
-			}
-			out.println("</ol>");
-			out.println("Users:</br>");
-			List<User> users = adminManager.getUsers();
-			out.println("<ol>");
-			for (User user : users) {
-				out.println("<li><a href='./users.html?name="
-						+ user.getUsername() + "'>" + user.getName() + " "
-						+ user.getSurname() + "</a></li>");
-				out.println("<ul>");
-				out.println("<li>L'utente " + user.getUsername()
-						+ " ha le seguenti abilitˆ:</li>");
-				for (Ability a : user.getAbilities()) {
-					out.println("<li>" + a.getName() + "</li>");
-				}
-				out.println("</ul>");
-			}
-			out.println("</ol>");
 
+			Ability ability = adminManager.loadAbility((String) request
+					.getParameter("ability"));
+			User user = adminManager.loadUserByUsername((String) request
+					.getParameter("user"));
+			if (ability == null || user == null) {
+				out.println("<b>Problems loading entities</b>");
+				return;
+			}
+			adminManager.addAbilityToUser(user, ability);
+
+			User userRefreshed = adminManager
+					.loadUserByUsername((String) request.getParameter("user"));
+			out.println("L'utente " + userRefreshed.getUsername()
+					+ " ha le seguenti abilitˆ:");
+			for (Ability a : userRefreshed.getAbilities()) {
+				out.println("<li>" + a.getName() + "</li>");
+			}
+			out.println("</ol>");
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}

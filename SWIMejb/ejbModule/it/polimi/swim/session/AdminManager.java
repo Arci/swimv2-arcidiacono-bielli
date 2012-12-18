@@ -65,10 +65,12 @@ public class AdminManager implements AdminManagerRemote, AdminManagerLocal {
 
 	public void addAbilityToUser(User user, Ability ability) {
 		user.getAbilities().add(ability);
+		database.merge(user);
 	}
 
 	public void removeAbilityToUser(User user, Ability ability) {
 		user.getAbilities().remove(ability);
+		database.merge(user);
 	}
 
 	public void initDb() {
@@ -85,7 +87,7 @@ public class AdminManager implements AdminManagerRemote, AdminManagerLocal {
 		user1.setType(UserType.ADMIN);
 		user1.setName("mikey");
 		user1.setSurname("topolino");
-		user1.setUsername("the mouse");
+		user1.setUsername("the_mouse");
 		user1.setEmail("topo@fattoria.com");
 		user1.setPassword("segreto_topo");
 		user1.setCity("Milano");
@@ -96,7 +98,7 @@ public class AdminManager implements AdminManagerRemote, AdminManagerLocal {
 		user2.setType(UserType.ADMIN);
 		user2.setName("paperino");
 		user2.setSurname("donald");
-		user2.setUsername("the duck");
+		user2.setUsername("the_duck");
 		user2.setEmail("papera@fattoria.com");
 		user2.setPassword("segreto_papera");
 		database.persist(user2);
@@ -104,10 +106,39 @@ public class AdminManager implements AdminManagerRemote, AdminManagerLocal {
 		User user3 = new User();
 		user3.setType(UserType.ADMIN);
 		user3.setName("pluto");
-		user3.setUsername("the dog");
+		user3.setUsername("the_dog");
 		user3.setEmail("cane@fattoria.com");
 		user3.setPassword("segreto_cane");
 		database.persist(user3);
+	}
+
+	public Ability loadAbility(String name) {
+		try {
+			Query q = database.createQuery("FROM Ability a WHERE a.name=:name");
+			q.setParameter("name", name);
+			System.out.println("*** ability name *** " + name);
+			System.out.println("*** ability  *** " + q.getSingleResult());
+			return (Ability) q.getSingleResult();
+		} catch (EntityNotFoundException exc) {
+		} catch (javax.persistence.NoResultException exc) {
+		} catch (NonUniqueResultException exc) {
+		}
+		return null;
+	}
+
+	public User loadUserByUsername(String username) {
+		try {
+			Query q = database
+					.createQuery("FROM User u WHERE u.username=:username ");
+			q.setParameter("username", username);
+			System.out.println("*** user username *** " + username);
+			System.out.println("*** user  *** " + q.getSingleResult());
+			return (User) q.getSingleResult();
+		} catch (EntityNotFoundException exc) {
+		} catch (javax.persistence.NoResultException exc) {
+		} catch (NonUniqueResultException exc) {
+		}
+		return null;
 	}
 
 }

@@ -24,4 +24,8 @@ public interface AdminManagerRemote {
 	
 	public void removeAbilityToUser(User user, Ability ability);
 	
+	public Ability loadAbility(String name);
+	
+	public User loadUserByUsername(String username);
+	
 }

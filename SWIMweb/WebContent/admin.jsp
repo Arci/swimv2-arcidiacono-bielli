@@ -6,30 +6,41 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Admin</title>
 </head>
 <body>
 	<%
 		try {
-		Hashtable<String, String> env = new Hashtable<String, String>();
-		env.put(Context.INITIAL_CONTEXT_FACTORY,
-				"org.jnp.interfaces.NamingContextFactory");
-		env.put(Context.PROVIDER_URL, "localhost:1099");
-		InitialContext jndiContext = new InitialContext(env);
-		Object ref = jndiContext.lookup("AdminManager/remote");
-		AdminManagerRemote userManager = (AdminManagerRemote) ref;
-		List<User> users = userManager.getUsers();
-		List<Ability> abilities = userManager.getAbilities();
-	%><select><%
-				for (Ability ability : abilities) { %>
-					<option value=<%=ability.getName() %>><%=ability.getName() %></option>
-				<% } %>
-			</select><%
-			%><select><%
-				for (User user : users) { %>
-				<option value=<%=user.getUsername() %>><%=user.getUsername() %></option>
-			<% } %>
-		</select><%
+			Hashtable<String, String> env = new Hashtable<String, String>();
+			env.put(Context.INITIAL_CONTEXT_FACTORY,
+					"org.jnp.interfaces.NamingContextFactory");
+			env.put(Context.PROVIDER_URL, "localhost:1099");
+			InitialContext jndiContext = new InitialContext(env);
+			Object ref = jndiContext.lookup("AdminManager/remote");
+			AdminManagerRemote userManager = (AdminManagerRemote) ref;
+			List<User> users = userManager.getUsers();
+			List<Ability> abilities = userManager.getAbilities();
+	%>
+	<form name="admin" action="insert.html" method="post">
+		<select name="ability">
+			<%
+				for (Ability ability : abilities) {
+			%>
+			<option value=<%=ability.getName()%>><%=ability.getName()%></option>
+			<%
+				}
+			%>
+		</select> <select name="user">
+			<%
+				for (User user : users) {
+			%>
+			<option value=<%=user.getUsername()%>><%=user.getUsername()%></option>
+			<%
+				}
+			%>
+		</select> <input type="submit" value="aggiungi">
+	</form>
+	<%
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}

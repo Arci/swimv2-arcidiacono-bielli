@@ -15,7 +15,6 @@
 		<servlet-name>initServlet</servlet-name>
 		<url-pattern>/init.html</url-pattern>
 	</servlet-mapping>
-
 	<servlet>
 		<servlet-name>listServlet</servlet-name>
 		<servlet-class>it.polimi.swim.servlet.ListServlet</servlet-class>
@@ -23,6 +22,14 @@
 	<servlet-mapping>
 		<servlet-name>listServlet</servlet-name>
 		<url-pattern>/list.html</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>addAbilityServlet</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.AddAbilityServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>addAbilityServlet</servlet-name>
+		<url-pattern>/insert.html</url-pattern>
 	</servlet-mapping>
 
 </web-app>
