@@ -3,33 +3,17 @@
 	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="WebApp_ID" version="2.5">
-	<display-name>TitanicWeb</display-name>
+	<display-name>SWIM</display-name>
 	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
+		<welcome-file>home.jsp</welcome-file>
 	</welcome-file-list>
 	<servlet>
-		<servlet-name>initServlet</servlet-name>
-		<servlet-class>it.polimi.swim.servlet.InitServlet</servlet-class>
+		<servlet-name>accessServlet</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.AccessServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>initServlet</servlet-name>
-		<url-pattern>/init.html</url-pattern>
-	</servlet-mapping>
-	<servlet>
-		<servlet-name>listServlet</servlet-name>
-		<servlet-class>it.polimi.swim.servlet.ListServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>listServlet</servlet-name>
-		<url-pattern>/list.html</url-pattern>
-	</servlet-mapping>
-	<servlet>
-		<servlet-name>addAbilityServlet</servlet-name>
-		<servlet-class>it.polimi.swim.servlet.AddAbilityServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>addAbilityServlet</servlet-name>
-		<url-pattern>/insert.html</url-pattern>
+		<servlet-name>accessServlet</servlet-name>
+		<url-pattern>/accessManager</url-pattern>
 	</servlet-mapping>
 
 </web-app>
