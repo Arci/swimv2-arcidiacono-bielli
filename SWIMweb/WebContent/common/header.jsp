@@ -1,46 +1,89 @@
 <%@page import="it.polimi.swim.model.*,it.polimi.swim.enums.*"%>
 <div id="header">
-	<span class="logo">SWIM</span><span class="logo extended">"Small World hypotesIs Machine"</span>
+	<span class="logo">SWIM</span>
+	<span class="logo extended">"Small World hypotesIs Machine"</span>
+	<div class="access">
 	<% if(session.getAttribute("User") == null) { %>
-	<div class="login">
 		<form action="accessManager" method="post">
 			Username: <input type="text" name="username" class="textinput" />
 			Password: <input type="password" name="password" class="textinput" /> 
-			<input type="submit" value="Login" />
+			<input type="submit" class="submit" value="Login" />
 		</form>
-	</div>
 	<% } else { %>
-	<div class="logout">
-		<form action="accessManager" method="post">
+		<form action="../accessManager" method="post">
 			<span>
 			<% User user = (User) session.getAttribute("User");
 			out.println("Banvenuto <i>"+ user.getUsername() +"</i>"); %>
 			</span>
 			<input type="hidden" value="logout" />
-			<input class="submit" type="submit" value="Logout" />
+			<input type="submit" class="submit" value="Logout" />
 		</form>
-	</div>
 	<% } %>
+	</div>
 </div>
 <div class="invertedshiftdown">
 	<% if(session.getAttribute("User") == null) { %>
 	<ul>
-		<li class="current"><a href="./research.jsp" title="Research">Research</a></li>
+		<% if(request.getParameter("page").equals("home")) {
+			out.println("<li class=\"current\">"); 
+		}else{
+			out.println("<li>");
+		}
+		out.println("<a href=\"home.jsp\" title=\"Search\">Search</a></li>"); %>
 	</ul>
 	<% } else {
 		User user = (User) session.getAttribute("User");
 		if(user.getType().equals(UserType.NORMAL)){ %>
 			<ul>
-				<li class="current"><a href="./profile.jsp" title="Profile">Profile</a></li>
-				<li><a href="./research.jsp" title="Search">Search</a></li>
-				<li><a href="./friends.jsp" title="Friends">"Friends"</a></li>
-				<li><a href="./helps.jsp" title="Helps">Helps</a></li>
-				<li><a href="./abilitySuggestion.jsp" title="Ability Suggestion">Suggestion</a></li>
+				<% 
+				if(request.getParameter("page").equals("profile")) {
+					out.println("<li class=\"current\">"); 
+				}else{
+					out.println("<li>");
+				}
+				out.println("<a href=\"../user/profile.jsp\" title=\"Profile\">Profile</a></li>");
+				if(request.getParameter("page").equals("search")) {
+					out.println("<li class=\"current\">"); 
+				}else{
+					out.println("<li>");
+				}
+				out.println("<a href=\"../user/search.jsp\" title=\"Search\">Search</a></li>");
+				if(request.getParameter("page").equals("friends")) {
+					out.println("<li class=\"current\">"); 
+				}else{
+					out.println("<li>");
+				}
+				out.println("<a href=\"../user/friends.jsp\" title=\"Friend\">Friend</a></li>");
+				if(request.getParameter("page").equals("helps")) {
+					out.println("<li class=\"current\">"); 
+				}else{
+					out.println("<li>");
+				}
+				out.println("<a href=\"../user/helps.jsp\" title=\"Helps\">Helps</a></li>");
+				if(request.getParameter("page").equals("abilitySuggestion")) {
+					out.println("<li class=\"current\">"); 
+				}else{
+					out.println("<li>");
+				}
+				out.println("<a href=\"../user/abilitySuggestion.jsp\" title=\"Ability Suggestion\">Suggestion</a></li>");
+				%>
 			</ul>
 		<% }else if(user.getType().equals(UserType.ADMIN)){ %>
 			<ul>
-				<li class="current"><a href="./suspended.jsp" title="Suspended Requests">Suspended Requests</a></li>
-				<li><a href="./newAbility.jsp" title="Add New Ability">Add New Ability</a></li>
+				<% 
+				if(request.getParameter("page").equals("suspended")) {
+					out.println("<li class=\"current\">"); 
+				}else{
+					out.println("<li>");
+				}
+				out.println("<a href=\"../admin/suspended.jsp\" title=\"Suspended Requests\">Suspended Requests</a></li>");
+				if(request.getParameter("page").equals("newAbility")) {
+					out.println("<li class=\"current\">"); 
+				}else{
+					out.println("<li>");
+				}
+				out.println("<a href=\"../admin/newAbility.jsp\" title=\"Add New Ability\">Add New Ability</a></li>");
+				%>
 			</ul>
 		<% }
 	 } %>

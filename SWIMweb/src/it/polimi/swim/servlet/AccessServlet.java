@@ -1,5 +1,6 @@
 package it.polimi.swim.servlet;
 
+import it.polimi.swim.enums.UserType;
 import it.polimi.swim.model.User;
 import it.polimi.swim.session.AccessManagerRemote;
 
@@ -57,7 +58,11 @@ public class AccessServlet extends HttpServlet {
 				response.sendRedirect("./home.jsp");
 			} else {
 				request.getSession().setAttribute("User", user);
-				response.sendRedirect("./home.jsp");
+				if(user.getType().equals(UserType.NORMAL)){
+					response.sendRedirect("./user/profile.jsp");
+				}else if(user.getType().equals(UserType.ADMIN)){
+					response.sendRedirect("./admin/suspended.jsp");
+				}
 			}
 		} catch (NamingException e) {
 			e.printStackTrace();

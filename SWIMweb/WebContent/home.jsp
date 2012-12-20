@@ -6,14 +6,17 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" type="text/css" href="./css/style.css" />
-<title>SWIM</title>
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+<title>SWIM - Homepage</title>
 </head>
 <body>
-	<jsp:include page="/common/header.jsp"></jsp:include>
+	<jsp:include page="/common/header.jsp">
+			<jsp:param name="page" value="home" />
+	</jsp:include>
 
 	<div id="pageContent">
 		<%
+			//TODO rimuovere
 			try {
 				Hashtable<String, String> env = new Hashtable<String, String>();
 				env.put(Context.INITIAL_CONTEXT_FACTORY,
