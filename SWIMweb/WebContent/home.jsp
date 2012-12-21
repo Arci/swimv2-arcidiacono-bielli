@@ -16,7 +16,7 @@
 
 	<div id="pageContent">
 		<%
-			//TODO rimuovere
+			//inserimento fake users
 			try {
 				Hashtable<String, String> env = new Hashtable<String, String>();
 				env.put(Context.INITIAL_CONTEXT_FACTORY,
@@ -26,17 +26,6 @@
 				Object ref = jndiContext.lookup("AccessManager/remote");
 				AccessManagerRemote accessManager = (AccessManagerRemote) ref;
 				accessManager.addFakeUsers();
-				List<User> users = accessManager.getAllUsers();
-				out.println("users on database:</br>");
-				if (users != null) {
-					out.println("<ul>");
-					for (User u : users) {
-						out.println("<li>" + u.getUsername() + "</li>");
-					}
-					out.println("</ul>");
-				} else {
-					out.println("there are no users in database </br>");
-				}
 			} catch (NamingException e) {
 				e.printStackTrace();
 			}

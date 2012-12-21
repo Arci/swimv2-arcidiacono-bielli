@@ -6,15 +6,17 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" type="text/css" href="../css/style.css" />
-<title>SWIM - Profilo</title>
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+<title>SWIM - SignIn</title>
 </head>
 <body>
 	<jsp:include page="/common/header.jsp">
-		<jsp:param name="page" value="profile" />
+		<jsp:param name="page" value="registration" />
 	</jsp:include>
 
-	<div id="pageContent"></div>
+	<div id="pageContent">
+	
+	</div>
 
 	<jsp:include page="/common/footer.jsp"></jsp:include>
 </body>

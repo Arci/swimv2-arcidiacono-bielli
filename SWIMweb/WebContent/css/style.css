@@ -13,14 +13,19 @@
 	line-height: 2.5;
 }
 
-.extended {
-	font: italic 9px Verdana;
-	line-height: 3.5;
+#header a {
+	color: white;
+	text-decoration: none;
 }
 
 .logo {
 	float: left;
 	margin-left: 10px;
+}
+
+.extended {
+	font: italic 9px Verdana;
+	line-height: 3.5;
 }
 
 .access {

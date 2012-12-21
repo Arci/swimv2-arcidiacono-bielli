@@ -1,6 +1,16 @@
 <%@page import="it.polimi.swim.model.*,it.polimi.swim.enums.*"%>
 <div id="header">
-	<span class="logo">SWIM</span>
+	<span class="logo">
+	<% if(session.getAttribute("User") != null){
+		User user = (User) session.getAttribute("User");
+		if(user.getType().equals(UserType.ADMIN)){
+			out.println("<a href=\"/SWIMweb/admin/suspended.jsp\">SWIM</a>");
+		}else if(user.getType().equals(UserType.NORMAL)){
+			out.println("<a href=\"/SWIMweb/user/profile.jsp\">SWIM</a>");
+		}
+	} else{
+		out.println("<a href=\"/SWIMweb\">SWIM</a>");
+	}%> </span>
 	<span class="logo extended">"Small World hypotesIs Machine"</span>
 	<div class="access">
 	<% if(session.getAttribute("User") == null) { %>
@@ -29,7 +39,13 @@
 		}else{
 			out.println("<li>");
 		}
-		out.println("<a href=\"home.jsp\" title=\"Search\">Search</a></li>"); %>
+		out.println("<a href=\"home.jsp\" title=\"Search\">Search</a></li>");
+		if(request.getParameter("page").equals("registration")) {
+			out.println("<li class=\"current\">"); 
+		}else{
+			out.println("<li>");
+		}
+		out.println("<a href=\"registration.jsp\" title=\"Register\">Register</a></li>");%>
 	</ul>
 	<% } else {
 		User user = (User) session.getAttribute("User");

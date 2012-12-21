@@ -14,9 +14,7 @@
 		<jsp:param name="page" value="newAbility" />
 	</jsp:include>
 
-	<div id="pageContent">
-		
-	</div>
+	<div id="pageContent"></div>
 
 	<jsp:include page="/common/footer.jsp"></jsp:include>
 </body>

@@ -58,9 +58,9 @@ public class AccessServlet extends HttpServlet {
 				response.sendRedirect("./home.jsp");
 			} else {
 				request.getSession().setAttribute("User", user);
-				if(user.getType().equals(UserType.NORMAL)){
+				if (user.getType().equals(UserType.NORMAL)) {
 					response.sendRedirect("./user/profile.jsp");
-				}else if(user.getType().equals(UserType.ADMIN)){
+				} else if (user.getType().equals(UserType.ADMIN)) {
 					response.sendRedirect("./admin/suspended.jsp");
 				}
 			}

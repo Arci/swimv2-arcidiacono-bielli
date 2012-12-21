@@ -3,8 +3,6 @@ package it.polimi.swim.session;
 import it.polimi.swim.enums.UserType;
 import it.polimi.swim.model.User;
 
-import java.util.List;
-
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -42,19 +40,6 @@ public class AccessManager implements AccessManagerRemote, AccessManagerLocal {
 		} catch (NonUniqueResultException exc) {
 			System.out.println("*** [login] multiple user found *** ");
 			return null;
-		}
-		return null;
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<User> getAllUsers() {
-		try {
-			Query q = manager.createQuery("FROM User u");
-			List<User> users = q.getResultList();
-			return users;
-		} catch (NoResultException exc) {
-			return null;
-		} catch (NonUniqueResultException exc) {
 		}
 		return null;
 	}
