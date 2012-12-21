@@ -23,9 +23,9 @@
 						"org.jnp.interfaces.NamingContextFactory");
 				env.put(Context.PROVIDER_URL, "localhost:1099");
 				InitialContext jndiContext = new InitialContext(env);
-				Object ref = jndiContext.lookup("AccessManager/remote");
-				AccessManagerRemote accessManager = (AccessManagerRemote) ref;
-				accessManager.addFakeUsers();
+				Object ref = jndiContext.lookup("InitializationManager/remote");
+				InitializationManagerRemote initializationManager = (InitializationManagerRemote) ref;
+				initializationManager.addFakeUsers();
 			} catch (NamingException e) {
 				e.printStackTrace();
 			}

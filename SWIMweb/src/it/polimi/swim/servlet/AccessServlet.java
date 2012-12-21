@@ -2,7 +2,7 @@ package it.polimi.swim.servlet;
 
 import it.polimi.swim.enums.UserType;
 import it.polimi.swim.model.User;
-import it.polimi.swim.session.AccessManagerRemote;
+import it.polimi.swim.session.HomeControlRemote;
 
 import java.io.IOException;
 import java.util.Hashtable;
@@ -43,14 +43,14 @@ public class AccessServlet extends HttpServlet {
 					"org.jnp.interfaces.NamingContextFactory");
 			env.put(Context.PROVIDER_URL, "localhost:1099");
 			InitialContext jndiContext = new InitialContext(env);
-			Object ref = jndiContext.lookup("AccessManager/remote");
-			AccessManagerRemote accessManager = (AccessManagerRemote) ref;
+			Object ref = jndiContext.lookup("HomeControl/remote");
+			HomeControlRemote homeControl = (HomeControlRemote) ref;
 			if (request.getParameter("logout") != null
 					&& request.getParameter("logout") == "logout") {
 				request.getSession().invalidate();
 				response.sendRedirect("./home.jsp");
 			}
-			User user = accessManager.checkLogin(
+			User user = homeControl.checkLogin(
 					request.getParameter("username"),
 					request.getParameter("password"));
 			if (user == null) {
