@@ -11,7 +11,7 @@
 </head>
 <body>
 	<jsp:include page="/common/header.jsp">
-			<jsp:param name="page" value="home" />
+		<jsp:param name="page" value="home" />
 	</jsp:include>
 
 	<div id="pageContent">
@@ -26,6 +26,7 @@
 				Object ref = jndiContext.lookup("InitializationManager/remote");
 				InitializationManagerRemote initializationManager = (InitializationManagerRemote) ref;
 				initializationManager.addFakeUsers();
+				initializationManager.addFakeAbilities();
 			} catch (NamingException e) {
 				e.printStackTrace();
 			}

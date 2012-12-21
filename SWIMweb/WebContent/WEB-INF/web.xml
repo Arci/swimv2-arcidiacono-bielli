@@ -15,5 +15,13 @@
 		<servlet-name>accessServlet</servlet-name>
 		<url-pattern>/accessManager</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>profileServlet</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.ProfileServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>profileServlet</servlet-name>
+		<url-pattern>/profileManager</url-pattern>
+	</servlet-mapping>
 
 </web-app>

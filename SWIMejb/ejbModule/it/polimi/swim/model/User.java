@@ -58,7 +58,7 @@ public class User implements Serializable {
 	@Column(name = "phone")
 	private int phone;
 
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_abilities",
 		joinColumns = @JoinColumn(name = "userID"),
 		inverseJoinColumns = @JoinColumn(name = "abilityID")

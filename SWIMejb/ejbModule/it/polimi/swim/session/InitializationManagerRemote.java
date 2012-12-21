@@ -6,5 +6,7 @@ import javax.ejb.Remote;
 public interface InitializationManagerRemote {
 
 	public void addFakeUsers();
-	
+
+	public void addFakeAbilities();
+
 }
