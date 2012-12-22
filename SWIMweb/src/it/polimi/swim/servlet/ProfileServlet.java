@@ -54,14 +54,13 @@ public class ProfileServlet extends HttpServlet {
 
 			User user = (User) request.getSession().getAttribute("User");
 			Double rating = profileManager.getUserRating(user);
-			// int rating = 3;
 			request.setAttribute("rating", (int) Math.rint(rating));
 			System.out.println("*** [ProfileServlet] rating set ***");
 			for (Ability ability : user.getAbilities()) {
 				Double abilityRating = profileManager.getAbilityRating(user,
 						ability);
-				// Double abilityRating = 2d;
-				request.setAttribute(ability.getName(),(int) Math.rint(abilityRating));
+				request.setAttribute(ability.getName(),
+						(int) Math.rint(abilityRating));
 			}
 			System.out.println("*** [ProfileServlet] abilities rating set ***");
 

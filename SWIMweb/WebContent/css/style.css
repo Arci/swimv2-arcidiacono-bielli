@@ -1,5 +1,5 @@
 /* HEADER */
-#header {
+#top {
 	margin: 20px 40px;
 	margin-bottom: 0px;
 	height: 30px;
@@ -13,7 +13,7 @@
 	line-height: 2.5;
 }
 
-#header a {
+#top a {
 	color: white;
 	text-decoration: none;
 }
@@ -113,6 +113,25 @@
 	font-weight: bold;
 }
 
-.warning {
+.warning, .italic{
 	font-style: italic;
+}
+
+.error {
+	color: #D10000;
+	font-style: left;
+}
+
+.headerError {
+	padding-right: 5px;
+	float: right;
+}
+
+.message {
+	font-style: italic;
+	color: #228B22;
+}
+
+fieldset {
+	width: 250px;
 }

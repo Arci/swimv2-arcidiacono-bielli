@@ -77,7 +77,7 @@ public class User implements Serializable {
 	/**
 	 * List of ability request created
 	 */
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private List<AbilityRequest> abilityRequest;
 
 	/**
@@ -201,11 +201,11 @@ public class User implements Serializable {
 	public void addAbility(Ability ability) {
 		abilities.add(ability);
 	}
-	
+
 	public void removeAbility(Ability ability) {
 		abilities.remove(ability);
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -216,10 +216,10 @@ public class User implements Serializable {
 			return false;
 		}
 		User other = (User) obj;
-		if (id != other.id){
+		if (id != other.id) {
 			return false;
 		}
 		return false;
 	}
-	
+
 }

@@ -23,5 +23,12 @@
 		<servlet-name>profileServlet</servlet-name>
 		<url-pattern>/user/profile</url-pattern>
 	</servlet-mapping>
-
+	<servlet>
+		<servlet-name>abilitySuggestionServlet</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.AbilitySuggestionServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>abilitySuggestionServlet</servlet-name>
+		<url-pattern>/user/abilitySuggestion</url-pattern>
+	</servlet-mapping>
 </web-app>

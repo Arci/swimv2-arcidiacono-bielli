@@ -68,7 +68,11 @@ public class AccessServlet extends HttpServlet {
 					System.out
 							.println("*** [AccessServlet] problem founding user ***");
 					request.getSession().invalidate();
-					response.sendRedirect("/SWIMweb");
+					request.setAttribute("headerError",
+							"username or password incorrect");
+					getServletConfig().getServletContext()
+							.getRequestDispatcher("/")
+							.forward(request, response);
 				} else {
 					request.getSession().setAttribute("User", user);
 					if (user.getType().equals(UserType.NORMAL)) {
@@ -85,7 +89,10 @@ public class AccessServlet extends HttpServlet {
 				System.out
 						.println("*** [AccessServlet] username/password null or empty ***");
 				request.getSession().invalidate();
-				response.sendRedirect("/SWIMweb");
+				request.setAttribute("headerError",
+						"username or password incorrect");
+				getServletConfig().getServletContext()
+						.getRequestDispatcher("/").forward(request, response);
 			}
 		} catch (NamingException e) {
 			e.printStackTrace();

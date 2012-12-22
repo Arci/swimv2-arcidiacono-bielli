@@ -7,8 +7,8 @@ import it.polimi.swim.model.HelpRequest;
 import it.polimi.swim.model.User;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 import javax.ejb.Stateless;
