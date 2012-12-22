@@ -21,7 +21,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>profileServlet</servlet-name>
-		<url-pattern>/profileManager</url-pattern>
+		<url-pattern>/user/profile</url-pattern>
 	</servlet-mapping>
 
 </web-app>

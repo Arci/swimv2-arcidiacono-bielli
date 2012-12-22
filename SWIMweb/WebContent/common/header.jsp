@@ -6,7 +6,7 @@
 		if(user.getType().equals(UserType.ADMIN)){
 			out.println("<a href=\"/SWIMweb/admin/suspended.jsp\">SWIM</a>");
 		}else if(user.getType().equals(UserType.NORMAL)){
-			out.println("<a href=\"/SWIMweb/user/profile.jsp\">SWIM</a>");
+			out.println("<a href=\"/SWIMweb/user/profile\">SWIM</a>");
 		}
 	} else{
 		out.println("<a href=\"/SWIMweb\">SWIM</a>");
@@ -56,7 +56,7 @@
 				}else{
 					out.println("<li>");
 				}
-				out.println("<a href=\"/SWIMweb/user/profile.jsp\" title=\"Profile\">Profile</a></li>");
+				out.println("<a href=\"/SWIMweb/user/profile\" title=\"Profile\">Profile</a></li>");
 				if(request.getParameter("page").equals("search")) {
 					out.println("<li class=\"current\">"); 
 				}else{

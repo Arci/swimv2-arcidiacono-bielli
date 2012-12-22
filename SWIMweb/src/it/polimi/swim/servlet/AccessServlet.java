@@ -74,7 +74,7 @@ public class AccessServlet extends HttpServlet {
 					if (user.getType().equals(UserType.NORMAL)) {
 						System.out
 								.println("*** [AccessServlet] redirect NORMAL user ***");
-						response.sendRedirect("/SWIMweb/user/profile.jsp");
+						response.sendRedirect("/SWIMweb/user/profile");
 					} else if (user.getType().equals(UserType.ADMIN)) {
 						System.out
 								.println("*** [AccessServlet] redirect ADMIN user ***");

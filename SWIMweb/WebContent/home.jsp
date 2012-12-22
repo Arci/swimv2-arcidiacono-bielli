@@ -27,6 +27,8 @@
 				InitializationManagerRemote initializationManager = (InitializationManagerRemote) ref;
 				initializationManager.addFakeUsers();
 				initializationManager.addFakeAbilities();
+				initializationManager.addAbilitiesToUsers();
+				initializationManager.addFakeHelpRequest();
 			} catch (NamingException e) {
 				e.printStackTrace();
 			}

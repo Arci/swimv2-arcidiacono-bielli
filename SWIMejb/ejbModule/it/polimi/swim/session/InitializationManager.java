@@ -1,8 +1,15 @@
 package it.polimi.swim.session;
 
+import it.polimi.swim.enums.HelpState;
 import it.polimi.swim.enums.UserType;
 import it.polimi.swim.model.Ability;
+import it.polimi.swim.model.HelpRequest;
 import it.polimi.swim.model.User;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Iterator;
+import java.util.Random;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -23,7 +30,6 @@ public class InitializationManager implements InitializationManagerLocal,
 	@Override
 	public void addFakeUsers() {
 		String adminUsername = "duck";
-		String normalUsername = "mouse";
 		try {
 			Query q = manager
 					.createQuery("FROM User u WHERE u.username=:admin");
@@ -47,6 +53,7 @@ public class InitializationManager implements InitializationManagerLocal,
 			System.out
 					.println("*** [InitializationManager] ADMIN user inserted ***");
 		}
+		String normalUsername = "mouse";
 		try {
 			Query q = manager
 					.createQuery("FROM User u WHERE u.username=:normal");
@@ -64,6 +71,30 @@ public class InitializationManager implements InitializationManagerLocal,
 			normal.setUsername(normalUsername);
 			normal.setEmail("topo@fattoria.com");
 			normal.setPassword("mouse");
+			normal.setCity("Milano");
+			normal.setPhone(1234567890);
+			manager.persist(normal);
+			System.out
+					.println("*** [InitializationManager] NORMAL user inserted ***");
+		}
+		String normalUsername2 = "dog";
+		try {
+			Query q = manager
+					.createQuery("FROM User u WHERE u.username=:normal");
+			q.setParameter("normal", normalUsername2);
+			q.getSingleResult();
+			System.out
+					.println("*** [InitializationManager] NORMAL users found no action ***");
+		} catch (NoResultException exc) {
+			System.out
+					.println("*** [InitializationManager] NORMAL users not found ***");
+			User normal = new User();
+			normal.setType(UserType.NORMAL);
+			normal.setName("pippo");
+			normal.setSurname("cane");
+			normal.setUsername(normalUsername2);
+			normal.setEmail("cane@fattoria.com");
+			normal.setPassword("dog");
 			normal.setCity("Milano");
 			normal.setPhone(1234567890);
 			manager.persist(normal);
@@ -105,6 +136,69 @@ public class InitializationManager implements InitializationManagerLocal,
 			manager.persist(ability);
 			System.out
 					.println("*** [InitializationManager] IMBIANCHINO ability inserted ***");
+		}
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public void addAbilitiesToUsers() {
+		try {
+			Query q = manager.createQuery("FROM User u");
+			List<User> users = (List<User>) q.getResultList();
+			q = manager.createQuery("FROM Ability a");
+			List<Ability> abilities = (List<Ability>) q.getResultList();
+			Iterator<User> itr = users.iterator();
+			while (itr.hasNext()) {
+				User normal = itr.next();
+				if (normal.getType().equals(UserType.NORMAL)) {
+					normal.addAbility(abilities.get(0));
+					normal.addAbility(abilities.get(1));
+					System.out
+							.println("*** [InitializationManager] Added abilities to '"
+									+ normal.getUsername() + "' ***");
+				}
+			}
+		} catch (NoResultException exc) {
+		}
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public void addFakeHelpRequest() {
+		try {
+			Query q = manager.createQuery("FROM User u");
+			List<User> users = (List<User>) q.getResultList();
+			q = manager.createQuery("FROM Ability a");
+			List<Ability> abilities = (List<Ability>) q.getResultList();
+			HelpRequest help = new HelpRequest();
+			for (User u : users) {
+				if (u.getType().equals(UserType.NORMAL)) {
+					help.setHelper(u);
+					System.out
+							.println("*** [InitializationManager] helper is '"
+									+ u.getUsername() + "' ***");
+				}
+			}
+			for (User u : users) {
+				if (u.getType().equals(UserType.NORMAL)
+						&& !u.equals(help.getHelper())) {
+					help.setUser(u);
+					System.out
+							.println("*** [InitializationManager] requester is '"
+									+ u.getUsername() + "' ***");
+				}
+			}
+			Random generator = new Random();
+			help.setVote(generator.nextInt(6));
+			help.setOpeningDate(new Date());
+			help.setState(HelpState.OPEN);
+			Ability ability = abilities.get(0);
+			help.setAbility(ability);
+			System.out
+					.println("*** [InitializationManager] ability is set to '"
+							+ ability.getName() + "' ***");
+			manager.persist(help);
+		} catch (NoResultException exc) {
 		}
 	}
 

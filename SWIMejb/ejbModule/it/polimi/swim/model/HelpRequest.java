@@ -1,6 +1,6 @@
 package it.polimi.swim.model;
 
-import it.polimi.swim.enums.RequestState;
+import it.polimi.swim.enums.HelpState;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -50,7 +50,7 @@ public class HelpRequest implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date openingDate;
 
-	@Column(name = "closing_date", nullable = false)
+	@Column(name = "closing_date")
 	@Temporal(TemporalType.DATE)
 	private Date closingDate;
 
@@ -59,7 +59,7 @@ public class HelpRequest implements Serializable {
 
 	@Column(name = "state", nullable = false)
 	@Enumerated(EnumType.STRING)
-	private RequestState state;
+	private HelpState state;
 
 	/**
 	 * List of messages associated in this help request
@@ -123,11 +123,11 @@ public class HelpRequest implements Serializable {
 		this.vote = vote;
 	}
 
-	public RequestState getState() {
+	public HelpState getState() {
 		return state;
 	}
 
-	public void setState(RequestState state) {
+	public void setState(HelpState state) {
 		this.state = state;
 	}
 

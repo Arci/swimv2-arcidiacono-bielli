@@ -59,10 +59,7 @@ public class User implements Serializable {
 	private int phone;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "user_abilities",
-		joinColumns = @JoinColumn(name = "userID"),
-		inverseJoinColumns = @JoinColumn(name = "abilityID")
-	)
+	@JoinTable(name = "user_abilities", joinColumns = @JoinColumn(name = "userID"), inverseJoinColumns = @JoinColumn(name = "abilityID"))
 	private Set<Ability> abilities;
 
 	/**
@@ -201,4 +198,28 @@ public class User implements Serializable {
 		this.friends = friends;
 	}
 
+	public void addAbility(Ability ability) {
+		abilities.add(ability);
+	}
+	
+	public void removeAbility(Ability ability) {
+		abilities.remove(ability);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof User)) {
+			return false;
+		}
+		User other = (User) obj;
+		if (id != other.id){
+			return false;
+		}
+		return false;
+	}
+	
 }

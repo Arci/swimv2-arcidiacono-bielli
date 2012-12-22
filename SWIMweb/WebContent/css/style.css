@@ -105,7 +105,8 @@
 }
 
 .nameSurname {
-	text-transform: capitalize;
+	text-transform: uppercase;
+	font-weight: bold;
 }
 
 .text {
@@ -113,5 +114,5 @@
 }
 
 .warning {
-	font-style: italic; 
+	font-style: italic;
 }
