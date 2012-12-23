@@ -38,6 +38,22 @@ public class ProfileManager implements ProfileManagerRemote,
 	}
 
 	@Override
+	public User getUserByUsername(String username) {
+		try {
+			Query q = manager
+					.createQuery("FROM User u WHERE u.username=:username");
+			q.setParameter("username", username);
+			User user = (User) q.getSingleResult();
+			System.out.println("*** [ProfileManager] requested user found ***");
+			return user;
+		} catch (NoResultException exc) {
+			System.out
+					.println("*** [ProfileManager] requested user not found ***");
+		}
+		return null;
+	}
+
+	@Override
 	public User updateProfile(User user, Hashtable<String, String> params) {
 		// TODO ricevuti i parametri aggiorna user se new!=old, poi fa
 		// manager.merge(user)

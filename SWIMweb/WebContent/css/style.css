@@ -113,7 +113,7 @@
 	font-weight: bold;
 }
 
-.warning, .italic{
+.warning,.italic {
 	font-style: italic;
 }
 
@@ -134,4 +134,13 @@
 
 fieldset {
 	width: 250px;
+}
+
+/* PROFILE */
+#profile {
+	float: left;
+}
+
+#buttons {
+	float: right;
 }

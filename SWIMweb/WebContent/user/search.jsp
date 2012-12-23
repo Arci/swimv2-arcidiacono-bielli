@@ -58,7 +58,8 @@
 						out.println("<ul>");
 						for(User user : results){
 							out.println("<li>" + user.getName() + " " + user.getSurname() + 
-									" <a href=\"#\">Visualizza Profilo</a></li>");
+									" <a href=\"profile?username=" +
+									user.getUsername() + "\">Visualizza Profilo</a></li>");
 						}
 						out.println("</ul>");
 					}

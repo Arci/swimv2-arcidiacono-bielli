@@ -15,6 +15,14 @@ public interface ProfileManagerRemote {
 	 * @return list of all ability in the system
 	 */
 	public List<Ability> getAbilityList();
+	
+	/**
+	 * get the user from his username
+	 * 
+	 * @param parameter
+	 * @return null if no user found, the user object otherwise
+	 */
+	public User getUserByUsername(String parameter);
 
 	/**
 	 * Check the params and update the user
@@ -59,5 +67,6 @@ public interface ProfileManagerRemote {
 	 *         requested ability, return -1d if some problems occurs
 	 */
 	public Double getAbilityRating(User user, Ability ability);
+
 
 }

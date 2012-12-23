@@ -29,7 +29,44 @@ public class ProfileServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		getUserInformation(request, response);
+		if (request.getParameter("username") != null
+				&& request.getParameter("username") != "") {
+			System.out.println("*** [ProfileServlet] doGet, show '"
+					+ request.getParameter("username") + "' profile ***");
+			try {
+				Hashtable<String, String> env = new Hashtable<String, String>();
+				env.put(Context.INITIAL_CONTEXT_FACTORY,
+						"org.jnp.interfaces.NamingContextFactory");
+				env.put(Context.PROVIDER_URL, "localhost:1099");
+				InitialContext jndiContext = new InitialContext(env);
+				Object ref = jndiContext.lookup("ProfileManager/remote");
+				ProfileManagerRemote profileManager = (ProfileManagerRemote) ref;
+
+				User userLoaded = profileManager
+						.getUserByUsername((String) request
+								.getParameter("username"));
+				request.setAttribute("userLoaded", userLoaded);
+				getUserInformation(userLoaded, request, response);
+				System.out
+						.println("*** [ProfileServlet] forwarding to profile.jsp ***");
+				getServletConfig().getServletContext()
+						.getRequestDispatcher("/user/profile.jsp")
+						.forward(request, response);
+			} catch (NamingException e) {
+				e.printStackTrace();
+			}
+		} else {
+			System.out
+					.println("*** [ProfileServlet] doGet, no params, show current user profile ***");
+			getUserInformation(
+					(User) request.getSession().getAttribute("User"), request,
+					response);
+			System.out
+					.println("*** [ProfileServlet] forwarding to profile.jsp ***");
+			getServletConfig().getServletContext()
+					.getRequestDispatcher("/user/profile.jsp")
+					.forward(request, response);
+		}
 	}
 
 	/**
@@ -38,10 +75,18 @@ public class ProfileServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		getUserInformation(request, response);
+		System.out
+				.println("*** [ProfileServlet] doPost, show current user profile ***");
+		getUserInformation((User) request.getSession().getAttribute("User"),
+				request, response);
+		System.out
+				.println("*** [ProfileServlet] forwarding to profile.jsp ***");
+		getServletConfig().getServletContext()
+				.getRequestDispatcher("/user/profile.jsp")
+				.forward(request, response);
 	}
 
-	private void getUserInformation(HttpServletRequest request,
+	private void getUserInformation(User user, HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		try {
 			Hashtable<String, String> env = new Hashtable<String, String>();
@@ -52,7 +97,6 @@ public class ProfileServlet extends HttpServlet {
 			Object ref = jndiContext.lookup("ProfileManager/remote");
 			ProfileManagerRemote profileManager = (ProfileManagerRemote) ref;
 
-			User user = (User) request.getSession().getAttribute("User");
 			Double rating = profileManager.getUserRating(user);
 			request.setAttribute("rating", (int) Math.rint(rating));
 			System.out.println("*** [ProfileServlet] rating set ***");
@@ -63,12 +107,6 @@ public class ProfileServlet extends HttpServlet {
 						(int) Math.rint(abilityRating));
 			}
 			System.out.println("*** [ProfileServlet] abilities rating set ***");
-
-			System.out
-					.println("*** [ProfileServlet] forwarding to profile.jsp ***");
-			getServletConfig().getServletContext()
-					.getRequestDispatcher("/user/profile.jsp")
-					.forward(request, response);
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}

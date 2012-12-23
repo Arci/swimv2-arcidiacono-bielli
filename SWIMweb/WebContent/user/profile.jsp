@@ -10,17 +10,28 @@
 <title>SWIM - Profilo</title>
 </head>
 <body>
-	<jsp:include page="/common/header.jsp">
-		<jsp:param name="page" value="profile" />
-	</jsp:include>
+	<%
+		User user = null;
+		boolean buttons = false;
+		if (request.getAttribute("userLoaded") != null
+				&& request.getAttribute("userLoaded") != "") {
+			user = (User) request.getAttribute("userLoaded");
+			buttons = true;
+			%><jsp:include page="/common/header.jsp">
+				<jsp:param name="page" value="search" />
+			</jsp:include><%
+		} else if (session.getAttribute("User") != null) {
+			user = (User) session.getAttribute("User");
+			buttons = false;
+			%><jsp:include page="/common/header.jsp">
+				<jsp:param name="page" value="profile" />
+			</jsp:include><%
+		} else {
+			response.sendRedirect("/SWIMweb");
+		}
+	%>
 
 	<div id="pageContent">
-		<%
-			User user = (User) session.getAttribute("User");
-			if (user == null) {
-				response.sendRedirect("/SWIMweb");
-			}
-		%>
 		<div id="profile">
 			<p class="nameSurname"><%=user.getName()%> <%=user.getSurname()%></p>
 			<p><span class="text">Username: </span><%=user.getUsername()%></p>
@@ -29,16 +40,16 @@
 			<p><span class="text">Phone: </span><%=user.getPhone()%></p>
 			<p><span class="text">Rating: </span>
 			<%
-			int rating = (Integer) request.getAttribute("rating");
-			String star = "";	
-			if (rating > 0) {	
-				for (int i = 0; i < rating; i++) {
-					star += "* ";
+				int rating = (Integer) request.getAttribute("rating");
+				String star = "";	
+				if (rating > 0) {	
+					for (int i = 0; i < rating; i++) {
+						star += "* ";
+					}
+				} else {
+					out.println("<span class=\"warning\">no rating yet</span></li>");
 				}
-			} else {
-				out.println("<span class=\"warning\">no rating yet</span></li>");
-			}
-			out.println(star);
+				out.println(star);
 			%></p>
 			<p>
 			<span class="text">You have the following abilities:</span></br>
@@ -67,8 +78,21 @@
 				}
 			%>
 			</p>
-			<p><a href="#">Modify Profile</a></p>
+			<% if(!buttons){ %>
+				<p><a href="#">Modify Profile</a></p>
+			<% } %>
 		</div>
+		<%
+			if(buttons){
+				%>
+				<div id="buttons">
+					<input type="button" value="Chiedi aiuto" />
+					<input type="button" value="Chiedi amicizia" />
+				</div>
+				<%
+			}
+		%>
+		<br style="clear: both;">
 	</div>
 
 	<jsp:include page="/common/footer.jsp"></jsp:include>
