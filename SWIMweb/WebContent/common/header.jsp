@@ -92,7 +92,7 @@
 								} else {
 									out.println("<li>");
 								}
-								out.println("<a href=\"/SWIMweb/user/search.jsp\" title=\"Search\">Search</a></li>");
+								out.println("<a href=\"/SWIMweb/user/search\" title=\"Search\">Search</a></li>");
 								if (request.getParameter("page").equals("friends")) {
 									out.println("<li class=\"current\">");
 								} else {

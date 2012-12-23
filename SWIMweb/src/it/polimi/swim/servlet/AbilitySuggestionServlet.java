@@ -29,7 +29,7 @@ public class AbilitySuggestionServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		System.out
-				.println("*** [AbilitySuggestionServlet] doGet - forwarding to abilitySuggestion.jsp ***");
+				.println("*** [AbilitySuggestionServlet] doGet, forwarding to abilitySuggestion.jsp ***");
 		getServletConfig().getServletContext()
 				.getRequestDispatcher("/user/abilitySuggestion.jsp")
 				.forward(request, response);
@@ -70,7 +70,7 @@ public class AbilitySuggestionServlet extends HttpServlet {
 					.forward(request, response);
 		} else {
 			System.out
-					.println("*** [AbilitySuggestionServlet] no suggestion forwarding to abilitySuggestion.jsp ***");
+					.println("*** [AbilitySuggestionServlet] no suggestion, forwarding to abilitySuggestion.jsp ***");
 			request.setAttribute("error", "suggestion can not be empty");
 			getServletConfig().getServletContext()
 					.getRequestDispatcher("/user/abilitySuggestion.jsp")

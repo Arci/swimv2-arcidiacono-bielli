@@ -48,7 +48,7 @@
 				if (user == null) {
 					response.sendRedirect("/SWIMweb");
 				}
-				List<AbilityRequest> abilityRequests = user.getAbilityRequest();
+				Set<AbilityRequest> abilityRequests = user.getAbilityRequest();
 				if (abilityRequests.isEmpty()) {
 					out.println("<span class=\"warning\">you don't have any suspended request</span>");
 				}else{
@@ -61,7 +61,6 @@
 					out.println("</ul>"); 
 				}
 			%>
-
 		</div>
 	</div>
 

@@ -59,7 +59,10 @@ public class User implements Serializable {
 	private int phone;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "user_abilities", joinColumns = @JoinColumn(name = "userID"), inverseJoinColumns = @JoinColumn(name = "abilityID"))
+	@JoinTable(name = "user_abilities",
+		joinColumns = @JoinColumn(name = "userID"),
+		inverseJoinColumns = @JoinColumn(name = "abilityID")
+	)
 	private Set<Ability> abilities;
 
 	/**
@@ -78,7 +81,7 @@ public class User implements Serializable {
 	 * List of ability request created
 	 */
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-	private List<AbilityRequest> abilityRequest;
+	private Set<AbilityRequest> abilityRequest;
 
 	/**
 	 * List of friends
@@ -182,11 +185,11 @@ public class User implements Serializable {
 		this.helpRequestAsHelper = helpRequestAsHelper;
 	}
 
-	public List<AbilityRequest> getAbilityRequest() {
+	public Set<AbilityRequest> getAbilityRequest() {
 		return abilityRequest;
 	}
 
-	public void setAbilityRequest(List<AbilityRequest> abilityRequest) {
+	public void setAbilityRequest(Set<AbilityRequest> abilityRequest) {
 		this.abilityRequest = abilityRequest;
 	}
 
