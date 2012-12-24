@@ -17,17 +17,31 @@
 				&& request.getAttribute("userLoaded") != "") {
 			user = (User) request.getAttribute("userLoaded");
 			buttons = true;
-			%><jsp:include page="/common/header.jsp">
-				<jsp:param name="page" value="search" />
-			</jsp:include><%
 		} else if (session.getAttribute("User") != null) {
 			user = (User) session.getAttribute("User");
 			buttons = false;
+		} else {
+			response.sendRedirect("/SWIMweb");
+		}
+		
+		if(request.getAttribute("from") != null && request.getAttribute("from") != ""){
+			if(request.getAttribute("from").equals("search")){
+				%><jsp:include page="/common/header.jsp">
+					<jsp:param name="page" value="search" />
+				</jsp:include><%
+			}else if(request.getAttribute("from").equals("friends")){
+				%><jsp:include page="/common/header.jsp">
+					<jsp:param name="page" value="friends" />
+				</jsp:include><%
+			}else if(request.getAttribute("from").equals("helps")){
+				%><jsp:include page="/common/header.jsp">
+					<jsp:param name="page" value="profile" />
+				</jsp:include><%
+			}
+		}else{
 			%><jsp:include page="/common/header.jsp">
 				<jsp:param name="page" value="profile" />
 			</jsp:include><%
-		} else {
-			response.sendRedirect("/SWIMweb");
 		}
 	%>
 

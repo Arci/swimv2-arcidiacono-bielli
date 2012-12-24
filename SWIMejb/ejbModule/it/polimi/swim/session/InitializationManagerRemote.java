@@ -12,5 +12,7 @@ public interface InitializationManagerRemote {
 	public void addAbilitiesToUsers();
 	
 	public void addFakeHelpRequest();
+	
+	public void addFakeFriendship();
 
 }

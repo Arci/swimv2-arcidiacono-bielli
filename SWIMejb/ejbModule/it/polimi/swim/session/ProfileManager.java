@@ -110,8 +110,8 @@ public class ProfileManager implements ProfileManagerRemote,
 	public Double getUserRating(User user) {
 		try {
 			Query q = manager
-					.createQuery("SELECT coalesce(avg(h.vote), 0) FROM HelpRequest h WHERE h.helper.id=:userid");
-			q.setParameter("userid", user.getId());
+					.createQuery("SELECT coalesce(avg(h.vote), 0) FROM HelpRequest h WHERE h.helper=:user");
+			q.setParameter("user", user);
 			Double vote = (Double) q.getSingleResult();
 			System.out.println("*** [ProfileManager] rating for '"
 					+ user.getUsername() + "' is '" + vote + "' ***");
@@ -126,9 +126,9 @@ public class ProfileManager implements ProfileManagerRemote,
 	public Double getAbilityRating(User user, Ability ability) {
 		try {
 			Query q = manager
-					.createQuery("SELECT coalesce(avg(h.vote), 0) FROM HelpRequest h WHERE h.helper.id=:userid AND h.ability.name=:abilityName");
-			q.setParameter("userid", user.getId());
-			q.setParameter("abilityName", ability.getName());
+					.createQuery("SELECT coalesce(avg(h.vote), 0) FROM HelpRequest h WHERE h.helper=:user AND h.ability=:ability");
+			q.setParameter("user", user);
+			q.setParameter("ability", ability);
 			Double vote = (Double) q.getSingleResult();
 			System.out.println("*** [ProfileManager] rating for ability '"
 					+ ability.getName() + "' of '" + user.getUsername()

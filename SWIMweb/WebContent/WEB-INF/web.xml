@@ -39,4 +39,12 @@
 		<servlet-name>searchServlet</servlet-name>
 		<url-pattern>/user/search</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>friendsServlet</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.FriendsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>friendsServlet</servlet-name>
+		<url-pattern>/user/friends</url-pattern>
+	</servlet-mapping>
 </web-app>

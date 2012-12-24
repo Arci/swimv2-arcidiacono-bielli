@@ -130,7 +130,7 @@ public class SearchServlet extends HttpServlet {
 				redirect(request, response);
 			} else {
 				System.out
-						.println("*** [SearchServlet] setting ability results, forwarding to search.jsp ***");				
+						.println("*** [SearchServlet] setting ability results, forwarding to search.jsp ***");
 				request.setAttribute("results", results);
 				redirect(request, response);
 			}

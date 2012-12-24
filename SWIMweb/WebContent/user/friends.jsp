@@ -14,7 +14,72 @@
 		<jsp:param name="page" value="friends" />
 	</jsp:include>
 
-	<div id="pageContent"></div>
+	<div id="pageContent">
+		<div id="friends">
+			<p>
+			<span class="text">These are your friends:</span></br>
+			<%
+				@SuppressWarnings("unchecked")
+				List<User> friends = (List<User>) request.getAttribute("friends");
+				if (friends.isEmpty() || friends == null) {
+					out.println("<span class=\"warning\">you don't have any friends yet!</span>");
+				}else{
+					out.println("<ul>");
+					for(User user : friends){
+						out.println("<li>" + user.getName() + " " + user.getSurname() + 
+								" <a href=\"profile?username=" +
+								user.getUsername() + "&from=friends\">Visualizza Profilo</a></li>");
+					}
+					out.println("</ul>");
+				}
+			%>
+			</p>
+		</div>
+		<div id="request">
+			<p>
+			<span class="text">These are your friendship request:</span></br>
+			<%
+				@SuppressWarnings("unchecked")
+				List<Friendship> requests = (List<Friendship>) request.getAttribute("requests");
+				if (friends.isEmpty() || friends == null) {
+					out.println("<span class=\"warning\">you don't have any requests </span>");
+				}else{
+					out.println("<ul>");
+					for(Friendship friendship : requests){
+						out.println("<li>" + friendship.getFriend().getName() +  " " +
+									friendship.getFriend().getSurname() +  
+									" <a href=\"friends?friendship=" +
+									friendship.getId() + 
+									"&state=accept\">Accept</a> <a href=\"friends?friendship=" +
+									friendship.getId() + "&state=reject\">Reject</a></li>");
+					}
+					out.println("</ul>");
+				}
+			%>
+			</p>
+		</div>
+		<div id="pending">
+			<p>
+			<span class="text">These are your pending request:</span></br>
+			<%
+				@SuppressWarnings("unchecked")
+				List<Friendship> pendings = (List<Friendship>) request.getAttribute("pendings");
+				if (friends.isEmpty() || friends == null) {
+					out.println("<span class=\"warning\">you don't have any pending requests </span>");
+				}else{
+					out.println("<ul>");
+					for(Friendship friendship : pendings){
+						out.println("<li>" + friendship.getFriend().getName() + " " +
+									friendship.getFriend().getSurname() + 
+									" <a href=\"profile?username=" +
+									friendship.getFriend().getUsername() + "&from=friends\">Visualizza Profilo</a></li>");
+					}
+					out.println("</ul>");
+				}
+			%>
+			</p>
+		</div>
+	</div>
 
 	<jsp:include page="/common/footer.jsp"></jsp:include>
 </body>

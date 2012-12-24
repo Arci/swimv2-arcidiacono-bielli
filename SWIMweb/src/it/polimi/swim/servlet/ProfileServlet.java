@@ -47,6 +47,8 @@ public class ProfileServlet extends HttpServlet {
 								.getParameter("username"));
 				request.setAttribute("userLoaded", userLoaded);
 				getUserInformation(userLoaded, request, response);
+
+				request.setAttribute("from", request.getParameter("from")); //Forwarding form attribute
 				System.out
 						.println("*** [ProfileServlet] forwarding to profile.jsp ***");
 				getServletConfig().getServletContext()

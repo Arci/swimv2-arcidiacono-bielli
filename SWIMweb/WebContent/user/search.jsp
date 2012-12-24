@@ -59,7 +59,7 @@
 						for(User user : results){
 							out.println("<li>" + user.getName() + " " + user.getSurname() + 
 									" <a href=\"profile?username=" +
-									user.getUsername() + "\">Visualizza Profilo</a></li>");
+									user.getUsername() + "&from=search\">Visualizza Profilo</a></li>");
 						}
 						out.println("</ul>");
 					}
