@@ -4,18 +4,12 @@ import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.User;
 
 import java.util.Hashtable;
-import java.util.List;
 
 import javax.ejb.Remote;
 
 @Remote
 public interface ProfileManagerRemote {
 
-	/**
-	 * @return list of all ability in the system
-	 */
-	public List<Ability> getAbilityList();
-	
 	/**
 	 * get the user from his username
 	 * 
@@ -67,6 +61,5 @@ public interface ProfileManagerRemote {
 	 *         requested ability, return -1d if some problems occurs
 	 */
 	public Double getAbilityRating(User user, Ability ability);
-
 
 }

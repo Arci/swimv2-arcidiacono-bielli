@@ -24,20 +24,6 @@ public class ProfileManager implements ProfileManagerRemote,
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public List<Ability> getAbilityList() {
-		try {
-			Query q = manager.createQuery("FROM Ability a");
-			List<Ability> abilities = (List<Ability>) q.getResultList();
-			System.out.println("*** [ProfileManager] abilities found ***");
-			return abilities;
-		} catch (NoResultException exc) {
-			System.out.println("*** [ProfileManager] abilities not found ***");
-		}
-		return null;
-	}
-
-	@Override
 	public User getUserByUsername(String username) {
 		try {
 			Query q = manager

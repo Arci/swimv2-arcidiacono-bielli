@@ -206,6 +206,12 @@ public class InitializationManager implements InitializationManagerLocal,
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * it.polimi.swim.session.InitializationManagerRemote#addFakeFriendship()
+	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public void addFakeFriendship() {

@@ -100,8 +100,22 @@
 			if(buttons){
 				%>
 				<div id="buttons">
-					<input type="button" value="Chiedi aiuto" />
-					<input type="button" value="Chiedi amicizia" />
+					<%
+						if(request.getAttribute("friendState") != null
+							&& request.getAttribute("friendState") != ""){
+							if(request.getAttribute("friendState")=="friend"){
+								%><input type="button" value="Chiedi aiuto" /><%
+							}else if(request.getAttribute("friendState")=="pending"){
+								%>
+								<input type="button" value="Chiedi aiuto" />
+								<span class="message">Friendship Request is pending</span><%
+							}
+						}else{
+							%>
+							<input type="button" value="Chiedi aiuto" />
+							<input type="button" value="Chiedi amicizia" /><%
+						}
+				%>
 				</div>
 				<%
 			}

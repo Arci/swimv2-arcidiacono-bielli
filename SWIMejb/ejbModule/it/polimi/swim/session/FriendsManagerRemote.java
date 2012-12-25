@@ -50,4 +50,19 @@ public interface FriendsManagerRemote {
 	 * @param friendshipID
 	 */
 	public void updateFriendship(RequestState state, Friendship friendshipID);
+
+	/**
+	 * @param user1
+	 * @param user2
+	 * @return true if the user are friends, false otherwise
+	 */
+	boolean areFriends(User user1, User user2);
+
+	/**
+	 * @param user1
+	 * @param user2
+	 * @return true if exist a pending friendship request from user1 to user2
+	 */
+	boolean isRequestPending(User user1, User user2);
+
 }

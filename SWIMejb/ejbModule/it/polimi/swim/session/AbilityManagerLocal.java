@@ -3,6 +3,6 @@ package it.polimi.swim.session;
 import javax.ejb.Local;
 
 @Local
-public interface AbilitySuggestionLocal {
+public interface AbilityManagerLocal {
 
 }

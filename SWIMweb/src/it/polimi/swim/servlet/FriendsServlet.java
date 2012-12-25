@@ -55,13 +55,10 @@ public class FriendsServlet extends HttpServlet {
 
 			User user = (User) request.getSession().getAttribute("User");
 			List<User> friends = friendsManager.getFriends(user);
-			System.out.println("*** [FriendshipServlet] friends list ok ***");
 			request.setAttribute("friends", friends);
 			List<Friendship> pendings = friendsManager.getPending(user);
-			System.out.println("*** [FriendshipServlet] pendings list ok ***");
 			request.setAttribute("pendings", pendings);
 			List<Friendship> requests = friendsManager.getRequest(user);
-			System.out.println("*** [FriendshipServlet] requests list ok ***");
 			request.setAttribute("requests", requests);
 
 			getServletConfig().getServletContext()

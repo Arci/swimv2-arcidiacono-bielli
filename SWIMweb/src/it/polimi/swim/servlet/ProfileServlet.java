@@ -2,6 +2,7 @@ package it.polimi.swim.servlet;
 
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.User;
+import it.polimi.swim.session.FriendsManagerRemote;
 import it.polimi.swim.session.ProfileManagerRemote;
 
 import java.io.IOException;
@@ -29,10 +30,7 @@ public class ProfileServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		if (request.getParameter("username") != null
-				&& request.getParameter("username") != "") {
-			System.out.println("*** [ProfileServlet] doGet, show '"
-					+ request.getParameter("username") + "' profile ***");
+		if (!haveToShowSessionUserProfile(request, response)) {
 			try {
 				Hashtable<String, String> env = new Hashtable<String, String>();
 				env.put(Context.INITIAL_CONTEXT_FACTORY,
@@ -41,6 +39,8 @@ public class ProfileServlet extends HttpServlet {
 				InitialContext jndiContext = new InitialContext(env);
 				Object ref = jndiContext.lookup("ProfileManager/remote");
 				ProfileManagerRemote profileManager = (ProfileManagerRemote) ref;
+				ref = jndiContext.lookup("FriendsManager/remote");
+				FriendsManagerRemote friendsManager = (FriendsManagerRemote) ref;
 
 				User userLoaded = profileManager
 						.getUserByUsername((String) request
@@ -48,7 +48,16 @@ public class ProfileServlet extends HttpServlet {
 				request.setAttribute("userLoaded", userLoaded);
 				getUserInformation(userLoaded, request, response);
 
-				request.setAttribute("from", request.getParameter("from")); //Forwarding form attribute
+				if (friendsManager.areFriends((User) request.getSession()
+						.getAttribute("User"), userLoaded)) {
+					request.setAttribute("friendState", "friend");
+				} else if (friendsManager.isRequestPending((User) request
+						.getSession().getAttribute("User"), userLoaded)) {
+					request.setAttribute("friendState", "pending");
+				}
+
+				request.setAttribute("from", request.getParameter("from"));
+
 				System.out
 						.println("*** [ProfileServlet] forwarding to profile.jsp ***");
 				getServletConfig().getServletContext()
@@ -101,7 +110,7 @@ public class ProfileServlet extends HttpServlet {
 
 			Double rating = profileManager.getUserRating(user);
 			request.setAttribute("rating", (int) Math.rint(rating));
-			System.out.println("*** [ProfileServlet] rating set ***");
+			System.out.println("*** [ProfileServlet] user rating set ***");
 			for (Ability ability : user.getAbilities()) {
 				Double abilityRating = profileManager.getAbilityRating(user,
 						ability);
@@ -111,6 +120,18 @@ public class ProfileServlet extends HttpServlet {
 			System.out.println("*** [ProfileServlet] abilities rating set ***");
 		} catch (NamingException e) {
 			e.printStackTrace();
+		}
+	}
+
+	private boolean haveToShowSessionUserProfile(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		if (request.getParameter("username") != null
+				&& request.getParameter("username") != "") {
+			System.out.println("*** [ProfileServlet] doGet, show '"
+					+ request.getParameter("username") + "' profile ***");
+			return false;
+		} else {
+			return true;
 		}
 	}
 }

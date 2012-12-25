@@ -1,7 +1,7 @@
 package it.polimi.swim.servlet;
 
 import it.polimi.swim.model.User;
-import it.polimi.swim.session.AbilitySuggestionRemote;
+import it.polimi.swim.session.AbilityManagerRemote;
 
 import java.io.IOException;
 import java.util.Hashtable;
@@ -49,25 +49,43 @@ public class AbilitySuggestionServlet extends HttpServlet {
 						"org.jnp.interfaces.NamingContextFactory");
 				env.put(Context.PROVIDER_URL, "localhost:1099");
 				InitialContext jndiContext = new InitialContext(env);
-				Object ref = jndiContext.lookup("AbilitySuggestion/remote");
-				AbilitySuggestionRemote abilitySuggestion = (AbilitySuggestionRemote) ref;
+				Object ref = jndiContext.lookup("AbilityManager/remote");
+				AbilityManagerRemote abilityManager = (AbilityManagerRemote) ref;
 
 				User user = (User) request.getSession().getAttribute("User");
-				abilitySuggestion.insertSuggestion(user,
-						request.getParameter("suggestion"));
-				user = abilitySuggestion.reloadUser(user);
-				request.getSession().removeAttribute("User");
-				request.getSession().setAttribute("User", user);
+				if (!abilityManager.existAbility(request
+						.getParameter("suggestion"))) {
+					abilityManager.insertSuggestion(user,
+							request.getParameter("suggestion"));
+					user = abilityManager.reloadUser(user);
+					request.getSession().removeAttribute("User");
+					request.getSession().setAttribute("User", user);
+					System.out
+							.println("*** [AbilitySuggestionServlet] suggestion '"
+									+ request.getParameter("suggestion")
+									+ "' added ***");
+					request.setAttribute("message",
+							"your suggestion has been recorded");
+					getServletConfig()
+							.getServletContext()
+							.getRequestDispatcher("/user/abilitySuggestion.jsp")
+							.forward(request, response);
+				} else {
+					System.out
+							.println("*** [AbilitySuggestionServlet] suggestion '"
+									+ request.getParameter("suggestion")
+									+ "' already exists ***");
+					request.setAttribute("error",
+							"the ability you are suggesting is already in the system!");
+					getServletConfig()
+							.getServletContext()
+							.getRequestDispatcher("/user/abilitySuggestion.jsp")
+							.forward(request, response);
+				}
 
 			} catch (NamingException e) {
 				e.printStackTrace();
 			}
-			System.out.println("*** [AbilitySuggestionServlet] suggestion '"
-					+ request.getParameter("suggestion") + "' added ***");
-			request.setAttribute("message", "your suggestion has been recorded");
-			getServletConfig().getServletContext()
-					.getRequestDispatcher("/user/abilitySuggestion.jsp")
-					.forward(request, response);
 		} else {
 			System.out
 					.println("*** [AbilitySuggestionServlet] no suggestion, forwarding to abilitySuggestion.jsp ***");
