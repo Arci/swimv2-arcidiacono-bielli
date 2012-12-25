@@ -46,12 +46,13 @@
 				}else{
 					out.println("<ul>");
 					for(Friendship friendship : requests){
-						out.println("<li>" + friendship.getFriend().getName() +  " " +
-									friendship.getFriend().getSurname() +  
-									" <a href=\"friends?friendship=" +
+						out.println("<li><span class=\"italic\">" + friendship.getUser().getName() +  " " +
+									friendship.getUser().getSurname() +  
+									"</span> wants to be your friend <a href=\"friends?friendship=" +
 									friendship.getId() + 
 									"&state=accept\">Accept</a> <a href=\"friends?friendship=" +
-									friendship.getId() + "&state=reject\">Reject</a></li>");
+									friendship.getId() + "&state=reject\">Reject</a> <a href=\"profile?username=" +
+									friendship.getUser().getUsername() + "&from=friends\">Visualizza Profilo</a></li>");
 					}
 					out.println("</ul>");
 				}

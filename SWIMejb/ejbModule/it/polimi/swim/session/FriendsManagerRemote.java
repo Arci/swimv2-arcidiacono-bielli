@@ -47,9 +47,9 @@ public interface FriendsManagerRemote {
 	 * set the ID of the passed friendship request to the passed state
 	 * 
 	 * @param state
-	 * @param friendshipID
+	 * @param string
 	 */
-	public void updateFriendship(RequestState state, Friendship friendshipID);
+	public void updateFriendship(RequestState state, int friendshipID);
 
 	/**
 	 * @param user1

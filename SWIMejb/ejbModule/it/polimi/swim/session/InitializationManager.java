@@ -224,7 +224,7 @@ public class InitializationManager implements InitializationManagerLocal,
 				List<User> normals = q.getResultList();
 				User user1 = normals.get(0);
 				User user2 = normals.get(1);
-				Friendship accepted1to2 = new Friendship();
+				/*Friendship accepted1to2 = new Friendship();
 				accepted1to2.setFriend(user2);
 				accepted1to2.setUser(user1);
 				accepted1to2.setState(RequestState.ACCEPTED);
@@ -238,7 +238,7 @@ public class InitializationManager implements InitializationManagerLocal,
 						.println("*** [InitializationManager] accepted friend '"
 								+ user2.getUsername()
 								+ "' user '"
-								+ user1.getUsername() + "' and viceversa ***");
+								+ user1.getUsername() + "' and viceversa ***");*/
 				Friendship pending = new Friendship();
 				pending.setFriend(user2);
 				pending.setUser(user1);

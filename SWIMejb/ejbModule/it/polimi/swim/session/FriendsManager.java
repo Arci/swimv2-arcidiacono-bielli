@@ -99,14 +99,29 @@ public class FriendsManager implements FriendsManagerRemote,
 	}
 
 	@Override
-	public void updateFriendship(RequestState state, Friendship friendshipID) {
+	public void updateFriendship(RequestState state, int friendshipID) {
 		try {
 			Friendship friendship = manager
 					.find(Friendship.class, friendshipID);
-			friendship.setState(state);
-			manager.merge(friendship);
+			if (state.equals(RequestState.REJECTED)) {
+				System.out
+						.println("*** [FriendsManager] reject remove friendship ***");
+				manager.remove(friendship);
+			} else if (state.equals(RequestState.ACCEPTED)) {
+				System.out
+						.println("*** [FriendsManager] accepted set and update friendship ***");
+				friendship.setState(state);
+				manager.merge(friendship);
+				Friendship viceversa = new Friendship();
+				viceversa.setFriend(friendship.getUser());
+				viceversa.setUser(friendship.getFriend());
+				viceversa.setState(RequestState.ACCEPTED);
+				manager.persist(viceversa);
+				System.out
+						.println("*** [FriendsManager] viceversa friendhsip added ***");
+			}
 			System.out
-					.println("*** [FriendsManager] friendship request found and updated ***");
+					.println("*** [FriendsManager] state was pending? don't know what to do ***");
 		} catch (NoResultException exc) {
 			System.out
 					.println("*** [FriendsManager] friendship request not found ***");

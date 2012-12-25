@@ -52,7 +52,10 @@ public class ProfileServlet extends HttpServlet {
 						.getAttribute("User"), userLoaded)) {
 					request.setAttribute("friendState", "friend");
 				} else if (friendsManager.isRequestPending((User) request
-						.getSession().getAttribute("User"), userLoaded)) {
+						.getSession().getAttribute("User"), userLoaded)
+						|| friendsManager.isRequestPending(userLoaded,
+								(User) request.getSession()
+										.getAttribute("User"))) {
 					request.setAttribute("friendState", "pending");
 				}
 
