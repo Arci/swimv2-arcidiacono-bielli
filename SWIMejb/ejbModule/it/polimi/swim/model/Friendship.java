@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -29,7 +28,7 @@ public class Friendship implements Serializable {
 	@Column(name = "ID")
 	private int id;
 
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "friendID", nullable = false)
 	private User friend;
 

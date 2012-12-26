@@ -15,9 +15,9 @@ public interface FriendsManagerRemote {
 	 * Add a request of friendship from user to friend
 	 * 
 	 * @param user
-	 * @param friend
+	 * @param string
 	 */
-	public void addRequest(User user, User friend);
+	public void addRequest(User user, String string);
 
 	/**
 	 * Get the friends list of the passed user
@@ -56,13 +56,13 @@ public interface FriendsManagerRemote {
 	 * @param user2
 	 * @return true if the user are friends, false otherwise
 	 */
-	boolean areFriends(User user1, User user2);
+	public boolean areFriends(User user1, User user2);
 
 	/**
 	 * @param user1
 	 * @param user2
 	 * @return true if exist a pending friendship request from user1 to user2
 	 */
-	boolean isRequestPending(User user1, User user2);
+	public boolean isRequestPending(User user1, User user2);
 
 }

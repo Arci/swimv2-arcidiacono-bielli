@@ -104,22 +104,80 @@
 						if(request.getAttribute("friendState") != null
 							&& request.getAttribute("friendState") != ""){
 							if(request.getAttribute("friendState")=="friend"){
-								%><input type="button" value="Chiedi aiuto" /><%
+								%>
+								<input type="button" id="help" onclick="addHelp('<%=user.getUsername()%>');" value="Ask for help" />
+								<%
 							}else if(request.getAttribute("friendState")=="pending"){
 								%>
-								<input type="button" value="Chiedi aiuto" />
-								<span class="message">Friendship Request is pending</span><%
+								<input type="button" id="help" onclick="addHelp('<%=user.getUsername()%>');" value="Ask for help" />
+								<span class="message">Friendship Request is pending</span>
+								<%
 							}
 						}else{
 							%>
-							<input type="button" value="Chiedi aiuto" />
-							<input type="button" value="Chiedi amicizia" /><%
+							<input type="button" id="help" onclick="addHelp('<%=user.getUsername()%>');" value="Ask for help" />
+							<input type="button" id="friend" onclick="addFriendship('<%=user.getUsername()%>');" value="Ask friendship" />
+							<% 
 						}
-				%>
+					%>
 				</div>
-				<%
+		<%
 			}
 		%>
+		<script type="text/javascript">
+			function newAjax(){
+				var xmlhttp = null;
+				try {
+					xmlhttp = new XMLHttpRequest();
+				} catch(e) {
+				 try {
+					 xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+				   } catch(e) {
+					 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+				   }
+				}
+				return xmlhttp;
+			};
+			function addFriendship(username)
+			{
+				var ajax = newAjax();
+				var url = "/SWIMweb/user/friends?newFriend="+username;
+				var buttonsDiv = document.getElementById('buttons'); 
+				ajax.onreadystatechange = function () {
+				    if (ajax.readyState == 4) {
+				        if( ajax.status == 200 ){ 
+				        	var span = document.createElement("span");
+				            span.setAttribute("class",'message');
+				            span.setAttribute("id",'friendMessage');
+				            span.innerHTML = "Request added successfully";
+				            buttonsDiv.appendChild(span);
+				            var friend = document.getElementById("friend");
+				            buttonsDiv.removeChild(friend);
+				            var error = document.getElementById("friendError");
+					        if(error!=null){
+					        	buttonsDiv.removeChild(error);
+						    }
+				        } else {
+					        var error = document.getElementById("friendError");
+					        if(error==null){
+					        	var span = document.createElement("span");
+					            span.setAttribute("class",'error');
+					            span.setAttribute("id",'friendError');
+					            span.innerHTML = "problems during the request";
+					            buttonsDiv.appendChild(span);
+						    }
+				        }
+				    }
+				};
+				ajax.open("GET", url, true);
+				ajax.send(null);
+			};
+			
+			function addHelp(username)
+			{
+				alert("Add a request with helper " + username + " - NOT implemented yet!");
+			};
+		</script>
 		<br style="clear: both;">
 	</div>
 

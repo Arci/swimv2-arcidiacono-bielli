@@ -4,11 +4,16 @@ import it.polimi.swim.enums.RequestState;
 import it.polimi.swim.model.Friendship;
 import it.polimi.swim.model.User;
 
+import java.util.Hashtable;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -23,12 +28,27 @@ public class FriendsManager implements FriendsManagerRemote,
 	}
 
 	@Override
-	public void addRequest(User user, User friend) {
-		Friendship friendship = new Friendship();
-		friendship.setUser(user);
-		friendship.setFriend(friend);
-		friendship.setState(RequestState.PENDING);
-		manager.persist(friendship);
+	public void addRequest(User user, String friend) {
+		try {
+			Hashtable<String, String> env = new Hashtable<String, String>();
+			env.put(Context.INITIAL_CONTEXT_FACTORY,
+					"org.jnp.interfaces.NamingContextFactory");
+			env.put(Context.PROVIDER_URL, "localhost:1099");
+			InitialContext jndiContext = new InitialContext(env);
+			Object ref = jndiContext.lookup("ProfileManager/local");
+			ProfileManagerLocal profileManager = (ProfileManagerLocal) ref;
+
+			User friendUser = profileManager.getUserByUsername(friend);
+			Friendship friendship = new Friendship();
+			friendship.setFriend(friendUser);
+			friendship.setState(RequestState.PENDING);
+			friendship.setUser(user);
+			manager.persist(friendship);
+
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	@Override
@@ -159,6 +179,10 @@ public class FriendsManager implements FriendsManagerRemote,
 			System.out.println("*** [ProfileManager] friendship '"
 					+ user1.getUsername() + "' and '" + user2.getUsername()
 					+ "' in state '" + state + "' not found ***");
+		} catch (NonUniqueResultException exc) {
+			System.out.println("*** [ProfileManager] friendship '"
+					+ user1.getUsername() + "' and '" + user2.getUsername()
+					+ "' in state '" + state + "' multiple found ***");
 		}
 		return false;
 	}

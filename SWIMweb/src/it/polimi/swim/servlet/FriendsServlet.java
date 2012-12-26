@@ -34,6 +34,9 @@ public class FriendsServlet extends HttpServlet {
 		if (haveTomanageFriendship(request, response)) {
 			System.out.println("*** [FriendsServlet] manage friendship ***");
 			manageFriendship(request, response);
+		} else if (haveToAddFriendship(request, response)) {
+			System.out.println("*** [FriendsServlet] add friendship ***");
+			addFriendship(request, response);
 		}
 		getUserInformation(request, response);
 	}
@@ -104,6 +107,34 @@ public class FriendsServlet extends HttpServlet {
 			getServletConfig().getServletContext()
 					.getRequestDispatcher("/user/friends.jsp")
 					.forward(request, response);
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private boolean haveToAddFriendship(HttpServletRequest request,
+			HttpServletResponse response) {
+		if (request.getParameter("newFriend") != null
+				&& request.getParameter("newFriend") != "") {
+			return true;
+		}
+		return false;
+	}
+
+	private void addFriendship(HttpServletRequest request,
+			HttpServletResponse response) {
+		try {
+			Hashtable<String, String> env = new Hashtable<String, String>();
+			env.put(Context.INITIAL_CONTEXT_FACTORY,
+					"org.jnp.interfaces.NamingContextFactory");
+			env.put(Context.PROVIDER_URL, "localhost:1099");
+			InitialContext jndiContext = new InitialContext(env);
+			Object ref = jndiContext.lookup("FriendsManager/remote");
+			FriendsManagerRemote friendsManager = (FriendsManagerRemote) ref;
+
+			friendsManager.addRequest((User) request.getSession().getAttribute("User")
+					, request.getParameter("newFriend"));
+			
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}

@@ -55,6 +55,7 @@ public class InitializationManager implements InitializationManagerLocal,
 			System.out
 					.println("*** [InitializationManager] ADMIN user inserted ***");
 		}
+
 		String normalUsername = "mouse";
 		try {
 			Query q = manager
@@ -79,6 +80,7 @@ public class InitializationManager implements InitializationManagerLocal,
 			System.out
 					.println("*** [InitializationManager] NORMAL user inserted ***");
 		}
+
 		String normalUsername2 = "dog";
 		try {
 			Query q = manager
@@ -103,12 +105,38 @@ public class InitializationManager implements InitializationManagerLocal,
 			System.out
 					.println("*** [InitializationManager] NORMAL user inserted ***");
 		}
+
+		String normalUsername3 = "mice";
+		try {
+			Query q = manager
+					.createQuery("FROM User u WHERE u.username=:normal");
+			q.setParameter("normal", normalUsername3);
+			q.getSingleResult();
+			System.out
+					.println("*** [InitializationManager] NORMAL users found no action ***");
+		} catch (NoResultException exc) {
+			System.out
+					.println("*** [InitializationManager] NORMAL users not found ***");
+			User normal = new User();
+			normal.setType(UserType.NORMAL);
+			normal.setName("minnie");
+			normal.setSurname("topolino");
+			normal.setUsername(normalUsername3);
+			normal.setEmail("topolina@fattoria.com");
+			normal.setPassword("mice");
+			normal.setCity("Torino");
+			normal.setPhone(1234567890);
+			manager.persist(normal);
+			System.out
+					.println("*** [InitializationManager] NORMAL user inserted ***");
+		}
 	}
 
 	@Override
 	public void addFakeAbilities() {
 		String giardiniere = "giardiniere";
 		String imbianchino = "imbianchino";
+		String carpentiere = "carpentiere";
 		try {
 			Query q = manager.createQuery("FROM Ability a WHERE a.name=:name");
 			q.setParameter("name", giardiniere);
@@ -139,6 +167,21 @@ public class InitializationManager implements InitializationManagerLocal,
 			System.out
 					.println("*** [InitializationManager] IMBIANCHINO ability inserted ***");
 		}
+		try {
+			Query q = manager.createQuery("FROM Ability a WHERE a.name=:name");
+			q.setParameter("name", carpentiere);
+			q.getSingleResult();
+			System.out
+					.println("*** [InitializationManager] CARPENTIERE ability found no action ***");
+		} catch (NoResultException exc) {
+			System.out
+					.println("*** [InitializationManager] CARPENTIERE ability not found ***");
+			Ability ability = new Ability();
+			ability.setName(carpentiere);
+			manager.persist(ability);
+			System.out
+					.println("*** [InitializationManager] CARPENTIERE ability inserted ***");
+		}
 	}
 
 	@Override
@@ -158,6 +201,9 @@ public class InitializationManager implements InitializationManagerLocal,
 					System.out
 							.println("*** [InitializationManager] Added abilities to '"
 									+ normal.getUsername() + "' ***");
+					if (normal.getUsername().equals("dog")) {
+						normal.addAbility(abilities.get(2));
+					}
 				}
 			}
 		} catch (NoResultException exc) {
@@ -206,12 +252,6 @@ public class InitializationManager implements InitializationManagerLocal,
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * it.polimi.swim.session.InitializationManagerRemote#addFakeFriendship()
-	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public void addFakeFriendship() {
@@ -224,7 +264,8 @@ public class InitializationManager implements InitializationManagerLocal,
 				List<User> normals = q.getResultList();
 				User user1 = normals.get(0);
 				User user2 = normals.get(1);
-				/*Friendship accepted1to2 = new Friendship();
+				User user3 = normals.get(2);
+				Friendship accepted1to2 = new Friendship();
 				accepted1to2.setFriend(user2);
 				accepted1to2.setUser(user1);
 				accepted1to2.setState(RequestState.ACCEPTED);
@@ -238,16 +279,16 @@ public class InitializationManager implements InitializationManagerLocal,
 						.println("*** [InitializationManager] accepted friend '"
 								+ user2.getUsername()
 								+ "' user '"
-								+ user1.getUsername() + "' and viceversa ***");*/
+								+ user3.getUsername() + "' and viceversa ***");
 				Friendship pending = new Friendship();
 				pending.setFriend(user2);
-				pending.setUser(user1);
+				pending.setUser(user3);
 				pending.setState(RequestState.PENDING);
 				manager.persist(pending);
 				System.out
 						.println("*** [InitializationManager] pending friend '"
 								+ user2.getUsername() + "' user '"
-								+ user1.getUsername() + "' ***");
+								+ user3.getUsername() + "' ***");
 			} else {
 				System.out
 						.println("*** [InitializationManager] friendship already inserted ***");

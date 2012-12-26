@@ -83,12 +83,6 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private Set<AbilityRequest> abilityRequest;
 
-	/**
-	 * List of friends
-	 */
-	@OneToMany(mappedBy = "friend")
-	private List<Friendship> friends;
-
 	public int getId() {
 		return id;
 	}
@@ -192,15 +186,7 @@ public class User implements Serializable {
 	public void setAbilityRequest(Set<AbilityRequest> abilityRequest) {
 		this.abilityRequest = abilityRequest;
 	}
-
-	public List<Friendship> getFriends() {
-		return friends;
-	}
-
-	public void setFriends(List<Friendship> friends) {
-		this.friends = friends;
-	}
-
+	
 	public void addAbility(Ability ability) {
 		abilities.add(ability);
 	}
