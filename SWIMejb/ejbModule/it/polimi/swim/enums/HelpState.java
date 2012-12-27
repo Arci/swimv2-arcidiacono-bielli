@@ -14,6 +14,12 @@ public enum HelpState {
 			return "pending";
 		}
 	},
+	REJECTED {
+		@Override
+		public String toString() {
+			return "rejected";
+		}
+	},
 	CLOSED {
 		@Override
 		public String toString() {

@@ -47,7 +47,7 @@ public class AbilityManager implements AbilityManagerRemote,
 			Query q = manager.createQuery("FROM Ability a WHERE a.name=:name");
 			q.setParameter("name", name);
 			Ability ability = (Ability) q.getSingleResult();
-			System.out.println("*** [ProfileManager] ability '" + name
+			System.out.println("*** [AbilityManager] ability '" + name
 					+ "' found ***");
 			if (ability != null) {
 				return true;
@@ -55,22 +55,38 @@ public class AbilityManager implements AbilityManagerRemote,
 				return false;
 			}
 		} catch (NoResultException exc) {
-			System.out.println("*** [ProfileManager] ability '" + name
+			System.out.println("*** [AbilityManager] ability '" + name
 					+ "' not found ***");
 		}
 		return false;
 	}
-	
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Ability> getAbilityList() {
 		try {
 			Query q = manager.createQuery("FROM Ability a");
 			List<Ability> abilities = (List<Ability>) q.getResultList();
-			System.out.println("*** [ProfileManager] abilities found ***");
+			System.out.println("*** [AbilityManager] abilities found ***");
 			return abilities;
 		} catch (NoResultException exc) {
-			System.out.println("*** [ProfileManager] abilities not found ***");
+			System.out.println("*** [AbilityManager] abilities not found ***");
+		}
+		return null;
+	}
+
+	@Override
+	public Ability getAbilityByName(String name) {
+		try {
+			Query q = manager.createQuery("FROM Ability a WHERE a.name=:name");
+			q.setParameter("name", name);
+			Ability ability = (Ability) q.getSingleResult();
+			System.out.println("*** [AbilityManager] ability '" + name
+					+ "' found ***");
+			return ability;
+		} catch (NoResultException exc) {
+			System.out.println("*** [AbilityManager] ability '" + name
+					+ "' not found ***");
 		}
 		return null;
 	}

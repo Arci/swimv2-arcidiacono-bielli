@@ -48,7 +48,6 @@ public class FriendsManager implements FriendsManagerRemote,
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override

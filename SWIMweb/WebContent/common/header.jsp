@@ -104,7 +104,7 @@
 								} else {
 									out.println("<li>");
 								}
-								out.println("<a href=\"/SWIMweb/user/helps.jsp\" title=\"Helps\">Helps</a></li>");
+								out.println("<a href=\"/SWIMweb/user/helps\" title=\"Helps\">Helps</a></li>");
 								if (request.getParameter("page")
 										.equals("abilitySuggestion")) {
 									out.println("<li class=\"current\">");

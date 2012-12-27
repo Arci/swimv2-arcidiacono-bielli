@@ -1,11 +1,12 @@
 package it.polimi.swim.servlet;
 
-import it.polimi.swim.enums.RequestState;
-import it.polimi.swim.model.Friendship;
+import it.polimi.swim.enums.HelpState;
+import it.polimi.swim.model.HelpRequest;
 import it.polimi.swim.model.User;
-import it.polimi.swim.session.FriendsManagerRemote;
+import it.polimi.swim.session.HelpsManagerRemote;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -17,11 +18,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class FriendsServlet extends HttpServlet {
+public class HelpsServlet extends HttpServlet {
 
-	private static final long serialVersionUID = -4806101806094670071L;
+	private static final long serialVersionUID = 6322246263448006617L;
 
-	public FriendsServlet() {
+	public HelpsServlet() {
 		super();
 	}
 
@@ -31,14 +32,14 @@ public class FriendsServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		if (haveToManageFriendship(request, response)) {
-			System.out.println("*** [FriendsServlet] manage friendship ***");
-			manageFriendship(request, response);
-		} else if (haveToAddFriendship(request, response)) {
-			System.out.println("*** [FriendsServlet] add friendship ***");
-			addFriendship(request, response);
+		if (haveToManageHelp(request, response)) {
+			System.out.println("*** [HelpsServlet] manage friendship ***");
+			manageHelp(request, response);
+		} else if (haveToAddHelp(request, response)) {
+			System.out.println("*** [HelpsServlet] add help ***");
+			addHelp(request, response);
 		}
-		getUserInformation(request, response);
+		getHelpsInformation(request, response);
 	}
 
 	/**
@@ -47,13 +48,13 @@ public class FriendsServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		getUserInformation(request, response);
+		getHelpsInformation(request, response);
 	}
 
-	private boolean haveToManageFriendship(HttpServletRequest request,
+	private boolean haveToManageHelp(HttpServletRequest request,
 			HttpServletResponse response) {
-		if (request.getParameter("friendship") != null
-				&& request.getParameter("friendship") != ""
+		if (request.getParameter("help") != null
+				&& request.getParameter("help") != ""
 				&& request.getParameter("state") != null
 				&& request.getParameter("state") != "") {
 			return true;
@@ -61,7 +62,7 @@ public class FriendsServlet extends HttpServlet {
 		return false;
 	}
 
-	private void manageFriendship(HttpServletRequest request,
+	private void manageHelp(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		try {
 			Hashtable<String, String> env = new Hashtable<String, String>();
@@ -69,15 +70,15 @@ public class FriendsServlet extends HttpServlet {
 					"org.jnp.interfaces.NamingContextFactory");
 			env.put(Context.PROVIDER_URL, "localhost:1099");
 			InitialContext jndiContext = new InitialContext(env);
-			Object ref = jndiContext.lookup("FriendsManager/remote");
-			FriendsManagerRemote friendsManager = (FriendsManagerRemote) ref;
+			Object ref = jndiContext.lookup("HelpsManager/remote");
+			HelpsManagerRemote helpsManager = (HelpsManagerRemote) ref;
 
 			if (request.getParameter("state").equals("accept")) {
-				friendsManager.updateFriendship(RequestState.ACCEPTED,
-						Integer.parseInt(request.getParameter("friendship")));
+				helpsManager.updateHelpRequest(HelpState.OPEN,
+						Integer.parseInt(request.getParameter("help")));
 			} else if (request.getParameter("state").equals("reject")) {
-				friendsManager.updateFriendship(RequestState.REJECTED,
-						Integer.parseInt(request.getParameter("friendship")));
+				helpsManager.updateHelpRequest(HelpState.REJECTED,
+						Integer.parseInt(request.getParameter("help")));
 			}
 
 		} catch (NamingException e) {
@@ -85,7 +86,7 @@ public class FriendsServlet extends HttpServlet {
 		}
 	}
 
-	private void getUserInformation(HttpServletRequest request,
+	private void getHelpsInformation(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		try {
 			Hashtable<String, String> env = new Hashtable<String, String>();
@@ -93,35 +94,41 @@ public class FriendsServlet extends HttpServlet {
 					"org.jnp.interfaces.NamingContextFactory");
 			env.put(Context.PROVIDER_URL, "localhost:1099");
 			InitialContext jndiContext = new InitialContext(env);
-			Object ref = jndiContext.lookup("FriendsManager/remote");
-			FriendsManagerRemote friendsManager = (FriendsManagerRemote) ref;
+			Object ref = jndiContext.lookup("HelpsManager/remote");
+			HelpsManagerRemote helpsManager = (HelpsManagerRemote) ref;
 
 			User user = (User) request.getSession().getAttribute("User");
-			List<User> friends = friendsManager.getFriends(user);
-			request.setAttribute("friends", friends);
-			List<Friendship> pendings = friendsManager.getPending(user);
-			request.setAttribute("pendings", pendings);
-			List<Friendship> requests = friendsManager.getRequest(user);
-			request.setAttribute("requests", requests);
+			List<HelpRequest> giving = helpsManager.getGivingHelpRequests(user);
+			request.setAttribute("giving", giving);
+			List<HelpRequest> open = helpsManager.getOpenHelpRequests(user);
+			request.setAttribute("open", open);
+			List<HelpRequest> pendingAsHelper = helpsManager
+					.getPendingAsHelper(user);
+			request.setAttribute("pendingAsHelper", pendingAsHelper);
+			List<HelpRequest> pendingAsAsker = helpsManager
+					.getPendingAsAsker(user);
+			request.setAttribute("pendingAsAsker", pendingAsAsker);
+			List<HelpRequest> closed = helpsManager.getClosedHelpRequests(user);
+			request.setAttribute("closed", closed);
 
 			getServletConfig().getServletContext()
-					.getRequestDispatcher("/user/friends.jsp")
+					.getRequestDispatcher("/user/helps.jsp")
 					.forward(request, response);
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private boolean haveToAddFriendship(HttpServletRequest request,
+	private boolean haveToAddHelp(HttpServletRequest request,
 			HttpServletResponse response) {
-		if (request.getParameter("newFriend") != null
-				&& request.getParameter("newFriend") != "") {
+		if (request.getParameter("newHelper") != null
+				&& request.getParameter("newHelper") != "") {
 			return true;
 		}
 		return false;
 	}
 
-	private void addFriendship(HttpServletRequest request,
+	private void addHelp(HttpServletRequest request,
 			HttpServletResponse response) {
 		try {
 			Hashtable<String, String> env = new Hashtable<String, String>();
@@ -129,12 +136,14 @@ public class FriendsServlet extends HttpServlet {
 					"org.jnp.interfaces.NamingContextFactory");
 			env.put(Context.PROVIDER_URL, "localhost:1099");
 			InitialContext jndiContext = new InitialContext(env);
-			Object ref = jndiContext.lookup("FriendsManager/remote");
-			FriendsManagerRemote friendsManager = (FriendsManagerRemote) ref;
+			Object ref = jndiContext.lookup("HelpsManager/remote");
+			HelpsManagerRemote helpsManager = (HelpsManagerRemote) ref;
 
-			friendsManager.addRequest((User) request.getSession().getAttribute("User")
-					, request.getParameter("newFriend"));
-			
+			helpsManager.addRequest(
+					(User) request.getSession().getAttribute("User"),
+					request.getParameter("newHelper"),
+					request.getParameter("ability"), new Date());
+
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}

@@ -105,18 +105,18 @@
 							&& request.getAttribute("friendState") != ""){
 							if(request.getAttribute("friendState")=="friend"){
 								%>
-								<input type="button" id="help" onclick="addHelp('<%=user.getUsername()%>');" value="Ask for help" />
+								<input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
 								<%
 							}else if(request.getAttribute("friendState")=="pending"){
 								%>
-								<input type="button" id="help" onclick="addHelp('<%=user.getUsername()%>');" value="Ask for help" />
+								<input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
 								<span class="message">Friendship Request is pending</span>
 								<%
 							}
 						}else{
 							%>
-							<input type="button" id="help" onclick="addHelp('<%=user.getUsername()%>');" value="Ask for help" />
-							<input type="button" id="friend" onclick="addFriendship('<%=user.getUsername()%>');" value="Ask friendship" />
+							<input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
+							<input type="button" id="friend" onclick="addRequest('friend','<%=user.getUsername()%>');" value="Ask friendship" />
 							<% 
 						}
 					%>
@@ -126,6 +126,11 @@
 		%>
 		<script type="text/javascript">
 			function newAjax(){
+
+				// TODO per help
+				// deve uscire una form da cui prendo
+				// l'abilità su cui chiede aiuto
+				
 				var xmlhttp = null;
 				try {
 					xmlhttp = new XMLHttpRequest();
@@ -138,33 +143,27 @@
 				}
 				return xmlhttp;
 			};
-			function addFriendship(username)
+			
+			function addRequest(type,username,ability)
 			{
 				var ajax = newAjax();
-				var url = "/SWIMweb/user/friends?newFriend="+username;
-				var buttonsDiv = document.getElementById('buttons'); 
+				var url = null;
+				var errorDiv = null;
+				if(type.equals("help")){
+					url = "/SWIMweb/user/friends?newHelper="+username+"&ability="+ability;
+					errorDiv="helpError";
+				}else if(type.equals("friendship")){
+					url = "/SWIMweb/user/friends?newFriend="+username;
+					errorDiv="friendError";
+				}
 				ajax.onreadystatechange = function () {
 				    if (ajax.readyState == 4) {
 				        if( ajax.status == 200 ){ 
-				        	var span = document.createElement("span");
-				            span.setAttribute("class",'message');
-				            span.setAttribute("id",'friendMessage');
-				            span.innerHTML = "Request added successfully";
-				            buttonsDiv.appendChild(span);
-				            var friend = document.getElementById("friend");
-				            buttonsDiv.removeChild(friend);
-				            var error = document.getElementById("friendError");
-					        if(error!=null){
-					        	buttonsDiv.removeChild(error);
-						    }
+				        	addSpan('message',errorDiv,'Request added successfully');
+				        	manageButtonDiv(type);
 				        } else {
-					        var error = document.getElementById("friendError");
-					        if(error==null){
-					        	var span = document.createElement("span");
-					            span.setAttribute("class",'error');
-					            span.setAttribute("id",'friendError');
-					            span.innerHTML = "problems during the request";
-					            buttonsDiv.appendChild(span);
+					        if(document.getElementById("friendError")){
+					        	addSpan('error',errorDiv,'Problems during the request');
 						    }
 				        }
 				    }
@@ -172,10 +171,22 @@
 				ajax.open("GET", url, true);
 				ajax.send(null);
 			};
-			
-			function addHelp(username)
-			{
-				alert("Add a request with helper " + username + " - NOT implemented yet!");
+
+			function manageButtonDiv(type){
+				var friend = document.getElementById(type);
+	            buttonsDiv.removeChild(friend);
+	            if(document.getElementById(type+"Error")){
+		        	buttonsDiv.removeChild(error,friendError);
+			    }
+			};
+
+			function addSpan(clazz,id,message){
+				var span = document.createElement("span");
+	            span.setAttribute("class",clazz);
+	            span.setAttribute("id",id);
+	            span.innerHTML = message;
+	            var buttonsDiv = document.getElementById('buttons'); 
+	            buttonsDiv.appendChild(span);
 			};
 		</script>
 		<br style="clear: both;">

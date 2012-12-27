@@ -7,6 +7,7 @@
 	<welcome-file-list>
 		<welcome-file>home.jsp</welcome-file>
 	</welcome-file-list>
+	
 	<servlet>
 		<servlet-name>accessServlet</servlet-name>
 		<servlet-class>it.polimi.swim.servlet.AccessServlet</servlet-class>
@@ -15,6 +16,7 @@
 		<servlet-name>accessServlet</servlet-name>
 		<url-pattern>/accessManager</url-pattern>
 	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>profileServlet</servlet-name>
 		<servlet-class>it.polimi.swim.servlet.ProfileServlet</servlet-class>
@@ -46,5 +48,13 @@
 	<servlet-mapping>
 		<servlet-name>friendsServlet</servlet-name>
 		<url-pattern>/user/friends</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>helpsServlet</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.HelpsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>helpsServlet</servlet-name>
+		<url-pattern>/user/helps</url-pattern>
 	</servlet-mapping>
 </web-app>

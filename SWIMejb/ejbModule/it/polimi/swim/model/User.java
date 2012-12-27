@@ -3,7 +3,6 @@ package it.polimi.swim.model;
 import it.polimi.swim.enums.UserType;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -59,23 +58,8 @@ public class User implements Serializable {
 	private int phone;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "user_abilities",
-		joinColumns = @JoinColumn(name = "userID"),
-		inverseJoinColumns = @JoinColumn(name = "abilityID")
-	)
+	@JoinTable(name = "user_abilities", joinColumns = @JoinColumn(name = "userID"), inverseJoinColumns = @JoinColumn(name = "abilityID"))
 	private Set<Ability> abilities;
-
-	/**
-	 * List of help request in which user appear as applicant user
-	 */
-	@OneToMany(mappedBy = "user")
-	private List<HelpRequest> helpRequest;
-
-	/**
-	 * List of help request in witch user appear as helper user
-	 */
-	@OneToMany(mappedBy = "helper")
-	private List<HelpRequest> helpRequestAsHelper;
 
 	/**
 	 * List of ability request created
@@ -163,22 +147,6 @@ public class User implements Serializable {
 		this.abilities = abilities;
 	}
 
-	public List<HelpRequest> getHelpRequest() {
-		return helpRequest;
-	}
-
-	public void setHelpRequest(List<HelpRequest> helpRequest) {
-		this.helpRequest = helpRequest;
-	}
-
-	public List<HelpRequest> getHelpRequestAsHelper() {
-		return helpRequestAsHelper;
-	}
-
-	public void setHelpRequestAsHelper(List<HelpRequest> helpRequestAsHelper) {
-		this.helpRequestAsHelper = helpRequestAsHelper;
-	}
-
 	public Set<AbilityRequest> getAbilityRequest() {
 		return abilityRequest;
 	}
@@ -186,7 +154,7 @@ public class User implements Serializable {
 	public void setAbilityRequest(Set<AbilityRequest> abilityRequest) {
 		this.abilityRequest = abilityRequest;
 	}
-	
+
 	public void addAbility(Ability ability) {
 		abilities.add(ability);
 	}
