@@ -139,4 +139,19 @@ public class HelpRequest implements Serializable {
 		this.messages = messages;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof HelpRequest)) {
+			return false;
+		}
+		HelpRequest other = (HelpRequest) obj;
+		if (id != other.id) {
+			return false;
+		}
+		return false;
+	}
 }

@@ -6,6 +6,7 @@ import it.polimi.swim.model.User;
 import it.polimi.swim.session.HelpsManagerRemote;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
@@ -129,7 +130,11 @@ public class HelpsServlet extends HttpServlet {
 	}
 
 	private void addHelp(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/xml;charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		out.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+		out.println("<response>");
 		try {
 			Hashtable<String, String> env = new Hashtable<String, String>();
 			env.put(Context.INITIAL_CONTEXT_FACTORY,
@@ -144,9 +149,11 @@ public class HelpsServlet extends HttpServlet {
 					request.getParameter("newHelper"),
 					request.getParameter("ability"), new Date());
 
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
+			out.println("<value>OK</value>");
+		} catch (Exception e) {
+			out.println("<value>KO</value>");
+		}		
+		out.println("</response>");
 	}
 
 }

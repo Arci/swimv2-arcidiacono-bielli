@@ -79,5 +79,21 @@ public class Message {
 	public void setHelpRequest(HelpRequest helpRequest) {
 		this.helpRequest = helpRequest;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Message)) {
+			return false;
+		}
+		Message other = (Message) obj;
+		if (id != other.id){
+			return false;
+		}
+		return false;
+	}
 
 }

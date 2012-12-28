@@ -104,19 +104,22 @@
 						if(request.getAttribute("friendState") != null
 							&& request.getAttribute("friendState") != ""){
 							if(request.getAttribute("friendState")=="friend"){
+								// TODO per help
+								// deve uscire una form da cui prendo
+								// l'abilità su cui chiede aiuto
 								%>
 								<input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
 								<%
 							}else if(request.getAttribute("friendState")=="pending"){
 								%>
 								<input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
-								<span class="message">Friendship Request is pending</span>
+								 <span class="message">Friendship Request is pending</span>
 								<%
 							}
 						}else{
 							%>
 							<input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
-							<input type="button" id="friend" onclick="addRequest('friend','<%=user.getUsername()%>');" value="Ask friendship" />
+							 <input type="button" id="friend" onclick="addRequest('friend','<%=user.getUsername()%>');" value="Ask friendship" />
 							<% 
 						}
 					%>
@@ -124,60 +127,49 @@
 		<%
 			}
 		%>
-		<script type="text/javascript">
-			function newAjax(){
-
-				// TODO per help
-				// deve uscire una form da cui prendo
-				// l'abilità su cui chiede aiuto
-				
-				var xmlhttp = null;
-				try {
-					xmlhttp = new XMLHttpRequest();
-				} catch(e) {
-				 try {
-					 xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-				   } catch(e) {
-					 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-				   }
-				}
-				return xmlhttp;
-			};
-			
-			function addRequest(type,username,ability)
-			{
-				var ajax = newAjax();
+		<script type="text/javascript">	
+			function addRequest(type,username,ability) {
+				xmlhttp = new XMLHttpRequest();
 				var url = null;
-				var errorDiv = null;
-				if(type.equals("help")){
+				var messageSpan = null;
+				if(type == "help"){
 					url = "/SWIMweb/user/friends?newHelper="+username+"&ability="+ability;
-					errorDiv="helpError";
-				}else if(type.equals("friendship")){
+					messageSpan="helpMessage";
+				}else if(type == "friend"){
 					url = "/SWIMweb/user/friends?newFriend="+username;
-					errorDiv="friendError";
+					messageSpan="friendMessage";
 				}
-				ajax.onreadystatechange = function () {
-				    if (ajax.readyState == 4) {
-				        if( ajax.status == 200 ){ 
-				        	addSpan('message',errorDiv,'Request added successfully');
-				        	manageButtonDiv(type);
+				console.log("AJAX REQUEST TO:\n" + url+ "\n");
+				xmlhttp.onreadystatechange = function () {
+				    if (xmlhttp.readyState == 4) {
+				        if( xmlhttp.status == 200 ){ 
+				        	console.log("RESPONSE TEXT:\n"+ xmlhttp.responseText);
+					        console.log("RESPONSE XML:\n"+ xmlhttp.responseXML);
+					        var response = xmlhttp.responseXML.getElementsByTagName("value")[0].childNodes[0].nodeValue;
+					        console.log("VALUE:\n"+ response);
+					        if(response == "OK"){
+					        	addSpan('message',messageSpan,'Request added successfully');
+					        	manageButtonDiv(type);
+					        } else {
+								if(!document.getElementById(messageSpan)){
+							    	addSpan('error',messageSpan,'Problems during the request');
+								}	
+							}
 				        } else {
-					        if(document.getElementById("friendError")){
+					        if(!document.getElementById(messageSpan)){
 					        	addSpan('error',errorDiv,'Problems during the request');
-						    }
-				        }
+						  	}
+				     	}
 				    }
 				};
-				ajax.open("GET", url, true);
-				ajax.send(null);
+				xmlhttp.open("GET", url, true);
+				xmlhttp.send(null);
 			};
 
 			function manageButtonDiv(type){
+				var buttonsDiv = document.getElementById('buttons'); 
 				var friend = document.getElementById(type);
 	            buttonsDiv.removeChild(friend);
-	            if(document.getElementById(type+"Error")){
-		        	buttonsDiv.removeChild(error,friendError);
-			    }
 			};
 
 			function addSpan(clazz,id,message){

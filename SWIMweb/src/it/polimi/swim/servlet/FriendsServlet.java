@@ -6,6 +6,7 @@ import it.polimi.swim.model.User;
 import it.polimi.swim.session.FriendsManagerRemote;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -34,11 +35,13 @@ public class FriendsServlet extends HttpServlet {
 		if (haveToManageFriendship(request, response)) {
 			System.out.println("*** [FriendsServlet] manage friendship ***");
 			manageFriendship(request, response);
+			getUserInformation(request, response);
 		} else if (haveToAddFriendship(request, response)) {
 			System.out.println("*** [FriendsServlet] add friendship ***");
 			addFriendship(request, response);
+		}else{
+			getUserInformation(request, response);
 		}
-		getUserInformation(request, response);
 	}
 
 	/**
@@ -122,7 +125,11 @@ public class FriendsServlet extends HttpServlet {
 	}
 
 	private void addFriendship(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/xml;charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		out.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+		out.println("<response>");
 		try {
 			Hashtable<String, String> env = new Hashtable<String, String>();
 			env.put(Context.INITIAL_CONTEXT_FACTORY,
@@ -135,9 +142,11 @@ public class FriendsServlet extends HttpServlet {
 			friendsManager.addRequest((User) request.getSession().getAttribute("User")
 					, request.getParameter("newFriend"));
 			
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
+			out.println("<value>OK</value>");
+		} catch (Exception e) {
+			out.println("<value>KO</value>");
+		}		
+		out.println("</response>");
 	}
 
 }
