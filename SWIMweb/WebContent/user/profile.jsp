@@ -66,7 +66,7 @@
 				out.println(star);
 			%></p>
 			<p>
-			<span class="text">You have the following abilities:</span></br>
+			<span class="text">You have the following abilities:</span><br>
 			<%
 				Set<Ability> abilities = user.getAbilities();
 				if (abilities.isEmpty()) {

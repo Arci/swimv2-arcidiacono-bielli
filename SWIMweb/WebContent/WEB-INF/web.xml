@@ -57,4 +57,12 @@
 		<servlet-name>helpsServlet</servlet-name>
 		<url-pattern>/user/helps</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>registrationServlet</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.RegistrationServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>registrationServlet</servlet-name>
+		<url-pattern>/registrationManager</url-pattern>
+	</servlet-mapping>	
 </web-app>
