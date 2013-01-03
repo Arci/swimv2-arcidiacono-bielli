@@ -1,6 +1,7 @@
 package it.polimi.swim.servlet;
 
-import it.polimi.swim.session.RegistrationManagerRemote;
+import it.polimi.swim.servletException.MissingRegistrationParametersException;
+import it.polimi.swim.session.ProfileManagerRemote;
 
 import java.io.IOException;
 import java.util.Hashtable;
@@ -38,15 +39,65 @@ public class RegistrationServlet extends HttpServlet{
 			env.put(Context.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
 	
 			InitialContext jndiContext = new InitialContext(env);
-			Object ref = jndiContext.lookup("RegistrationManager/remote");
+			Object ref = jndiContext.lookup("ProfileManager/remote");
 		
-			RegistrationManagerRemote registrationManager = (RegistrationManagerRemote)ref;
+			ProfileManagerRemote profileManager = (ProfileManagerRemote)ref;
 			
-			if(registrationManager.isUsernameUnique((String) request.getParameter("username")))
-				System.out.println("*** [RegistrationServlet] username is unique ***");
+			this.checkParameters(request, response);
+			
+			if(profileManager.isUsernameUnique((String) request.getParameter("username")) && 
+				profileManager.isEmailUnique((String) request.getParameter("email"))){
+				
+				
+			}			
 			
 		} catch (NamingException e){
 			e.printStackTrace();
+		} catch (MissingRegistrationParametersException e){
+			request.setAttribute("missingParameters", e.getMissingParameters());
+			getServletConfig().getServletContext()
+			.getRequestDispatcher("/registration.jsp")
+			.forward(request, response);
+		}
+	}
+
+	private void checkParameters(HttpServletRequest request,
+			HttpServletResponse response) throws MissingRegistrationParametersException{
+		
+		MissingRegistrationParametersException e = new MissingRegistrationParametersException();
+	
+		if ((String) request.getParameter("name") == null ||
+				(String) request.getParameter("name") == ""){
+			
+			e.addMissingParameter("name");
+		}
+		
+		if ((String) request.getParameter("username") == null ||
+				(String) request.getParameter("username") == ""){
+			
+			e.addMissingParameter("username");
+		}
+		
+		if ((String) request.getParameter("email") == null ||
+				(String) request.getParameter("email") == ""){
+			
+			e.addMissingParameter("email");
+		}
+		
+		if ((String) request.getParameter("password") == null ||
+				(String) request.getParameter("password") == ""){
+			
+			e.addMissingParameter("password");
+		}		
+	
+		if ((String) request.getParameter("checkPassword") == null ||
+				(String) request.getParameter("checkPassword") == ""){
+			
+			e.addMissingParameter("checkPassword");
+		}
+		
+		if (e.hasMissingParameters()){
+			throw e;
 		}
 	}
 }
