@@ -16,7 +16,7 @@
 
 	<div id="pageContent">
 		<div id="registration">
-			<form id='register' action='' method='post' accept-charset='UTF-8'>
+			<form id='register' action='registrationManager' method='post' accept-charset='UTF-8'>
 				<label for='name'>Name*: </label>
 				<input type='text'name='name' id='name'/></br>
 				<label for='name'>Surname: </label>
