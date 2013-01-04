@@ -1,4 +1,4 @@
-package it.polimi.swim.servletException;
+package it.polimi.swim.servlet.exception;
 
 import java.util.HashSet;
 import java.util.Set;

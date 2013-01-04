@@ -43,7 +43,7 @@
 				<%if(hasMissingParameters || hasDuplicatedParameters || hasPasswordError){%>
 				value='<%=request.getParameter("name")%>'<%}%>/>
 				<%if(hasMissingParameters && missingParameters.contains("name")){%>
-				<small id='wrongParameters'>&#9;*you must insert the name.</small><%}%>
+				<small class='error'>&#9;*you must insert the name.</small><%}%>
 				<br>
 				
 				<label for='name'>Surname: </label>
@@ -56,9 +56,9 @@
 				<%if(hasMissingParameters || hasDuplicatedParameters || hasPasswordError){%>
 				value='<%=request.getParameter("email")%>'<%}%> /> 
 				<%if(hasMissingParameters && missingParameters.contains("email")){%>
-				<small id='wrongParameters'>&#9;*you must insert the email.</small><%}%>
+				<small class='error'>&#9;*you must insert the email.</small><%}%>
 				<%if(hasDuplicatedParameters && duplicatedParameters.contains("email")){ %>
-				<small id='wrongParameters'>&#9;*this email is already used.</small><%} %>
+				<small class='error'>&#9;*this email is already used.</small><%} %>
 				<br>
 				
 				<label for='username'>Username*:</label> 
@@ -66,23 +66,23 @@
 				<%if(hasMissingParameters || hasDuplicatedParameters || hasPasswordError){%>
 				value='<%=request.getParameter("username")%>'<%}%>/>
 				<%if(hasMissingParameters && missingParameters.contains("username")){%>
-				<small id='wrongParameters'>&#9;*you must insert the username.</small><%}%>
+				<small class='error'>&#9;*you must insert the username.</small><%}%>
 				<%if(hasDuplicatedParameters && duplicatedParameters.contains("username")){ %>
-				<small id='wrongParameters'>&#9;*this username is already used.</small><%} %>
+				<small class='error'>&#9;*this username is already used.</small><%} %>
 				<br>
 				
 				<label for='password'>Password*:</label> 
 				<input type='password' name='password' id='password'/>
 				<%if(hasMissingParameters && missingParameters.contains("password")){%>
-				<small id='wrongParameters'>&#9;*you must insert the password.</small><%}%>
+				<small class='error'>&#9;*you must insert the password.</small><%}%>
 				<%if(hasPasswordError){ %>
-				<small id='wrongParameters'>&#9;*password and check password are not equal.</small><%}%>
+				<small class='error'>&#9;*password and check password are not equal.</small><%}%>
 				<br>
 				
 				<label for='password'>Check Password*:</label> 
 				<input type='password' name='checkPassword' id='checkPassword'/> 
 				<%if(hasMissingParameters && missingParameters.contains("checkPassword")){%>
-				<small id='wrongParameters'>&#9;*you must insert the check password.</small><%}%>
+				<small class='error'>&#9;*you must insert the check password.</small><%}%>
 				<br>
 				
 				* required<br>

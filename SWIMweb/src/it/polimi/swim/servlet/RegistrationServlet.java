@@ -1,13 +1,14 @@
 package it.polimi.swim.servlet;
 
-import it.polimi.swim.servletException.DuplicatedRegistrationParameterException;
-import it.polimi.swim.servletException.MissingRegistrationParametersException;
+import it.polimi.swim.servlet.exception.DuplicatedRegistrationParameterException;
+import it.polimi.swim.servlet.exception.MissingRegistrationParametersException;
 import it.polimi.swim.session.ProfileManagerRemote;
 
 import java.io.IOException;
 import java.util.Hashtable;
-
+import java.util.Map;
 import javax.naming.Context;
+
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
@@ -51,9 +52,25 @@ public class RegistrationServlet extends HttpServlet{
 				getServletConfig().getServletContext()
 				.getRequestDispatcher("/registration.jsp")
 				.forward(request, response);
+				
 				return;
 			}
-			//TODO SigIn
+			
+			//TODO
+			
+			Map <String, Object> parameters = new Hashtable <String, Object>();
+			
+			parameters.put("name", request.getParameter("name"));
+			parameters.put("surname", request.getParameter("surname"));
+			parameters.put("username", request.getParameter("username"));
+			parameters.put("email", request.getParameter("email"));
+			parameters.put("password", request.getParameter("password"));
+			
+			profileManager.insertNewUser(parameters);
+			
+			getServletConfig().getServletContext()
+			.getRequestDispatcher("/accessManager")
+			.forward(request, response);
 			
 		} catch (NamingException e){
 			e.printStackTrace();

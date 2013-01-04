@@ -4,11 +4,21 @@ import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.User;
 
 import java.util.Hashtable;
+import java.util.Map;
 
 import javax.ejb.Remote;
 
 @Remote
 public interface ProfileManagerRemote {
+	
+	/**
+	 * insert in the database the parameters about a new user.
+	 * 
+	 * @param params
+	 * @return the new user
+	 */
+	
+	public User insertNewUser(Map <String, Object> params);
 
 	/**
 	 * get the user from his username

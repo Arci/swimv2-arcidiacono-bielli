@@ -1,11 +1,14 @@
 package it.polimi.swim.session;
 
+import it.polimi.swim.enums.UserType;
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.User;
 
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -125,6 +128,37 @@ public class ProfileManager implements ProfileManagerRemote,
 					.println("*** [ProfileManager] ability rating not found ***");
 		}
 		return -1d;
+	}
+
+	@Override
+	public User insertNewUser(Map<String, Object> params) {
+		
+		
+		String normalUsername = (String) params.get("username");
+		try {
+			Query q = manager
+					.createQuery("FROM User u WHERE u.username=:normal");
+			q.setParameter("normal", normalUsername);
+			q.getSingleResult();
+			System.out
+					.println("*** [ProfileManager] NORMAL users found no action ***");
+		} catch (NoResultException exc) {
+			System.out
+					.println("*** [ProfileManager] NORMAL users not found ***");
+			User normal = new User();
+			normal.setType(UserType.NORMAL);
+			normal.setName((String) params.get("name"));
+			normal.setSurname((String) params.get("surname"));
+			normal.setUsername((String) normalUsername);
+			normal.setEmail((String) params.get("email"));
+			normal.setPassword((String) params.get("password"));
+//			normal.setCity((String) params.get("city"));
+//			normal.setPhone((int) params.get("phone"));
+			manager.persist(normal);
+			System.out
+					.println("*** [ProfileManager] NORMAL user inserted ***");
+		}
+		return null;
 	}
 
 }
