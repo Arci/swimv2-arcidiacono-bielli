@@ -136,6 +136,10 @@ fieldset {
 	width: 250px;
 }
 
+#wrongParameters {
+	color: red;
+}
+
 /* PROFILE */
 #profile {
 	float: left;

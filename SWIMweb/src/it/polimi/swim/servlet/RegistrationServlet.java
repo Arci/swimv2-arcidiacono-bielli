@@ -1,5 +1,6 @@
 package it.polimi.swim.servlet;
 
+import it.polimi.swim.servletException.DuplicatedRegistrationParameterException;
 import it.polimi.swim.servletException.MissingRegistrationParametersException;
 import it.polimi.swim.session.ProfileManagerRemote;
 
@@ -24,7 +25,7 @@ public class RegistrationServlet extends HttpServlet{
 	 */
 	protected void doGet(HttpServletRequest request,
 	HttpServletResponse response) throws ServletException, IOException {
-		//TODO DoGet
+		//TODO do get
 	}
 	
 	/**
@@ -43,13 +44,16 @@ public class RegistrationServlet extends HttpServlet{
 		
 			ProfileManagerRemote profileManager = (ProfileManagerRemote)ref;
 			
-			this.checkParameters(request, response);
-			
-			if(profileManager.isUsernameUnique((String) request.getParameter("username")) && 
-				profileManager.isEmailUnique((String) request.getParameter("email"))){
+			this.checkParameters(request, response, profileManager);
+			if(!request.getParameter("password").equals(request.getParameter("checkPassword"))){
+				request.setAttribute("passwordError", new String("passwordError"));
 				
-				
-			}			
+				getServletConfig().getServletContext()
+				.getRequestDispatcher("/registration.jsp")
+				.forward(request, response);
+				return;
+			}
+			//TODO SigIn
 			
 		} catch (NamingException e){
 			e.printStackTrace();
@@ -58,46 +62,56 @@ public class RegistrationServlet extends HttpServlet{
 			getServletConfig().getServletContext()
 			.getRequestDispatcher("/registration.jsp")
 			.forward(request, response);
+		} catch (DuplicatedRegistrationParameterException e){
+			request.setAttribute("duplicatedParameters", e.getDuplicatedParameters());
+			getServletConfig().getServletContext()
+			.getRequestDispatcher("/registration.jsp")
+			.forward(request, response);
 		}
 	}
 
 	private void checkParameters(HttpServletRequest request,
-			HttpServletResponse response) throws MissingRegistrationParametersException{
+			HttpServletResponse response, ProfileManagerRemote profileManager) 
+			throws MissingRegistrationParametersException, DuplicatedRegistrationParameterException{
 		
-		MissingRegistrationParametersException e = new MissingRegistrationParametersException();
+		MissingRegistrationParametersException e1 = new MissingRegistrationParametersException();
+		DuplicatedRegistrationParameterException e2 = new DuplicatedRegistrationParameterException();
 	
 		if ((String) request.getParameter("name") == null ||
 				(String) request.getParameter("name") == ""){
-			
-			e.addMissingParameter("name");
+			e1.addMissingParameter("name");
 		}
 		
 		if ((String) request.getParameter("username") == null ||
 				(String) request.getParameter("username") == ""){
-			
-			e.addMissingParameter("username");
+			e1.addMissingParameter("username");
+		}else if(!profileManager.isUsernameUnique((String) request.getParameter("username"))){
+			e2.addDuplicatedParameter("username");
 		}
 		
 		if ((String) request.getParameter("email") == null ||
 				(String) request.getParameter("email") == ""){
-			
-			e.addMissingParameter("email");
+			e1.addMissingParameter("email");
+		}else if(!profileManager.isEmailUnique((String) request.getParameter("email"))){
+			e2.addDuplicatedParameter("email");
 		}
 		
 		if ((String) request.getParameter("password") == null ||
-				(String) request.getParameter("password") == ""){
-			
-			e.addMissingParameter("password");
+				(String) request.getParameter("password") == ""){	
+			e1.addMissingParameter("password");
 		}		
 	
 		if ((String) request.getParameter("checkPassword") == null ||
-				(String) request.getParameter("checkPassword") == ""){
-			
-			e.addMissingParameter("checkPassword");
+				(String) request.getParameter("checkPassword") == ""){	
+			e1.addMissingParameter("checkPassword");
 		}
 		
-		if (e.hasMissingParameters()){
-			throw e;
+		if (e1.hasMissingParameters()){
+			throw e1;
+		}
+		
+		if (e2.hasDuplicatedParameters()){
+			throw e2;
 		}
 	}
 }
