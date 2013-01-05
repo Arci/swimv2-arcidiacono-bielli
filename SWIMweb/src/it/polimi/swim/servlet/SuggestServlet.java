@@ -61,16 +61,19 @@ public class SuggestServlet extends HttpServlet {
 			System.out.println("*** [SuggestServlet] suspended abilities not found ***");
 		}
 		} catch (NamingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
 	
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		// Not to implement, redirect
+		System.out.println("*** [SuggestServlet] doPost, forwarding to suggest ***");
+		getServletConfig().getServletContext()
+						.getRequestDispatcher("/user/suggest")
+						.forward(request, response);
 	}
 	
 	private boolean hasDecided(HttpServletRequest req, HttpServletResponse resp){

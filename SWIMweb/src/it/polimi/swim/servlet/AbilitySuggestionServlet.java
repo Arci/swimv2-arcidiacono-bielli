@@ -28,6 +28,7 @@ public class AbilitySuggestionServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		// Not to implement, redirect
 		System.out
 				.println("*** [AbilitySuggestionServlet] doGet, forwarding to abilitySuggestion.jsp ***");
 		getServletConfig().getServletContext()

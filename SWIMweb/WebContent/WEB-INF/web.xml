@@ -8,6 +8,17 @@
 		<welcome-file>home.jsp</welcome-file>
 	</welcome-file-list>
 	
+	<!--  common pages -->
+	<servlet>
+		<servlet-name>registrationServlet</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.RegistrationServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>registrationServlet</servlet-name>
+		<url-pattern>/registrationManager</url-pattern>
+	</servlet-mapping>	
+	
+	<!-- registered user pages -->
 	<servlet>
 		<servlet-name>accessServlet</servlet-name>
 		<servlet-class>it.polimi.swim.servlet.AccessServlet</servlet-class>
@@ -57,15 +68,9 @@
 		<servlet-name>helpsServlet</servlet-name>
 		<url-pattern>/user/helps</url-pattern>
 	</servlet-mapping>
+	
+	<!--  admin pages -->
 	<servlet>
-		<servlet-name>registrationServlet</servlet-name>
-		<servlet-class>it.polimi.swim.servlet.RegistrationServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>registrationServlet</servlet-name>
-		<url-pattern>/registrationManager</url-pattern>
-	</servlet-mapping>	
-		<servlet>
 		<servlet-name>suggestServlet</servlet-name>
 		<servlet-class>it.polimi.swim.servlet.SuggestServlet</servlet-class>
 	</servlet>
