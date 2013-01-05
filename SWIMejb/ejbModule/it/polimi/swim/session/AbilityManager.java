@@ -2,6 +2,7 @@ package it.polimi.swim.session;
 
 import java.util.List;
 
+import gnu.io.RS485PortEvent;
 import it.polimi.swim.enums.RequestState;
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.AbilityRequest;
@@ -107,7 +108,24 @@ public class AbilityManager implements AbilityManagerRemote,
 		
 		return null;
 	}
-	
-	
 
+	@Override
+	public void updateAbilityRequestState(String id, String state) {
+		try {
+			int abilityRequestID = Integer.parseInt(id);
+			AbilityRequest request = manager.find(AbilityRequest.class, abilityRequestID);
+			
+			if (state.equals(RequestState.ACCEPTED.toString())){
+				request.setState(RequestState.ACCEPTED);
+				System.out.println("*** [AbilityManager] state of '" + request.getText() + "' became accepted ***");
+			} else if (state.equals(RequestState.REJECTED.toString())){
+				request.setState(RequestState.REJECTED);
+				System.out.println("*** [AbilityManager] state of '" + request.getText() + "' became refused ***");
+			} else System.out.println("*** [AbilityManager] error state ***");
+			manager.merge(request);
+		
+		} catch (NoResultException exc){
+			System.out.println("*** [AbilityManager] ability request not found ***");
+		}
+	}
 }

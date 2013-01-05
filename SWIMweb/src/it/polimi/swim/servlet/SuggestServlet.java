@@ -1,5 +1,6 @@
 package it.polimi.swim.servlet;
 
+import it.polimi.swim.enums.RequestState;
 import it.polimi.swim.model.AbilityRequest;
 import it.polimi.swim.session.AbilityManagerRemote;
 
@@ -15,8 +16,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.sun.crypto.provider.ARCFOURCipher;
-
 public class SuggestServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -2736959968486863204L;
@@ -24,19 +23,37 @@ public class SuggestServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		super.doGet(req, resp);
+		try {
 		
 		Hashtable<String, String> env = new Hashtable<String, String>();
 		env.put(Context.INITIAL_CONTEXT_FACTORY,
 				"org.jnp.interfaces.NamingContextFactory");
 		env.put(Context.PROVIDER_URL, "localhost:1099");
-		InitialContext jndiContext;
-		try {
-			jndiContext = new InitialContext(env);
+		InitialContext jndiContext = new InitialContext(env);
 		Object ref = jndiContext.lookup("AbilityManager/remote");
 		AbilityManagerRemote abilityManager = (AbilityManagerRemote) ref;
 		
 		List<AbilityRequest> abilityRequests = abilityManager.getAbilityRequests();
+		
+
+		if (hasDecided(req, resp)){
+			String id =  req.getParameter("ability");
+			String state = req.getParameter("decision");
+			
+			abilityManager.updateAbilityRequestState(id, state);
+			
+//			if(suspended.equals(RequestState.ACCEPTED)){
+//				System.out.println("*** [SuggestServlet] ability '" + suspended.getText() + "' accepted ***");
+//			} else {
+//				System.out.println("*** [SuggestServlet] ability '" + suspended.getText() + "' refuse ***");
+//			}
+//			System.out.println("*** [SuggestServlet] reload /admin/suspended.jsp ***");
+//			
+//			abilityRequests = abilityManager.getAbilityRequests();
+			resp.sendRedirect("/SWIMweb/admin/suspended.jsp");
+			return;
+		}
+		
 		if(abilityRequests != null && abilityRequests.size() > 0){
 			req.setAttribute("suggests", abilityRequests);
 			System.out.println("*** [SuggestServlet] suspended abilities catched under the attribute 'suggests' ***");
@@ -54,7 +71,12 @@ public class SuggestServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		super.doPost(req, resp);
+	}
+	
+	private boolean hasDecided(HttpServletRequest req, HttpServletResponse resp){
+		if (req.getParameter("ability") != null && !req.getParameter("ability").equals("")){
+			 return true;
+		} else return false;
 	}
 
 }

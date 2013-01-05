@@ -1,3 +1,4 @@
+<%@page import="it.polimi.swim.enums.RequestState"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@page
@@ -20,7 +21,10 @@
 				if (request.getAttribute("suggests") != null){
 					List <AbilityRequest> suspended = (List<AbilityRequest>) request.getAttribute("suggests");
 					for (AbilityRequest req : suspended){
-						%><span> <%out.println(req.getText());%></span><br> <%
+						%><span>- <%out.println(req.getText());%> -> <%out.println(req.getState()); %></span>
+						<a href="suspended/suggest?ability=<%=req.getId()%>&decision=<%=RequestState.ACCEPTED.toString() %>">Accept</a>
+						<a href="suspended/suggest?ability=<%=req.getId()%>&decision=<%=RequestState.REJECTED.toString() %>">Refuse</a>
+						<br> <%
 					}
 				}
 			%>

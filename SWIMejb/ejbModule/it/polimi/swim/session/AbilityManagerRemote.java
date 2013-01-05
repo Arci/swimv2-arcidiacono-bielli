@@ -44,4 +44,11 @@ public interface AbilityManagerRemote {
 	 * @return list of all suspended ability requests.
 	 */
 	public List<AbilityRequest> getAbilityRequests();
+	
+	/**
+	 * update the state about an ability request.
+	 * @param id about an ability request
+	 * @param state about an ability request
+	 */
+	public void updateAbilityRequestState(String id, String state);
 }
