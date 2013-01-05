@@ -8,7 +8,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -157,6 +156,7 @@ public class ProfileManager implements ProfileManagerRemote,
 			manager.persist(normal);
 			System.out
 					.println("*** [ProfileManager] NORMAL user inserted ***");
+			return normal;
 		}
 		return null;
 	}

@@ -3,6 +3,7 @@ package it.polimi.swim.session;
 import java.util.List;
 
 import it.polimi.swim.model.Ability;
+import it.polimi.swim.model.AbilityRequest;
 import it.polimi.swim.model.User;
 
 import javax.ejb.Remote;
@@ -37,4 +38,10 @@ public interface AbilityManagerRemote {
 	 * @return list of all ability in the system
 	 */
 	public List<Ability> getAbilityList();
+	
+	/**
+	 * 
+	 * @return list of all suspended ability requests.
+	 */
+	public List<AbilityRequest> getAbilityRequests();
 }

@@ -13,8 +13,19 @@
 	<jsp:include page="/common/header.jsp">
 		<jsp:param name="page" value="suspended" />
 	</jsp:include>
-
-	<div id="pageContent"></div>
+	<div id="pageContent">
+		<p>
+			<jsp:include page="/admin/suspended/suggest"></jsp:include>
+			<%
+				if (request.getAttribute("suggests") != null){
+					List <AbilityRequest> suspended = (List<AbilityRequest>) request.getAttribute("suggests");
+					for (AbilityRequest req : suspended){
+						%><span> <%out.println(req.getText());%></span><br> <%
+					}
+				}
+			%>
+		</p>
+	</div>
 
 	<jsp:include page="/common/footer.jsp"></jsp:include>
 </body>

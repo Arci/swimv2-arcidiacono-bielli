@@ -91,4 +91,23 @@ public class AbilityManager implements AbilityManagerRemote,
 		return null;
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<AbilityRequest> getAbilityRequests() {
+		try {
+			Query q = manager.createQuery("FROM AbilityRequest a WHERE a.state='pending'");
+			List <AbilityRequest> result = q.getResultList();
+			if (result.size() > 0){
+				System.out.println("*** [AbilityManager] there are ability requests ***");
+				return result;
+			} else throw new NoResultException();
+		} catch (NoResultException e){
+			System.out.println("*** [AbilityManager] there aren't ability requests ***");
+		}
+		
+		return null;
+	}
+	
+	
+
 }

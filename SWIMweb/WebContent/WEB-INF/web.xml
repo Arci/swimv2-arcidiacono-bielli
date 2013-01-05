@@ -65,4 +65,12 @@
 		<servlet-name>registrationServlet</servlet-name>
 		<url-pattern>/registrationManager</url-pattern>
 	</servlet-mapping>	
+		<servlet>
+		<servlet-name>suggestServlet</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.SuggestServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>suggestServlet</servlet-name>
+		<url-pattern>/admin/suspended/suggest</url-pattern>
+	</servlet-mapping>	
 </web-app>

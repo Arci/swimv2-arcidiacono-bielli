@@ -56,8 +56,6 @@ public class RegistrationServlet extends HttpServlet{
 				return;
 			}
 			
-			//TODO
-			
 			Map <String, Object> parameters = new Hashtable <String, Object>();
 			
 			parameters.put("name", request.getParameter("name"));
