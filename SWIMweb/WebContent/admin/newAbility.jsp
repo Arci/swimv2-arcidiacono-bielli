@@ -28,6 +28,7 @@
 			<label>Abilities of the system:</label><br>
 			<p>
 				<%
+					@SuppressWarnings("unchecked")
 					List<Ability> abilities = (List<Ability>) request
 							.getAttribute("abilities");
 					for (Ability ability : abilities) {

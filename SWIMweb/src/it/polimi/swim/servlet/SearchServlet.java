@@ -1,7 +1,6 @@
 package it.polimi.swim.servlet;
 
 import it.polimi.swim.model.User;
-import it.polimi.swim.session.ProfileManagerRemote;
 import it.polimi.swim.session.SearchManagerRemote;
 
 import java.io.IOException;
@@ -89,11 +88,11 @@ public class SearchServlet extends HttpServlet {
 			String keywords = request.getParameter("keywords");
 			String[] key = keywords.split(" ");
 			Set<User> results = new HashSet<User>();
-			
+
 			for (int i = 0; i < key.length; i++) {
 				results.addAll(searchManager.searchPerson(key[i]));
 			}
-			
+
 			if (results.isEmpty() || results == null) {
 				System.out.println("*** [SearchServlet] no users result ***");
 				request.setAttribute("message", "sorry no results found");

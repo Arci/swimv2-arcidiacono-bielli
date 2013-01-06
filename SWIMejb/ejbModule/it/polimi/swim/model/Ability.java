@@ -40,7 +40,7 @@ public class Ability implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -51,7 +51,7 @@ public class Ability implements Serializable {
 			return false;
 		}
 		Ability other = (Ability) obj;
-		if (name != other.name){
+		if (name != other.name) {
 			return false;
 		}
 		return false;

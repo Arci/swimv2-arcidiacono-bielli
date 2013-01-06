@@ -10,9 +10,9 @@ public interface InitializationManagerRemote {
 	public void addFakeAbilities();
 
 	public void addAbilitiesToUsers();
-	
+
 	public void addFakeHelpRequest();
-	
+
 	public void addFakeFriendship();
 
 }

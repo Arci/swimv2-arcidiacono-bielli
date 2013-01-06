@@ -152,7 +152,7 @@ public class HelpsServlet extends HttpServlet {
 			out.println("<value>OK</value>");
 		} catch (Exception e) {
 			out.println("<value>KO</value>");
-		}		
+		}
 		out.println("</response>");
 	}
 

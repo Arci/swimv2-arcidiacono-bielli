@@ -8,5 +8,5 @@ import javax.ejb.Local;
 public interface ProfileManagerLocal {
 
 	public User getUserByUsername(String username);
-	
+
 }

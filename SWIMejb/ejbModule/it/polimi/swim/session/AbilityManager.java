@@ -1,11 +1,11 @@
 package it.polimi.swim.session;
 
-import java.util.List;
-
 import it.polimi.swim.enums.RequestState;
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.AbilityRequest;
 import it.polimi.swim.model.User;
+
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -95,16 +95,20 @@ public class AbilityManager implements AbilityManagerRemote,
 	@SuppressWarnings("unchecked")
 	public List<AbilityRequest> getAbilityRequests() {
 		try {
-			Query q = manager.createQuery("FROM AbilityRequest a WHERE a.state='pending'");
-			List <AbilityRequest> result = q.getResultList();
-			if (result.size() > 0){
-				System.out.println("*** [AbilityManager] there are ability requests ***");
+			Query q = manager
+					.createQuery("FROM AbilityRequest a WHERE a.state='pending'");
+			List<AbilityRequest> result = q.getResultList();
+			if (result.size() > 0) {
+				System.out
+						.println("*** [AbilityManager] there are ability requests ***");
 				return result;
-			} else throw new NoResultException();
-		} catch (NoResultException e){
-			System.out.println("*** [AbilityManager] there aren't ability requests ***");
+			} else
+				throw new NoResultException();
+		} catch (NoResultException e) {
+			System.out
+					.println("*** [AbilityManager] there aren't ability requests ***");
 		}
-		
+
 		return null;
 	}
 
@@ -112,23 +116,28 @@ public class AbilityManager implements AbilityManagerRemote,
 	public void updateAbilityRequestState(String id, String state) {
 		try {
 			int abilityRequestID = Integer.parseInt(id);
-			AbilityRequest request = manager.find(AbilityRequest.class, abilityRequestID);
-			
-			if (state.equals(RequestState.ACCEPTED.toString())){
+			AbilityRequest request = manager.find(AbilityRequest.class,
+					abilityRequestID);
+
+			if (state.equals(RequestState.ACCEPTED.toString())) {
 				request.setState(RequestState.ACCEPTED);
-				System.out.println("*** [AbilityManager] state of '" + request.getText() + "' became accepted ***");
-				Ability ability =  new Ability();
+				System.out.println("*** [AbilityManager] state of '"
+						+ request.getText() + "' became accepted ***");
+				Ability ability = new Ability();
 				ability.setName(request.getText());
 				manager.persist(ability);
 				System.out.println("*** [AbilityManager] ability added'");
-			} else if (state.equals(RequestState.REJECTED.toString())){
+			} else if (state.equals(RequestState.REJECTED.toString())) {
 				request.setState(RequestState.REJECTED);
-				System.out.println("*** [AbilityManager] state of '" + request.getText() + "' became refused ***");
-			} else System.out.println("*** [AbilityManager] error state ***");
+				System.out.println("*** [AbilityManager] state of '"
+						+ request.getText() + "' became refused ***");
+			} else
+				System.out.println("*** [AbilityManager] error state ***");
 			manager.merge(request);
-		
-		} catch (NoResultException exc){
-			System.out.println("*** [AbilityManager] ability request not found ***");
+
+		} catch (NoResultException exc) {
+			System.out
+					.println("*** [AbilityManager] ability request not found ***");
 		}
 	}
 

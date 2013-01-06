@@ -10,15 +10,15 @@ import javax.ejb.Remote;
 
 @Remote
 public interface ProfileManagerRemote {
-	
+
 	/**
 	 * insert in the database the parameters about a new user.
 	 * 
 	 * @param params
 	 * @return the new user
 	 */
-	
-	public User insertNewUser(Map <String, Object> params);
+
+	public User insertNewUser(Map<String, Object> params);
 
 	/**
 	 * get the user from his username

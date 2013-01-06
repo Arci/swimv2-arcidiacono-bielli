@@ -70,7 +70,7 @@ public class AbilityRequest implements Serializable {
 	public void setState(RequestState state) {
 		this.state = state;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -81,7 +81,7 @@ public class AbilityRequest implements Serializable {
 			return false;
 		}
 		AbilityRequest other = (AbilityRequest) obj;
-		if (id != other.id){
+		if (id != other.id) {
 			return false;
 		}
 		return false;

@@ -39,7 +39,7 @@ public class FriendsServlet extends HttpServlet {
 		} else if (haveToAddFriendship(request, response)) {
 			System.out.println("*** [FriendsServlet] add friendship ***");
 			addFriendship(request, response);
-		}else{
+		} else {
 			getUserInformation(request, response);
 		}
 	}
@@ -145,13 +145,14 @@ public class FriendsServlet extends HttpServlet {
 			Object ref = jndiContext.lookup("FriendsManager/remote");
 			FriendsManagerRemote friendsManager = (FriendsManagerRemote) ref;
 
-			friendsManager.addRequest((User) request.getSession().getAttribute("User")
-					, request.getParameter("newFriend"));
-			
+			friendsManager.addRequest(
+					(User) request.getSession().getAttribute("User"),
+					request.getParameter("newFriend"));
+
 			out.println("<value>OK</value>");
 		} catch (Exception e) {
 			out.println("<value>KO</value>");
-		}		
+		}
 		out.println("</response>");
 	}
 

@@ -170,8 +170,7 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 	@Override
 	public void updateHelpRequest(HelpState state, int helpID) {
 		try {
-			HelpRequest help = manager
-					.find(HelpRequest.class, helpID);
+			HelpRequest help = manager.find(HelpRequest.class, helpID);
 			if (state.equals(HelpState.REJECTED)) {
 				System.out
 						.println("*** [HelpsManager] reject remove help request ***");
@@ -185,8 +184,7 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 			System.out
 					.println("*** [HelpsManager] state was pending? don't know what to do ***");
 		} catch (NoResultException exc) {
-			System.out
-.println("*** [HelpsManager] help request not found ***");
+			System.out.println("*** [HelpsManager] help request not found ***");
 		}
 	}
 

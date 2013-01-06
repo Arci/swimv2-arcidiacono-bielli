@@ -39,7 +39,8 @@ public class AbilityServlet extends HttpServlet {
 			req.setAttribute("abilities", abilityManager.getAbilityList());
 
 			getServletConfig().getServletContext()
-					.getRequestDispatcher("/admin/newAbility.jsp").forward(req, resp);
+					.getRequestDispatcher("/admin/newAbility.jsp")
+					.forward(req, resp);
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}

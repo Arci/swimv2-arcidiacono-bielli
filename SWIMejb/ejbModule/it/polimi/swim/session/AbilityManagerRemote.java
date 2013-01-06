@@ -1,10 +1,10 @@
 package it.polimi.swim.session;
 
-import java.util.List;
-
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.AbilityRequest;
 import it.polimi.swim.model.User;
+
+import java.util.List;
 
 import javax.ejb.Remote;
 
@@ -38,22 +38,26 @@ public interface AbilityManagerRemote {
 	 * @return list of all ability in the system
 	 */
 	public List<Ability> getAbilityList();
-	
+
 	/**
 	 * 
 	 * @return list of all suspended ability requests.
 	 */
 	public List<AbilityRequest> getAbilityRequests();
-	
+
 	/**
 	 * update the state about an ability request.
-	 * @param id about an ability request
-	 * @param state about an ability request
+	 * 
+	 * @param id
+	 *            about an ability request
+	 * @param state
+	 *            about an ability request
 	 */
 	public void updateAbilityRequestState(String id, String state);
-	
+
 	/**
 	 * Insert a new ability in the sistem.
+	 * 
 	 * @param name
 	 */
 	public void insertNewAbility(String name);

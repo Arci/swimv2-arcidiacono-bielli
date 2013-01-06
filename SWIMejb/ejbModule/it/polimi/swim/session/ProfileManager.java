@@ -131,8 +131,7 @@ public class ProfileManager implements ProfileManagerRemote,
 
 	@Override
 	public User insertNewUser(Map<String, Object> params) {
-		
-		
+
 		String normalUsername = (String) params.get("username");
 		try {
 			Query q = manager
@@ -151,11 +150,10 @@ public class ProfileManager implements ProfileManagerRemote,
 			normal.setUsername((String) normalUsername);
 			normal.setEmail((String) params.get("email"));
 			normal.setPassword((String) params.get("password"));
-//			normal.setCity((String) params.get("city"));
-//			normal.setPhone((int) params.get("phone"));
+			// normal.setCity((String) params.get("city"));
+			// normal.setPhone((int) params.get("phone"));
 			manager.persist(normal);
-			System.out
-					.println("*** [ProfileManager] NORMAL user inserted ***");
+			System.out.println("*** [ProfileManager] NORMAL user inserted ***");
 			return normal;
 		}
 		return null;
