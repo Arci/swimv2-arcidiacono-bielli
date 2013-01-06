@@ -131,4 +131,12 @@ public class AbilityManager implements AbilityManagerRemote,
 			System.out.println("*** [AbilityManager] ability request not found ***");
 		}
 	}
+
+	@Override
+	public void insertNewAbility(String name) {
+		Ability ability = new Ability();
+		ability.setName(name);
+		manager.persist(ability);
+		System.out.println("*** [AbilityManager] new ability added ***");
+	}
 }

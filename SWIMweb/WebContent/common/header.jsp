@@ -7,7 +7,7 @@
 				if (session.getAttribute("User") != null) {
 					User user = (User) session.getAttribute("User");
 					if (user.getType().equals(UserType.ADMIN)) {
-						out.println("<a href=\"/SWIMweb/admin/suspended.jsp\">SWIM</a>");
+						out.println("<a href=\"/SWIMweb/admin/admin\">SWIM</a>");
 					} else if (user.getType().equals(UserType.NORMAL)) {
 						out.println("<a href=\"/SWIMweb/user/profile\">SWIM</a>");
 					}
@@ -124,13 +124,13 @@
 								} else {
 									out.println("<li>");
 								}
-								out.println("<a href=\"/SWIMweb/admin/suspended.jsp\" title=\"Suspended Requests\">Suspended Requests</a></li>");
+								out.println("<a href=\"/SWIMweb/admin/suspended\" title=\"Suspended Requests\">Suspended Requests</a></li>");
 								if (request.getParameter("page").equals("newAbility")) {
 									out.println("<li class=\"current\">");
 								} else {
 									out.println("<li>");
 								}
-								out.println("<a href=\"/SWIMweb/admin/newAbility.jsp\" title=\"Add New Ability\">Add New Ability</a></li>");
+								out.println("<a href=\"/SWIMweb/admin/newAbility\" title=\"Add New Ability\">Add New Ability</a></li>");
 					%>
 				</ul>
 			<%

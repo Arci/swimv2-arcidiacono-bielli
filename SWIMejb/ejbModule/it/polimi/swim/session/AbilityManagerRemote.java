@@ -51,4 +51,10 @@ public interface AbilityManagerRemote {
 	 * @param state about an ability request
 	 */
 	public void updateAbilityRequestState(String id, String state);
+	
+	/**
+	 * Insert a new ability in the sistem.
+	 * @param name
+	 */
+	public void insertNewAbility(String name);
 }

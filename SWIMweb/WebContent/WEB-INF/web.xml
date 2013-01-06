@@ -76,6 +76,14 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>suggestServlet</servlet-name>
-		<url-pattern>/admin/suspended/suggest</url-pattern>
+		<url-pattern>/admin/suspended</url-pattern>
+	</servlet-mapping>	
+		<servlet>
+		<servlet-name>abilities</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.AbilityServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>abilities</servlet-name>
+		<url-pattern>/admin/newAbility</url-pattern>
 	</servlet-mapping>	
 </web-app>

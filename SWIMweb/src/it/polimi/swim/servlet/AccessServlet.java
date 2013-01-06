@@ -82,7 +82,7 @@ public class AccessServlet extends HttpServlet {
 					} else if (user.getType().equals(UserType.ADMIN)) {
 						System.out
 								.println("*** [AccessServlet] redirect ADMIN user ***");
-						response.sendRedirect("/SWIMweb/admin/suspended.jsp");
+						response.sendRedirect("/SWIMweb/admin/suspended");
 					}
 				}
 			} else {

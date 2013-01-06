@@ -1,6 +1,5 @@
 package it.polimi.swim.servlet;
 
-import it.polimi.swim.enums.RequestState;
 import it.polimi.swim.model.AbilityRequest;
 import it.polimi.swim.session.AbilityManagerRemote;
 
@@ -60,10 +59,12 @@ public class SuggestServlet extends HttpServlet {
 		} else {
 			System.out.println("*** [SuggestServlet] suspended abilities not found ***");
 		}
+
+		getServletConfig().getServletContext()
+				.getRequestDispatcher("/admin/suspended.jsp").forward(req, resp);
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
-
 	}
 	
 	@Override

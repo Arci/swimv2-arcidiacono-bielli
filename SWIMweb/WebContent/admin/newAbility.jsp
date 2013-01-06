@@ -14,7 +14,30 @@
 		<jsp:param name="page" value="newAbility" />
 	</jsp:include>
 
-	<div id="pageContent"></div>
+	<div id="pageContent">
+		<div id="newAbility">
+			<fieldset>
+				<legend class="text">Create a new Ability</legend>
+				<form action="newAbility" method="get">
+					<input type="text" name="newAbility" /><br> 
+					<input type="submit" name="submit" value="Submit" />
+				</form>
+			</fieldset>
+		</div>
+		<div id="ability">
+			<label>Abilities of the system:</label><br>
+			<p>
+				<%
+					List<Ability> abilities = (List<Ability>) request
+							.getAttribute("abilities");
+					for (Ability ability : abilities) {
+				%><span id="ability"><%=ability.getName()%></span><br>
+				<%
+					}
+				%>
+			</p>
+		</div>
+	</div>
 
 	<jsp:include page="/common/footer.jsp"></jsp:include>
 </body>
