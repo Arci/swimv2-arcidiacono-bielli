@@ -118,6 +118,10 @@ public class AbilityManager implements AbilityManagerRemote,
 			if (state.equals(RequestState.ACCEPTED.toString())){
 				request.setState(RequestState.ACCEPTED);
 				System.out.println("*** [AbilityManager] state of '" + request.getText() + "' became accepted ***");
+				Ability ability =  new Ability();
+				ability.setName(request.getText());
+				manager.persist(ability);
+				System.out.println("*** [AbilityManager] ability added'");
 			} else if (state.equals(RequestState.REJECTED.toString())){
 				request.setState(RequestState.REJECTED);
 				System.out.println("*** [AbilityManager] state of '" + request.getText() + "' became refused ***");
