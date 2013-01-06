@@ -51,6 +51,12 @@ public class FriendsServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		getUserInformation(request, response);
+		// Not to implement, redirect
+		System.out
+				.println("*** [FriendsServlet] doGet, forwarding to friends ***");
+		getServletConfig().getServletContext()
+				.getRequestDispatcher("/user/friends")
+				.forward(request, response);
 	}
 
 	private boolean haveToManageFriendship(HttpServletRequest request,

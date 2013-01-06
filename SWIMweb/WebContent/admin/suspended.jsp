@@ -19,9 +19,10 @@
 			<jsp:include page="/admin/suspended/suggest"></jsp:include>
 			<%
 				if (request.getAttribute("suggests") != null){
+					@SuppressWarnings("unchecked")
 					List <AbilityRequest> suspended = (List<AbilityRequest>) request.getAttribute("suggests");
 					for (AbilityRequest req : suspended){
-						%><span>- <%out.println(req.getText());%> -> <%out.println(req.getState()); %></span>
+						%><span><%out.println(req.getText() + " in state: <span class=\"message\">" + req.getState() + "</span>"); %></span>
 						<a href="suspended/suggest?ability=<%=req.getId()%>&decision=<%=RequestState.ACCEPTED.toString() %>">Accept</a>
 						<a href="suspended/suggest?ability=<%=req.getId()%>&decision=<%=RequestState.REJECTED.toString() %>">Refuse</a>
 						<br> <%

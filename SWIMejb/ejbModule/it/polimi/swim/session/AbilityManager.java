@@ -2,7 +2,6 @@ package it.polimi.swim.session;
 
 import java.util.List;
 
-import gnu.io.RS485PortEvent;
 import it.polimi.swim.enums.RequestState;
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.AbilityRequest;

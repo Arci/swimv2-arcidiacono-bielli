@@ -5,6 +5,8 @@
 # Eclipse Files #
 .classpath
 .settings/
+*/bin
+*/build
 # Package Files #
 *.jar
 *.war
