@@ -89,7 +89,7 @@
 						out.println(star);
 					%></p>
 					<p>
-					<span class="text">You have the following abilities:</span></br>
+					<span class="text">You have the following abilities:</span><br/>
 					<%
 						Set<Ability> abilities = user.getAbilities();
 						if (abilities.isEmpty()) {
@@ -116,7 +116,7 @@
 					%>
 					</p>
 					<% if(!buttons){ %>
-						<p><a href="#">Modify Profile</a></p>
+						<p><a href="/SWIMweb/user/modifyProfile.jsp">Modify Profile</a></p>
 					<% } %>
 				</div>
 				<% if(buttons){ %>
@@ -128,17 +128,17 @@
 									// deve uscire una form da cui prendo
 									// l'abilità su cui chiede aiuto
 									%>
-									<input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
+									 <input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
 									<%
 								}else if(request.getAttribute("friendState")=="pending"){
 									%>
-									<input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
+									 <input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
 									 <span class="message">Friendship Request is pending</span>
 									<%
 								}
 							}else{
 								%>
-								<input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
+								 <input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
 								 <input type="button" id="friend" onclick="addRequest('friend','<%=user.getUsername()%>');" value="Ask friendship" />
 								<% 
 							} %>

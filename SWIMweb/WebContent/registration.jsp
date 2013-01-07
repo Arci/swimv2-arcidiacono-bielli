@@ -13,6 +13,7 @@
 	<jsp:include page="/common/header.jsp">
 		<jsp:param name="page" value="registration" />
 	</jsp:include>
+	
 	<div id="pageContent">
 		<% 
 		boolean hasMissingParameters = false;
@@ -46,7 +47,7 @@
 				<span class='error'>&#9;*you must insert the name.</span><%}%>
 				<br>
 				
-				<label for='name'>Surname: </label>
+				<label for='surname'>Surname: </label>
 				<input type='text'name='surname' id='surname'
 				<%if(hasMissingParameters || hasDuplicatedParameters || hasPasswordError){%>
 				value='<%=request.getParameter("surname")%>'<%}%>/><br>
@@ -79,7 +80,7 @@
 				<span class='error'>&#9;*password and check password are not equal.</span><%}%>
 				<br>
 				
-				<label for='password'>Check Password*:</label> 
+				<label for='checkPassword'>Check Password*:</label> 
 				<input type='password' name='checkPassword' id='checkPassword'/> 
 				<%if(hasMissingParameters && missingParameters.contains("checkPassword")){%>
 				<span class='error'>&#9;*you must insert the check password.</span><%}%>

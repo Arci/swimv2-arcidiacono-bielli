@@ -26,7 +26,7 @@
 		<div id="helpAsHelpers">
 			<p>
 				<span class="text">These are the help requests in which you
-					are helping someone:</span></br>
+					are helping someone:</span><br/>
 				<%
 					@SuppressWarnings("unchecked")
 					List<HelpRequest> giving = (List<HelpRequest>) request
@@ -49,7 +49,7 @@
 		</div>
 		<div id="helpsHaveAsked">
 			<p>
-				<span class="text">These are the helps you have asked:</span></br>
+				<span class="text">These are the helps you have asked:</span><br/>
 				<%
 					@SuppressWarnings("unchecked")
 					List<HelpRequest> open = (List<HelpRequest>) request
@@ -74,7 +74,7 @@
 		</div>
 		<div id="helpsHaveRequest">
 			<p>
-				<span class="text">These are the pending helps asked to you:</span></br>
+				<span class="text">These are the pending helps asked to you:</span><br/>
 				<%
 					@SuppressWarnings("unchecked")
 					List<HelpRequest> pendingAsHelper = (List<HelpRequest>) request
@@ -103,7 +103,7 @@
 		</div>
 		<div id="helpsSuspended">
 			<p>
-				<span class="text">These are your pending helps request:</span></br>
+				<span class="text">These are your pending helps request:</span><br/>
 				<%
 					@SuppressWarnings("unchecked")
 					List<HelpRequest> pendingAsAsker = (List<HelpRequest>) request
@@ -126,7 +126,7 @@
 		</div>
 		<div id="helpsClosed">
 			<p>
-				<span class="text">These are the closed helps request:</span></br>
+				<span class="text">These are the closed helps request:</span><br/>
 				<%
 					@SuppressWarnings("unchecked")
 					List<HelpRequest> closed = (List<HelpRequest>) request

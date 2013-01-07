@@ -20,7 +20,7 @@
 				<legend class="text">Search</legend>
 				<form id="searchForm" action="search" method="post" >
 					<input type="radio" name="toSearch" value="persons" checked="checked"/> Person
-					<input type="radio" name="toSearch" value="abilities" />Abilities</br>
+					<input type="radio" name="toSearch" value="abilities" />Abilities<br/>
 					<%
 						if(request.getParameter("keywords") != null){
 							out.println("<input type=\"text\" name=\"keywords\" value=\""+
@@ -28,7 +28,7 @@
 						}else{
 							out.println("<input type=\"text\" name=\"keywords\" />");
 						}
-					%></br>
+					%><br/>
 					<input type="submit" name="submit" value="Search" />
 				</form>
 				<span class="error">

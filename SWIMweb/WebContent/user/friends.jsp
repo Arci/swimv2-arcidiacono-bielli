@@ -22,7 +22,7 @@
 		</div>
 		<div id="friends">
 			<p>
-				<span class="text">These are your friends:</span></br>
+				<span class="text">These are your friends:</span><br/>
 				<%
 					@SuppressWarnings("unchecked")
 					List<User> friends = (List<User>) request.getAttribute("friends");
@@ -44,7 +44,7 @@
 		</div>
 		<div id="request">
 			<p>
-				<span class="text">These are your friendship request:</span></br>
+				<span class="text">These are your friendship request:</span><br/>
 				<%
 					@SuppressWarnings("unchecked")
 					List<Friendship> requests = (List<Friendship>) request
@@ -73,7 +73,7 @@
 		</div>
 		<div id="pending">
 			<p>
-				<span class="text">These are your pending request:</span></br>
+				<span class="text">These are your pending request:</span><br/>
 				<%
 					@SuppressWarnings("unchecked")
 					List<Friendship> pendings = (List<Friendship>) request

@@ -19,7 +19,7 @@
 			<fieldset>
 				<legend class="text">Suggest new ability</legend>
 				<form id="requestForm" action="abilitySuggestion" method="post">
-					<input type="text" name="suggestion" /></br> 
+					<input type="text" name="suggestion" /><br/> 
 					<input type="submit" name="submit" value="Submit" />
 				</form>
 				<span class="error">
@@ -40,9 +40,9 @@
 				</span>
 			</fieldset>
 		</div>
-		</br>
+		<br/>
 		<div id="otherRequest">
-			<span class="text">This is the list of your suggestions:</span></br>
+			<span class="text">This is the list of your suggestions:</span><br/>
 			<%
 				User user = (User) session.getAttribute("User");
 				if (user == null) {

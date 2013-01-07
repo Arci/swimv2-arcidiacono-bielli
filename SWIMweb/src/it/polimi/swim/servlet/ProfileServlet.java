@@ -90,15 +90,7 @@ public class ProfileServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		System.out
-				.println("*** [ProfileServlet] doPost, show current user profile ***");
-		getUserInformation((User) request.getSession().getAttribute("User"),
-				request, response);
-		System.out
-				.println("*** [ProfileServlet] forwarding to profile.jsp ***");
-		getServletConfig().getServletContext()
-				.getRequestDispatcher("/user/profile.jsp")
-				.forward(request, response);
+		//TODO manage modify profile
 	}
 
 	private void getUserInformation(User user, HttpServletRequest request,
