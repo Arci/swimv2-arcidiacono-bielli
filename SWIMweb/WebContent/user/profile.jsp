@@ -20,9 +20,7 @@
 		} else if (session.getAttribute("User") != null) {
 			user = (User) session.getAttribute("User");
 			buttons = false;
-		} else {
-			response.sendRedirect("/SWIMweb");
-		}
+		} 
 		
 		if(request.getAttribute("from") != null && request.getAttribute("from") != ""){
 			if(request.getAttribute("from").equals("search")){
@@ -37,6 +35,11 @@
 				%><jsp:include page="/common/header.jsp">
 					<jsp:param name="page" value="profile" />
 				</jsp:include><%
+			}else{
+				%><!--  default -->
+				<jsp:include page="/common/header.jsp">
+					<jsp:param name="page" value="profile" />
+				</jsp:include><%
 			}
 		}else{
 			%><jsp:include page="/common/header.jsp">
@@ -44,103 +47,108 @@
 			</jsp:include><%
 		}
 	%>
-
+	
 	<div id="pageContent">
-		<div id="profile">
-			<p class="nameSurname"><%=user.getName()%> <%=user.getSurname()%></p>
-			<p><span class="text">Username: </span><%=user.getUsername()%></p>
-			<p><span class="text">Email: </span><%=user.getEmail()%></p>
-			<p>
-			<span class="text">City: </span>
-			<%if(user.getCity() != null){
-				out.println(user.getCity());
-			}else{
-				out.println("<span class=\"warning\">no city yet</span>");
-			}%>
-			</p>
-			<p>
-			<span class="text">Phone: </span>
-			<%if(user.getPhone() != 0){
-				out.println(user.getPhone() );
-			}else{
-				out.println("<span class=\"warning\">no phone yet</span>");
-			}%>
-			</p>
-			<p><span class="text">Rating: </span>
-			<%
-				int rating = (Integer) request.getAttribute("rating");
-				String star = "";	
-				if (rating > 0) {	
-					for (int i = 0; i < rating; i++) {
-						star += "* ";
-					}
-				} else {
-					out.println("<span class=\"warning\">no rating yet</span></li>");
-				}
-				out.println(star);
-			%></p>
-			<p>
-			<span class="text">You have the following abilities:</span></br>
-			<%
-				Set<Ability> abilities = user.getAbilities();
-				if (abilities.isEmpty()) {
-					out.println("<span class=\"warning\">you don't have any ability yet!</span>");
-				} else {
-					out.println("<ul>");
-					for (Ability a : abilities) {
-						int abilityRating = (Integer) request.getAttribute(a
-								.getName());
-						if (abilityRating > 0) {
-							star = "";
-							for (int i = 0; i < abilityRating; i++) {
+		<% if(request.getAttribute("error") != null){ %>
+			<div class="error">
+				<% out.println(request.getAttribute("error")); %>
+			</div>
+		<% }else{ %>
+			<div>
+				<div id="profile">
+					<p class="nameSurname"><%=user.getName()%> <%=user.getSurname()%></p>
+					<p><span class="text">Username: </span><%=user.getUsername()%></p>
+					<p><span class="text">Email: </span><%=user.getEmail()%></p>
+					<p>
+					<span class="text">City: </span>
+					<%if(user.getCity() != null){
+						out.println(user.getCity());
+					}else{
+						out.println("<span class=\"warning\">no city yet</span>");
+					}%>
+					</p>
+					<p>
+					<span class="text">Phone: </span>
+					<%if(user.getPhone() != 0){
+						out.println(user.getPhone() );
+					}else{
+						out.println("<span class=\"warning\">no phone yet</span>");
+					}%>
+					</p>
+					<p><span class="text">Rating: </span>
+					<%
+						int rating = (Integer) request.getAttribute("rating");
+						String star = "";	
+						if (rating > 0) {	
+							for (int i = 0; i < rating; i++) {
 								star += "* ";
 							}
-							out.println("<li>" + a.getName() + " " + star + "</li>");
 						} else {
-							out.println("<li>"
-									+ a.getName()
-									+ " <span class=\"warning\">no rating yet</span></li>");
+							out.println("<span class=\"warning\">no rating yet</span></li>");
 						}
-					}
-					out.println("</ul>");
-				}
-			%>
-			</p>
-			<% if(!buttons){ %>
-				<p><a href="#">Modify Profile</a></p>
-			<% } %>
-		</div>
-		<%
-			if(buttons){
-				%>
-				<div id="buttons">
+						out.println(star);
+					%></p>
+					<p>
+					<span class="text">You have the following abilities:</span></br>
 					<%
-						if(request.getAttribute("friendState") != null
-							&& request.getAttribute("friendState") != ""){
-							if(request.getAttribute("friendState")=="friend"){
-								// TODO per help
-								// deve uscire una form da cui prendo
-								// l'abilità su cui chiede aiuto
-								%>
-								<input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
-								<%
-							}else if(request.getAttribute("friendState")=="pending"){
-								%>
-								<input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
-								 <span class="message">Friendship Request is pending</span>
-								<%
+						Set<Ability> abilities = user.getAbilities();
+						if (abilities.isEmpty()) {
+							out.println("<span class=\"warning\">you don't have any ability yet!</span>");
+						} else {
+							out.println("<ul>");
+							for (Ability a : abilities) {
+								int abilityRating = (Integer) request.getAttribute(a
+										.getName());
+								if (abilityRating > 0) {
+									star = "";
+									for (int i = 0; i < abilityRating; i++) {
+										star += "* ";
+									}
+									out.println("<li>" + a.getName() + " " + star + "</li>");
+								} else {
+									out.println("<li>"
+											+ a.getName()
+											+ " <span class=\"warning\">no rating yet</span></li>");
+								}
 							}
-						}else{
-							%>
-							<input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
-							 <input type="button" id="friend" onclick="addRequest('friend','<%=user.getUsername()%>');" value="Ask friendship" />
-							<% 
+							out.println("</ul>");
 						}
 					%>
+					</p>
+					<% if(!buttons){ %>
+						<p><a href="#">Modify Profile</a></p>
+					<% } %>
 				</div>
-		<%
-			}
-		%>
+				<% if(buttons){ %>
+					<div id="buttons">
+						<% if(request.getAttribute("friendState") != null
+								&& request.getAttribute("friendState") != ""){
+								if(request.getAttribute("friendState")=="friend"){
+									// TODO per help
+									// deve uscire una form da cui prendo
+									// l'abilità su cui chiede aiuto
+									%>
+									<input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
+									<%
+								}else if(request.getAttribute("friendState")=="pending"){
+									%>
+									<input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
+									 <span class="message">Friendship Request is pending</span>
+									<%
+								}
+							}else{
+								%>
+								<input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
+								 <input type="button" id="friend" onclick="addRequest('friend','<%=user.getUsername()%>');" value="Ask friendship" />
+								<% 
+							} %>
+					</div>
+				<%	} %>
+				</div>
+				<br style="clear: both;">
+			</div>		
+		<% } %>
+			
 		<script type="text/javascript">	
 			function addRequest(type,username,ability) {
 				xmlhttp = new XMLHttpRequest();
@@ -176,13 +184,13 @@
 				xmlhttp.open("GET", url, true);
 				xmlhttp.send(null);
 			};
-
+	
 			function manageButtonDiv(type){
 				var buttonsDiv = document.getElementById('buttons'); 
 				var friend = document.getElementById(type);
 	            buttonsDiv.removeChild(friend);
 			};
-
+	
 			function manageMessage(clazz,id,message){
 				if(document.getElementById(id)){
 					var buttonsDiv = document.getElementById('buttons');
@@ -195,9 +203,7 @@
 	            var buttonsDiv = document.getElementById('buttons'); 
 	            buttonsDiv.appendChild(span);
 			};
-		</script>
-		<br style="clear: both;">
-	</div>
+	</script>
 
 	<jsp:include page="/common/footer.jsp"></jsp:include>
 </body>

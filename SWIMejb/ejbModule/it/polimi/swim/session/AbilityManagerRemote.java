@@ -17,6 +17,8 @@ public interface AbilityManagerRemote {
 	 * 
 	 * @param user
 	 * @param text
+	 * @throws AbilitySuggestionException
+	 *             with the error message
 	 */
 	public void insertSuggestion(User user, String text)
 			throws AbilitySuggestionException;

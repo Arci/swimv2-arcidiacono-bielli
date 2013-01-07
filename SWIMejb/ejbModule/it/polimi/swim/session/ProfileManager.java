@@ -3,6 +3,7 @@ package it.polimi.swim.session;
 import it.polimi.swim.enums.UserType;
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.User;
+import it.polimi.swim.session.exceptions.UserException;
 
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -26,7 +27,7 @@ public class ProfileManager implements ProfileManagerRemote,
 	}
 
 	@Override
-	public User getUserByUsername(String username) {
+	public User getUserByUsername(String username) throws UserException {
 		try {
 			Query q = manager
 					.createQuery("FROM User u WHERE u.username=:username");
@@ -37,8 +38,8 @@ public class ProfileManager implements ProfileManagerRemote,
 		} catch (NoResultException exc) {
 			System.out
 					.println("*** [ProfileManager] requested user not found ***");
+			throw new UserException("user not found");
 		}
-		return null;
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import it.polimi.swim.enums.HelpState;
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.HelpRequest;
 import it.polimi.swim.model.User;
+import it.polimi.swim.session.exceptions.UserException;
 
 import java.util.Date;
 import java.util.List;
@@ -18,9 +19,10 @@ public interface HelpsManagerRemote {
 	 * 
 	 * @param user
 	 * @param friend
+	 * @throws UserException
 	 */
 	public void addRequest(User user, String helper, String ability,
-			Date opening_date);
+			Date opening_date) throws UserException;
 
 	/**
 	 * Get the list of help that user is giving

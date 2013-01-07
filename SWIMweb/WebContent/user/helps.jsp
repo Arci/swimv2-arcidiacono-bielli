@@ -15,6 +15,11 @@
 	</jsp:include>
 
 	<div id="pageContent">
+		<div class="error">
+			<% if(request.getAttribute("error") != null){
+				out.println(request.getAttribute("error"));
+			} %>
+		</div>
 		<%
 			User user = (User) session.getAttribute("User");
 		%>

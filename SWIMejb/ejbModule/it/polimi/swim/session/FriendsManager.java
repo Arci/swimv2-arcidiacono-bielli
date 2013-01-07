@@ -4,6 +4,7 @@ import it.polimi.swim.enums.RequestState;
 import it.polimi.swim.model.Friendship;
 import it.polimi.swim.model.User;
 import it.polimi.swim.session.exceptions.FriendshipException;
+import it.polimi.swim.session.exceptions.UserException;
 
 import java.util.Hashtable;
 import java.util.List;
@@ -29,7 +30,8 @@ public class FriendsManager implements FriendsManagerRemote,
 	}
 
 	@Override
-	public void addRequest(User user, String friend) throws FriendshipException {
+	public void addRequest(User user, String friend)
+			throws FriendshipException, UserException {
 		try {
 			Hashtable<String, String> env = new Hashtable<String, String>();
 			env.put(Context.INITIAL_CONTEXT_FACTORY,
@@ -51,6 +53,8 @@ public class FriendsManager implements FriendsManagerRemote,
 			}
 		} catch (NamingException e) {
 			e.printStackTrace();
+		} catch (UserException e) {
+			throw new UserException("can't found 'friend' user: " + friend);
 		}
 	}
 

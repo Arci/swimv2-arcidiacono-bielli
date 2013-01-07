@@ -5,6 +5,7 @@ import it.polimi.swim.model.Friendship;
 import it.polimi.swim.model.User;
 import it.polimi.swim.session.FriendsManagerRemote;
 import it.polimi.swim.session.exceptions.FriendshipException;
+import it.polimi.swim.session.exceptions.UserException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -159,6 +160,9 @@ public class FriendsServlet extends HttpServlet {
 		} catch (NamingException nex) {
 			out.println("<result>KO</result>");
 			out.println("<error>can't reach the server</error>");
+		} catch (UserException ue) {
+			out.println("<result>KO</result>");
+			out.println("<error>" + ue.getMessage() + "</error>");
 		}
 		out.println("</response>");
 	}

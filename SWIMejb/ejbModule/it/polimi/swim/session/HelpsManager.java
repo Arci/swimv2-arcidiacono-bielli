@@ -4,6 +4,7 @@ import it.polimi.swim.enums.HelpState;
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.HelpRequest;
 import it.polimi.swim.model.User;
+import it.polimi.swim.session.exceptions.UserException;
 
 import java.util.Date;
 import java.util.Hashtable;
@@ -29,7 +30,7 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 
 	@Override
 	public void addRequest(User user, String helper, String ability,
-			Date opening_date) {
+			Date opening_date) throws UserException {
 		try {
 			Hashtable<String, String> env = new Hashtable<String, String>();
 			env.put(Context.INITIAL_CONTEXT_FACTORY,
@@ -54,6 +55,8 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 
 		} catch (NamingException e) {
 			e.printStackTrace();
+		} catch (UserException e) {
+			throw new UserException("can't found helper user: " + helper);
 		}
 	}
 

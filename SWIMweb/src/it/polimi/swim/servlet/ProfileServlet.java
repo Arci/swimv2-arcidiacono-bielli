@@ -4,6 +4,7 @@ import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.User;
 import it.polimi.swim.session.FriendsManagerRemote;
 import it.polimi.swim.session.ProfileManagerRemote;
+import it.polimi.swim.session.exceptions.UserException;
 
 import java.io.IOException;
 import java.util.Hashtable;
@@ -58,17 +59,17 @@ public class ProfileServlet extends HttpServlet {
 										.getAttribute("User"))) {
 					request.setAttribute("friendState", "pending");
 				}
-
-				request.setAttribute("from", request.getParameter("from"));
-
-				System.out
-						.println("*** [ProfileServlet] forwarding to profile.jsp ***");
-				getServletConfig().getServletContext()
-						.getRequestDispatcher("/user/profile.jsp")
-						.forward(request, response);
 			} catch (NamingException e) {
-				e.printStackTrace();
+				request.setAttribute("error", "can't reach the server");
+			} catch (UserException ue) {
+				request.setAttribute("error", ue.getMessage());
 			}
+			request.setAttribute("from", request.getParameter("from"));
+			System.out
+					.println("*** [ProfileServlet] forwarding to profile.jsp ***");
+			getServletConfig().getServletContext()
+					.getRequestDispatcher("/user/profile.jsp")
+					.forward(request, response);
 		} else {
 			System.out
 					.println("*** [ProfileServlet] doGet, no params, show current user profile ***");

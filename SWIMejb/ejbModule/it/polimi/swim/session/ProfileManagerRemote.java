@@ -2,6 +2,7 @@ package it.polimi.swim.session;
 
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.User;
+import it.polimi.swim.session.exceptions.UserException;
 
 import java.util.Hashtable;
 import java.util.Map;
@@ -17,16 +18,16 @@ public interface ProfileManagerRemote {
 	 * @param params
 	 * @return the new user
 	 */
-
 	public User insertNewUser(Map<String, Object> params);
 
 	/**
-	 * get the user from his username
 	 * 
-	 * @param parameter
-	 * @return null if no user found, the user object otherwise
+	 * @param username
+	 * @return the user with the username passed
+	 * @throws UserException
+	 *             if no user found
 	 */
-	public User getUserByUsername(String parameter);
+	public User getUserByUsername(String username) throws UserException;
 
 	/**
 	 * Check the params and update the user
