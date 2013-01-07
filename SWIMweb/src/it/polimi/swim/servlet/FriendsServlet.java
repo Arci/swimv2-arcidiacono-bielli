@@ -4,6 +4,7 @@ import it.polimi.swim.enums.RequestState;
 import it.polimi.swim.model.Friendship;
 import it.polimi.swim.model.User;
 import it.polimi.swim.session.FriendsManagerRemote;
+import it.polimi.swim.session.exceptions.FriendshipException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -90,7 +91,9 @@ public class FriendsServlet extends HttpServlet {
 			}
 
 		} catch (NamingException e) {
-			e.printStackTrace();
+			request.setAttribute("error", "can't reach the server");
+		} catch (FriendshipException fex) {
+			request.setAttribute("error", fex.getMessage());
 		}
 	}
 
@@ -149,9 +152,13 @@ public class FriendsServlet extends HttpServlet {
 					(User) request.getSession().getAttribute("User"),
 					request.getParameter("newFriend"));
 
-			out.println("<value>OK</value>");
-		} catch (Exception e) {
-			out.println("<value>KO</value>");
+			out.println("<result>OK</result>");
+		} catch (FriendshipException fex) {
+			out.println("<result>KO</result>");
+			out.println("<error>" + fex.getMessage() + "</error>");
+		} catch (NamingException nex) {
+			out.println("<result>KO</result>");
+			out.println("<error>can't reach the server</error>");
 		}
 		out.println("</response>");
 	}

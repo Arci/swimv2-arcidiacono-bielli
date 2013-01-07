@@ -3,6 +3,7 @@ package it.polimi.swim.session;
 import it.polimi.swim.enums.RequestState;
 import it.polimi.swim.model.Friendship;
 import it.polimi.swim.model.User;
+import it.polimi.swim.session.exceptions.FriendshipException;
 
 import java.util.List;
 
@@ -16,8 +17,9 @@ public interface FriendsManagerRemote {
 	 * 
 	 * @param user
 	 * @param string
+	 * @throws FriendshipException
 	 */
-	public void addRequest(User user, String string);
+	public void addRequest(User user, String string) throws FriendshipException;
 
 	/**
 	 * Get the friends list of the passed user
@@ -49,7 +51,7 @@ public interface FriendsManagerRemote {
 	 * @param state
 	 * @param string
 	 */
-	public void updateFriendship(RequestState state, int friendshipID);
+	public void updateFriendship(RequestState state, int friendshipID) throws FriendshipException;
 
 	/**
 	 * @param user1

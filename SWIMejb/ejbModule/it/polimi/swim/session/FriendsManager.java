@@ -3,6 +3,7 @@ package it.polimi.swim.session;
 import it.polimi.swim.enums.RequestState;
 import it.polimi.swim.model.Friendship;
 import it.polimi.swim.model.User;
+import it.polimi.swim.session.exceptions.FriendshipException;
 
 import java.util.Hashtable;
 import java.util.List;
@@ -28,7 +29,7 @@ public class FriendsManager implements FriendsManagerRemote,
 	}
 
 	@Override
-	public void addRequest(User user, String friend) {
+	public void addRequest(User user, String friend) throws FriendshipException {
 		try {
 			Hashtable<String, String> env = new Hashtable<String, String>();
 			env.put(Context.INITIAL_CONTEXT_FACTORY,
@@ -39,14 +40,40 @@ public class FriendsManager implements FriendsManagerRemote,
 			ProfileManagerLocal profileManager = (ProfileManagerLocal) ref;
 
 			User friendUser = profileManager.getUserByUsername(friend);
-			Friendship friendship = new Friendship();
-			friendship.setFriend(friendUser);
-			friendship.setState(RequestState.PENDING);
-			friendship.setUser(user);
-			manager.persist(friendship);
-
+			if (!friendshipAlreadyExist(user, friendUser)) {
+				Friendship friendship = new Friendship();
+				friendship.setFriend(friendUser);
+				friendship.setState(RequestState.PENDING);
+				friendship.setUser(user);
+				manager.persist(friendship);
+			} else {
+				throw new FriendshipException("friendship already exists!");
+			}
 		} catch (NamingException e) {
 			e.printStackTrace();
+		}
+	}
+
+	private boolean friendshipAlreadyExist(User user, User friendUser) {
+		try {
+			Query q = manager
+					.createQuery("SELECT OBJECT(f) FROM Friendship f WHERE f.user=:user AND f.friend=:friend");
+			q.setParameter("user", user);
+			q.setParameter("friend", friendUser);
+			Friendship friendship = (Friendship) q.getSingleResult();
+			if (friendship == null) {
+				System.out
+						.println("*** [FriendsManager] friendship not exists ***");
+				return false;
+			}
+			return true;
+		} catch (NonUniqueResultException exc) {
+			System.out.println("*** [FriendsManager] friendship exists ***");
+			return true;
+		} catch (NoResultException nrex) {
+			System.out
+					.println("*** [FriendsManager] friendship not exists ***");
+			return false;
 		}
 	}
 
@@ -118,10 +145,17 @@ public class FriendsManager implements FriendsManagerRemote,
 	}
 
 	@Override
-	public void updateFriendship(RequestState state, int friendshipID) {
+	public void updateFriendship(RequestState state, int friendshipID)
+			throws FriendshipException {
 		try {
 			Friendship friendship = manager
 					.find(Friendship.class, friendshipID);
+			if (friendship == null) {
+				System.out
+						.println("*** [FriendsManager] friendship request not found ***");
+				throw new FriendshipException(
+						"you are trying to manage a friendship that does not exists!");
+			}
 			if (state.equals(RequestState.REJECTED)) {
 				System.out
 						.println("*** [FriendsManager] reject remove friendship ***");
@@ -139,11 +173,11 @@ public class FriendsManager implements FriendsManagerRemote,
 				System.out
 						.println("*** [FriendsManager] viceversa friendhsip added ***");
 			}
-			System.out
-					.println("*** [FriendsManager] state was pending? don't know what to do ***");
 		} catch (NoResultException exc) {
 			System.out
 					.println("*** [FriendsManager] friendship request not found ***");
+			throw new FriendshipException(
+					"trying to manage a friendship that does not exists!");
 		}
 	}
 

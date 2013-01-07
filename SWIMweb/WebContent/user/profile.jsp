@@ -50,8 +50,22 @@
 			<p class="nameSurname"><%=user.getName()%> <%=user.getSurname()%></p>
 			<p><span class="text">Username: </span><%=user.getUsername()%></p>
 			<p><span class="text">Email: </span><%=user.getEmail()%></p>
-			<p><span class="text">City: </span><%=user.getCity()%></p>
-			<p><span class="text">Phone: </span><%=user.getPhone()%></p>
+			<p>
+			<span class="text">City: </span>
+			<%if(user.getCity() != null){
+				out.println(user.getCity());
+			}else{
+				out.println("<span class=\"warning\">no city yet</span>");
+			}%>
+			</p>
+			<p>
+			<span class="text">Phone: </span>
+			<%if(user.getPhone() != 0){
+				out.println(user.getPhone() );
+			}else{
+				out.println("<span class=\"warning\">no phone yet</span>");
+			}%>
+			</p>
 			<p><span class="text">Rating: </span>
 			<%
 				int rating = (Integer) request.getAttribute("rating");
@@ -145,20 +159,17 @@
 				        if( xmlhttp.status == 200 ){ 
 				        	console.log("RESPONSE TEXT:\n"+ xmlhttp.responseText);
 					        console.log("RESPONSE XML:\n"+ xmlhttp.responseXML);
-					        var response = xmlhttp.responseXML.getElementsByTagName("value")[0].childNodes[0].nodeValue;
+					        var response = xmlhttp.responseXML.getElementsByTagName("result")[0].childNodes[0].nodeValue;
 					        console.log("VALUE:\n"+ response);
 					        if(response == "OK"){
-					        	addSpan('message',messageSpan,'Request added successfully');
+					        	manageMessage('message',messageSpan,'Request added successfully');
 					        	manageButtonDiv(type);
 					        } else {
-								if(!document.getElementById(messageSpan)){
-							    	addSpan('error',messageSpan,'Problems during the request');
-								}	
+								var error = xmlhttp.responseXML.getElementsByTagName("error")[0].childNodes[0].nodeValue;
+								manageMessage('error',messageSpan,error);
 							}
 				        } else {
-					        if(!document.getElementById(messageSpan)){
-					        	addSpan('error',errorDiv,'Problems during the request');
-						  	}
+					        manageMessage('error',errorDiv,'Problems during the request');
 				     	}
 				    }
 				};
@@ -172,7 +183,11 @@
 	            buttonsDiv.removeChild(friend);
 			};
 
-			function addSpan(clazz,id,message){
+			function manageMessage(clazz,id,message){
+				if(document.getElementById(id)){
+					var buttonsDiv = document.getElementById('buttons');
+					buttonsDiv.removeChild(document.getElementById(id));
+				}
 				var span = document.createElement("span");
 	            span.setAttribute("class",clazz);
 	            span.setAttribute("id",id);
