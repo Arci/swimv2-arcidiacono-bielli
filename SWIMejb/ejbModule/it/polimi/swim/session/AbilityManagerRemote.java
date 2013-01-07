@@ -3,6 +3,7 @@ package it.polimi.swim.session;
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.AbilityRequest;
 import it.polimi.swim.model.User;
+import it.polimi.swim.session.exceptions.AbilitySuggestionException;
 
 import java.util.List;
 
@@ -17,7 +18,8 @@ public interface AbilityManagerRemote {
 	 * @param user
 	 * @param text
 	 */
-	public void insertSuggestion(User user, String text);
+	public void insertSuggestion(User user, String text)
+			throws AbilitySuggestionException;
 
 	/**
 	 * 
@@ -25,14 +27,6 @@ public interface AbilityManagerRemote {
 	 * @return the user reloaded
 	 */
 	public User reloadUser(User user);
-
-	/**
-	 * Check if an ability already exists
-	 * 
-	 * @param name
-	 * @return true if name correspond to an existing ability, false otherwise
-	 */
-	public boolean existAbility(String name);
 
 	/**
 	 * @return list of all ability in the system

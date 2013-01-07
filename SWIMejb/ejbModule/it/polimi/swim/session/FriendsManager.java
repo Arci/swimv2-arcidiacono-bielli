@@ -161,17 +161,28 @@ public class FriendsManager implements FriendsManagerRemote,
 						.println("*** [FriendsManager] reject remove friendship ***");
 				manager.remove(friendship);
 			} else if (state.equals(RequestState.ACCEPTED)) {
+				if (friendship.getState() != RequestState.ACCEPTED) {
+					System.out
+							.println("*** [FriendsManager] accepted set and update friendship ***");
+					friendship.setState(state);
+					manager.merge(friendship);
+					Friendship viceversa = new Friendship();
+					viceversa.setFriend(friendship.getUser());
+					viceversa.setUser(friendship.getFriend());
+					viceversa.setState(RequestState.ACCEPTED);
+					manager.persist(viceversa);
+					System.out
+							.println("*** [FriendsManager] viceversa friendhsip added ***");
+				} else {
+					System.out
+							.println("*** [FriendsManager] accept 2 times the same requet ***");
+					throw new FriendshipException(
+							"you have already accepted this friendship request!");
+				}
+			} else {
 				System.out
-						.println("*** [FriendsManager] accepted set and update friendship ***");
-				friendship.setState(state);
-				manager.merge(friendship);
-				Friendship viceversa = new Friendship();
-				viceversa.setFriend(friendship.getUser());
-				viceversa.setUser(friendship.getFriend());
-				viceversa.setState(RequestState.ACCEPTED);
-				manager.persist(viceversa);
-				System.out
-						.println("*** [FriendsManager] viceversa friendhsip added ***");
+						.println("*** [FriendsManager] maybe have selected pending or something else ***");
+				throw new FriendshipException("action not recognized!");
 			}
 		} catch (NoResultException exc) {
 			System.out

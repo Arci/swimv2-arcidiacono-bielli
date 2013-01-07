@@ -2,6 +2,7 @@ package it.polimi.swim.servlet;
 
 import it.polimi.swim.model.User;
 import it.polimi.swim.session.AbilityManagerRemote;
+import it.polimi.swim.session.exceptions.AbilitySuggestionException;
 
 import java.io.IOException;
 import java.util.Hashtable;
@@ -54,39 +55,26 @@ public class AbilitySuggestionServlet extends HttpServlet {
 				AbilityManagerRemote abilityManager = (AbilityManagerRemote) ref;
 
 				User user = (User) request.getSession().getAttribute("User");
-				if (!abilityManager.existAbility(request
-						.getParameter("suggestion"))) {
-					abilityManager.insertSuggestion(user,
-							request.getParameter("suggestion"));
-					user = abilityManager.reloadUser(user);
-					request.getSession().removeAttribute("User");
-					request.getSession().setAttribute("User", user);
-					System.out
-							.println("*** [AbilitySuggestionServlet] suggestion '"
-									+ request.getParameter("suggestion")
-									+ "' added ***");
-					request.setAttribute("message",
-							"your suggestion has been recorded");
-					getServletConfig()
-							.getServletContext()
-							.getRequestDispatcher("/user/abilitySuggestion.jsp")
-							.forward(request, response);
-				} else {
-					System.out
-							.println("*** [AbilitySuggestionServlet] suggestion '"
-									+ request.getParameter("suggestion")
-									+ "' already exists ***");
-					request.setAttribute("error",
-							"the ability you are suggesting is already in the system!");
-					getServletConfig()
-							.getServletContext()
-							.getRequestDispatcher("/user/abilitySuggestion.jsp")
-							.forward(request, response);
-				}
 
+				abilityManager.insertSuggestion(user,
+						request.getParameter("suggestion"));
+				user = abilityManager.reloadUser(user);
+				request.getSession().removeAttribute("User");
+				request.getSession().setAttribute("User", user);
+				System.out
+						.println("*** [AbilitySuggestionServlet] suggestion '"
+								+ request.getParameter("suggestion")
+								+ "' added ***");
+				request.setAttribute("message",
+						"your suggestion has been recorded");
 			} catch (NamingException e) {
-				e.printStackTrace();
+				request.setAttribute("error", "can't reach the server");
+			} catch (AbilitySuggestionException asex) {
+				request.setAttribute("error", asex.getMessage());
 			}
+			getServletConfig().getServletContext()
+					.getRequestDispatcher("/user/abilitySuggestion.jsp")
+					.forward(request, response);
 		} else {
 			System.out
 					.println("*** [AbilitySuggestionServlet] no suggestion, forwarding to abilitySuggestion.jsp ***");

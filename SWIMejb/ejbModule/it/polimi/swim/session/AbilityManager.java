@@ -4,6 +4,7 @@ import it.polimi.swim.enums.RequestState;
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.AbilityRequest;
 import it.polimi.swim.model.User;
+import it.polimi.swim.session.exceptions.AbilitySuggestionException;
 
 import java.util.List;
 
@@ -24,12 +25,23 @@ public class AbilityManager implements AbilityManagerRemote,
 	}
 
 	@Override
-	public void insertSuggestion(User user, String text) {
-		AbilityRequest request = new AbilityRequest();
-		request.setUser(user);
-		request.setText(text);
-		request.setState(RequestState.PENDING);
-		manager.persist(request);
+	public void insertSuggestion(User user, String text)
+			throws AbilitySuggestionException {
+		if (!existAbility(text)) {
+			if (!existSuggest(text)) {
+				AbilityRequest request = new AbilityRequest();
+				request.setUser(user);
+				request.setText(text);
+				request.setState(RequestState.PENDING);
+				manager.persist(request);
+			} else {
+				throw new AbilitySuggestionException(
+						"you have already suggested this ability!");
+			}
+		} else {
+			throw new AbilitySuggestionException(
+					"the ability you are suggesting already exists!");
+		}
 	}
 
 	@Override
@@ -41,8 +53,27 @@ public class AbilityManager implements AbilityManagerRemote,
 		}
 	}
 
-	@Override
-	public boolean existAbility(String name) {
+	private boolean existSuggest(String text) {
+		try {
+			Query q = manager
+					.createQuery("FROM AbilityRequest ar WHERE ar.text=:text");
+			q.setParameter("text", text);
+			AbilityRequest request = (AbilityRequest) q.getSingleResult();
+			System.out.println("*** [AbilityManager] ability request '" + text
+					+ "' found ***");
+			if (request != null) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (NoResultException exc) {
+			System.out.println("*** [AbilityManager] ability  request '" + text
+					+ "' not found ***");
+		}
+		return false;
+	}
+
+	private boolean existAbility(String name) {
 		try {
 			Query q = manager.createQuery("FROM Ability a WHERE a.name=:name");
 			q.setParameter("name", name);
