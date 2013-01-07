@@ -4,6 +4,7 @@ import it.polimi.swim.enums.HelpState;
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.HelpRequest;
 import it.polimi.swim.model.User;
+import it.polimi.swim.session.exceptions.HelpException;
 import it.polimi.swim.session.exceptions.UserException;
 
 import java.util.Date;
@@ -16,6 +17,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,7 +32,7 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 
 	@Override
 	public void addRequest(User user, String helper, String ability,
-			Date opening_date) throws UserException {
+			Date opening_date) throws UserException, HelpException {
 		try {
 			Hashtable<String, String> env = new Hashtable<String, String>();
 			env.put(Context.INITIAL_CONTEXT_FACTORY,
@@ -45,18 +47,53 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 			AbilityManagerLocal abilityManager = (AbilityManagerLocal) ref;
 			Ability helpAbility = abilityManager.getAbilityByName(ability);
 
-			HelpRequest help = new HelpRequest();
-			help.setAbility(helpAbility);
-			help.setHelper(helperUser);
-			help.setOpeningDate(new Date());
-			help.setUser(user);
-			help.setState(HelpState.PENDING);
-			manager.persist(help);
+			if (!helpAlreadyExist(user, helperUser)) {
+				if (!user.equals(helperUser)) {
+					if (helperUser.getAbilities().contains(helpAbility)) {
+						HelpRequest help = new HelpRequest();
+						help.setAbility(helpAbility);
+						help.setHelper(helperUser);
+						help.setOpeningDate(new Date());
+						help.setUser(user);
+						help.setState(HelpState.PENDING);
+						manager.persist(help);
+					} else {
+						throw new HelpException(
+								"you can't ask help to a user which not have the ability you are looking for!");
+					}
+				} else {
+					throw new HelpException(
+							"you can't ask help to yourself!");
+				}
+			} else {
+				throw new HelpException("help request already exists!");
+			}
 
 		} catch (NamingException e) {
 			e.printStackTrace();
 		} catch (UserException e) {
 			throw new UserException("can't found helper user: " + helper);
+		}
+	}
+
+	private boolean helpAlreadyExist(User user, User helperUser) {
+		try {
+			Query q = manager
+					.createQuery("SELECT OBJECT(h) FROM HelpRequest h WHERE h.user=:user AND h.helper=:helper");
+			q.setParameter("user", user);
+			q.setParameter("helper", helperUser);
+			HelpRequest help = (HelpRequest) q.getSingleResult();
+			if (help == null) {
+				System.out.println("*** [HelpsManager] help not exists ***");
+				return false;
+			}
+			return true;
+		} catch (NonUniqueResultException exc) {
+			System.out.println("*** [HelpsManager] help exists ***");
+			return true;
+		} catch (NoResultException nrex) {
+			System.out.println("*** [HelpsManager] help not exists ***");
+			return false;
 		}
 	}
 

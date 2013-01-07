@@ -43,11 +43,16 @@ public class FriendsManager implements FriendsManagerRemote,
 
 			User friendUser = profileManager.getUserByUsername(friend);
 			if (!friendshipAlreadyExist(user, friendUser)) {
-				Friendship friendship = new Friendship();
-				friendship.setFriend(friendUser);
-				friendship.setState(RequestState.PENDING);
-				friendship.setUser(user);
-				manager.persist(friendship);
+				if (!user.equals(friendUser)) {
+					Friendship friendship = new Friendship();
+					friendship.setFriend(friendUser);
+					friendship.setState(RequestState.PENDING);
+					friendship.setUser(user);
+					manager.persist(friendship);
+				} else {
+					throw new FriendshipException(
+							"you can't ask friendship to yourself!");
+				}
 			} else {
 				throw new FriendshipException("friendship already exists!");
 			}
