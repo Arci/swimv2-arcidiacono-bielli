@@ -91,11 +91,12 @@
 				        console.log("VALUE:\n"+ response);
 				        if(response == "OK"){
 				        	console.log("OK\n");
+				        	//TODO remove message if exists
+					        //addAbility(ability)
 				        } else {
 							var error = xmlhttp.responseXML.getElementsByTagName("error")[0].childNodes[0].nodeValue;
 							manageMessage('error', error);
 						}
-				        addAbility(ability);
 			        } else {
 			        	manageMessage('error','Problems during the request');
 			     	}
@@ -117,11 +118,12 @@
 				        console.log("VALUE:\n"+ response);
 				        if(response == "OK"){
 				        	console.log("OK\n");
+				        	//TODO remove message if exists
+							//removeAbility(ability);
 				        } else {
 							var error = xmlhttp.responseXML.getElementsByTagName("error")[0].childNodes[0].nodeValue;
 							manageMessage('error', error);
 						}
-						removeAbility(ability);
 			        } else {
 			        	manageMessage('error','Problems during the request');
 			     	}
@@ -144,13 +146,13 @@
             abilitiesFieldset.appendChild(span);
 		};
 
-		function removeAbility(abilityID){
+		/*function removeAbility(abilityID){
 			//remove ability from the list (the entire <li>)
 		};
 
 		function addAbility(abilityID){
 			//add ability to the list (creante new <li>)
-		};
+		};*/
 		
 	</script>
 	
