@@ -55,7 +55,7 @@
 			</div>
 		<% }else{ %>
 			<div>
-				<div id="profile">
+				<div id="profile" class="left">
 					<p class="nameSurname"><%=user.getName()%> <%=user.getSurname()%></p>
 					<p><span class="text">Username: </span><%=user.getUsername()%></p>
 					<p><span class="text">Email: </span><%=user.getEmail()%></p>
@@ -120,7 +120,7 @@
 					<% } %>
 				</div>
 				<% if(buttons){ %>
-					<div id="buttons">
+					<div id="buttons" class="right">
 						<% if(request.getAttribute("friendState") != null
 								&& request.getAttribute("friendState") != ""){
 								if(request.getAttribute("friendState")=="friend"){

@@ -3,7 +3,7 @@ package it.polimi.swim.session;
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.AbilityRequest;
 import it.polimi.swim.model.User;
-import it.polimi.swim.session.exceptions.AbilitySuggestionException;
+import it.polimi.swim.session.exceptions.AbilityException;
 
 import java.util.List;
 
@@ -17,11 +17,11 @@ public interface AbilityManagerRemote {
 	 * 
 	 * @param user
 	 * @param text
-	 * @throws AbilitySuggestionException
+	 * @throws AbilityException
 	 *             with the error message
 	 */
 	public void insertSuggestion(User user, String text)
-			throws AbilitySuggestionException;
+			throws AbilityException;
 
 	/**
 	 * 

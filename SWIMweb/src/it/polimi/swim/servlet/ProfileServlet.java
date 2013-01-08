@@ -90,7 +90,7 @@ public class ProfileServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		//TODO manage modify profile
+		// TODO manage modify profile
 	}
 
 	private void getUserInformation(User user, HttpServletRequest request,

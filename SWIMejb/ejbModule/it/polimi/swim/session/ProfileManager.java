@@ -3,6 +3,7 @@ package it.polimi.swim.session;
 import it.polimi.swim.enums.UserType;
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.User;
+import it.polimi.swim.session.exceptions.AbilityException;
 import it.polimi.swim.session.exceptions.UserException;
 
 import java.util.Hashtable;
@@ -11,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Stateless;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -158,6 +162,60 @@ public class ProfileManager implements ProfileManagerRemote,
 			return normal;
 		}
 		return null;
+	}
+
+	@Override
+	public void removeAbility(String username, String abilityName)
+			throws UserException, AbilityException {
+		try {
+			Hashtable<String, String> env = new Hashtable<String, String>();
+			env.put(Context.INITIAL_CONTEXT_FACTORY,
+					"org.jnp.interfaces.NamingContextFactory");
+			env.put(Context.PROVIDER_URL, "localhost:1099");
+			InitialContext jndiContext;
+			jndiContext = new InitialContext(env);
+			Object ref = jndiContext.lookup("AbilityManager/local");
+			AbilityManagerLocal abilityManager = (AbilityManagerLocal) ref;
+
+			Ability ability = abilityManager.getAbilityByName(abilityName);
+			User user = this.getUserByUsername(username);
+
+			if (user.getAbilities().contains(ability)) {
+				user.removeAbility(ability);
+			} else {
+				throw new AbilityException(
+						"you can't delete an ability you don't have!");
+			}
+
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void addAbility(String username, String abilityName)
+			throws UserException, AbilityException {
+		try {
+			Hashtable<String, String> env = new Hashtable<String, String>();
+			env.put(Context.INITIAL_CONTEXT_FACTORY,
+					"org.jnp.interfaces.NamingContextFactory");
+			env.put(Context.PROVIDER_URL, "localhost:1099");
+			InitialContext jndiContext;
+			jndiContext = new InitialContext(env);
+			Object ref = jndiContext.lookup("AbilityManager/local");
+			AbilityManagerLocal abilityManager = (AbilityManagerLocal) ref;
+
+			Ability ability = abilityManager.getAbilityByName(abilityName);
+			User user = this.getUserByUsername(username);
+			if (!user.getAbilities().contains(ability)) {
+				user.addAbility(ability);
+			} else {
+				throw new AbilityException("you already have this ability!");
+			}
+
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

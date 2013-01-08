@@ -27,7 +27,6 @@
 		<servlet-name>accessServlet</servlet-name>
 		<url-pattern>/accessManager</url-pattern>
 	</servlet-mapping>
-	
 	<servlet>
 		<servlet-name>profileServlet</servlet-name>
 		<servlet-class>it.polimi.swim.servlet.ProfileServlet</servlet-class>
@@ -67,6 +66,14 @@
 	<servlet-mapping>
 		<servlet-name>helpsServlet</servlet-name>
 		<url-pattern>/user/helps</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>userAbilityServlet</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.UserAbilityServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>userAbilityServlet</servlet-name>
+		<url-pattern>/user/ability</url-pattern>
 	</servlet-mapping>
 	
 	<!--  admin pages -->

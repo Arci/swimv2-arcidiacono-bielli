@@ -4,6 +4,7 @@ import it.polimi.swim.enums.HelpState;
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.HelpRequest;
 import it.polimi.swim.model.User;
+import it.polimi.swim.session.exceptions.AbilityException;
 import it.polimi.swim.session.exceptions.HelpException;
 import it.polimi.swim.session.exceptions.UserException;
 
@@ -32,7 +33,8 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 
 	@Override
 	public void addRequest(User user, String helper, String ability,
-			Date opening_date) throws UserException, HelpException {
+			Date opening_date) throws UserException, HelpException,
+			AbilityException {
 		try {
 			Hashtable<String, String> env = new Hashtable<String, String>();
 			env.put(Context.INITIAL_CONTEXT_FACTORY,
@@ -62,8 +64,7 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 								"you can't ask help to a user which not have the ability you are looking for!");
 					}
 				} else {
-					throw new HelpException(
-							"you can't ask help to yourself!");
+					throw new HelpException("you can't ask help to yourself!");
 				}
 			} else {
 				throw new HelpException("help request already exists!");
@@ -72,7 +73,9 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 		} catch (NamingException e) {
 			e.printStackTrace();
 		} catch (UserException e) {
-			throw new UserException("can't found helper user: " + helper);
+			throw new UserException("can't find helper user: " + helper);
+		} catch (AbilityException e) {
+			throw new AbilityException("can't find ability: " + ability);
 		}
 	}
 

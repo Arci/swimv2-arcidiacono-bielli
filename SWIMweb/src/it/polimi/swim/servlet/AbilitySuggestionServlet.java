@@ -2,7 +2,7 @@ package it.polimi.swim.servlet;
 
 import it.polimi.swim.model.User;
 import it.polimi.swim.session.AbilityManagerRemote;
-import it.polimi.swim.session.exceptions.AbilitySuggestionException;
+import it.polimi.swim.session.exceptions.AbilityException;
 
 import java.io.IOException;
 import java.util.Hashtable;
@@ -69,7 +69,7 @@ public class AbilitySuggestionServlet extends HttpServlet {
 						"your suggestion has been recorded");
 			} catch (NamingException e) {
 				request.setAttribute("error", "can't reach the server");
-			} catch (AbilitySuggestionException asex) {
+			} catch (AbilityException asex) {
 				request.setAttribute("error", asex.getMessage());
 			}
 			getServletConfig().getServletContext()

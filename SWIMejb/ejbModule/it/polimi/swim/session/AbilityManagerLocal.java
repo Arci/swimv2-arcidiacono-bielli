@@ -1,6 +1,7 @@
 package it.polimi.swim.session;
 
 import it.polimi.swim.model.Ability;
+import it.polimi.swim.session.exceptions.AbilityException;
 
 import javax.ejb.Local;
 
@@ -12,7 +13,8 @@ public interface AbilityManagerLocal {
 	 * 
 	 * @param name
 	 * @return null if no ability exist, the ability otherwise
+	 * @throws AbilityException
 	 */
-	public Ability getAbilityByName(String name);
+	public Ability getAbilityByName(String name) throws AbilityException;
 
 }

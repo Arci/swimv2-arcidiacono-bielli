@@ -4,7 +4,7 @@ import it.polimi.swim.enums.RequestState;
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.AbilityRequest;
 import it.polimi.swim.model.User;
-import it.polimi.swim.session.exceptions.AbilitySuggestionException;
+import it.polimi.swim.session.exceptions.AbilityException;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class AbilityManager implements AbilityManagerRemote,
 
 	@Override
 	public void insertSuggestion(User user, String text)
-			throws AbilitySuggestionException {
+			throws AbilityException {
 		if (!existAbility(text)) {
 			if (!existSuggest(text)) {
 				AbilityRequest request = new AbilityRequest();
@@ -35,11 +35,11 @@ public class AbilityManager implements AbilityManagerRemote,
 				request.setState(RequestState.PENDING);
 				manager.persist(request);
 			} else {
-				throw new AbilitySuggestionException(
+				throw new AbilityException(
 						"you have already suggested this ability!");
 			}
 		} else {
-			throw new AbilitySuggestionException(
+			throw new AbilityException(
 					"the ability you are suggesting already exists!");
 		}
 	}
@@ -107,7 +107,7 @@ public class AbilityManager implements AbilityManagerRemote,
 	}
 
 	@Override
-	public Ability getAbilityByName(String name) {
+	public Ability getAbilityByName(String name) throws AbilityException {
 		try {
 			Query q = manager.createQuery("FROM Ability a WHERE a.name=:name");
 			q.setParameter("name", name);
@@ -118,8 +118,8 @@ public class AbilityManager implements AbilityManagerRemote,
 		} catch (NoResultException exc) {
 			System.out.println("*** [AbilityManager] ability '" + name
 					+ "' not found ***");
+			throw new AbilityException("ability not found");
 		}
-		return null;
 	}
 
 	@Override

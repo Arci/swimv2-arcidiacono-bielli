@@ -2,6 +2,7 @@ package it.polimi.swim.session;
 
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.User;
+import it.polimi.swim.session.exceptions.AbilityException;
 import it.polimi.swim.session.exceptions.UserException;
 
 import java.util.Hashtable;
@@ -11,6 +12,32 @@ import javax.ejb.Remote;
 
 @Remote
 public interface ProfileManagerRemote {
+
+	/**
+	 * remove the specified ability from the user
+	 * 
+	 * @param username
+	 * @param abilityName
+	 * @throws UserException
+	 *             if user not found
+	 * @throws AbilityException
+	 *             if ability not found or user doesn't have the ability
+	 */
+	public void removeAbility(String username, String abilityName)
+			throws UserException, AbilityException;
+
+	/**
+	 * remove the specified ability from the user
+	 * 
+	 * @param username
+	 * @param abilityName
+	 * @throws UserException
+	 *             if user not found
+	 * @throws AbilityException
+	 *             if ability not found or user doesn't have the ability
+	 */
+	public void addAbility(String username, String abilityName)
+			throws UserException, AbilityException;
 
 	/**
 	 * insert in the database the parameters about a new user.
