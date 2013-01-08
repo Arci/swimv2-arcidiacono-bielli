@@ -43,32 +43,48 @@
 					</form>
 				</fieldset>
 			</div>
-			<div id="abilitiesDiv" class="right">
-				<fieldset id="abilitiesFieldset">
+			<div id="abilitiesManager" class="right">
+				<fieldset>
 					<legend>Manage your abilities:</legend>
-					<% 
-						out.println("<select id=\"abilityList\">");
-						out.println("<option value=\"giardiniere\">giardiniere</option>");
-						//TODO get abilities and fill combo box
-						out.println("</select>");
-						%>
-						<input type="button" id="abilityAdder" onclick="addAbility('<%=user.getUsername()%>');" value="Add" />
-						<%
-						Set<Ability> abilities = user.getAbilities();
-						if (abilities.isEmpty()) {
-							out.println("<span class=\"warning\">you don't have any ability yet!</span>");
-						} else {
-							out.println("<ul>");
-							for (Ability a : abilities) {
-									out.println("<li>" + a.getName() + 
-											" <input type=\"button\" id=\"" +
-											a.getName() +"\" onclick=\"removeAbility(\'" +
-											a.getName() + "\', '" + 
-											user.getUsername() + "');\" value=\"Delete\"></li>");
+					<form id="modifyAbilities" action='ability' method='post' accept-charset='UTF-8'>			
+						<% 
+							try {	
+								Hashtable<String, String> env = new Hashtable<String, String>();
+								env.put(Context.INITIAL_CONTEXT_FACTORY,
+										"org.jnp.interfaces.NamingContextFactory");
+								env.put(Context.PROVIDER_URL, "localhost:1099");
+								InitialContext jndiContext = new InitialContext(env);
+								Object ref = jndiContext.lookup("AbilityManager/remote");
+								AbilityManagerRemote abilityManager = (AbilityManagerRemote) ref;
+								
+								List<Ability> allAbilities = abilityManager.getAbilityList();
+								
+								out.println("<select id=\"abilityList\">");
+								for(Ability ability : allAbilities){
+									out.println("<option value=\"" + ability.getName() + "\">" + ability.getName() + "</option>");
+								}
+								out.println("</select>");
+								%><input type="button" id="abilityAdder" onclick="addAbility('<%=user.getUsername()%>');" value="Add" /><%
+							} catch (NamingException e) {
+								%><span class="error">Can't reach server</span><%
 							}
-							out.println("</ul>");
-						}
-					%>
+							Set<Ability> abilities = user.getAbilities();
+							if (abilities.isEmpty()) {
+								out.println("<span class=\"warning\">you don't have any ability yet!</span>");
+							} else {
+								out.println("<ul id=\"abilityUl\">");
+								for (Ability a : abilities) {
+										out.println("<li id=\"" + a.getName() +"\">" + a.getName() + 
+												" <input type=\"button\" id=\"" +
+												a.getName() +"\" onclick=\"removeAbility(\'" +
+												a.getName() + "\', '" + 
+												user.getUsername() + "');\" value=\"Delete\"></li>");
+								}
+								out.println("</ul>");
+							}
+						%>
+						<input type='submit' name='Submit' value='Apply' />
+					</form>
 				</fieldset>
 			</div>			
 		</div>
@@ -77,83 +93,114 @@
 	<% } %>
 	
 	<script type="text/javascript">	
-		function addAbility(username){
-			xmlhttp = new XMLHttpRequest();
-			var abilityList = document.getElementById("abilityList");
-			var ability = abilityList.options[abilityList.selectedIndex].value;
-			var url = "/SWIMweb/user/ability?action=add&username=" + username + "&ability=" + ability;
-			console.log("AJAX REQUEST TO:\n" + url+ "\n");
-			xmlhttp.onreadystatechange = function () {
-			    if (xmlhttp.readyState == 4) {
-			        if( xmlhttp.status == 200 ){ 
-			        	console.log("RESPONSE TEXT:\n"+ xmlhttp.responseText);
-				        var response = xmlhttp.responseXML.getElementsByTagName("result")[0].childNodes[0].nodeValue;
-				        console.log("VALUE:\n"+ response);
-				        if(response == "OK"){
-				        	console.log("OK\n");
-				        	//TODO remove message if exists
-					        //addAbility(ability)
-				        } else {
-							var error = xmlhttp.responseXML.getElementsByTagName("error")[0].childNodes[0].nodeValue;
-							manageMessage('error', error);
-						}
-			        } else {
-			        	manageMessage('error','Problems during the request');
-			     	}
-			    }
-			};
-			xmlhttp.open("GET", url, true);
-			xmlhttp.send(null);
-		};
-
-		function removeAbility(ability, username){
-			xmlhttp = new XMLHttpRequest();
-			var url = "/SWIMweb/user/ability?action=remove&username=" + username + "&ability=" + ability;
-			console.log("AJAX REQUEST TO:\n" + url+ "\n");
-			xmlhttp.onreadystatechange = function () {
-			    if (xmlhttp.readyState == 4) {
-			        if( xmlhttp.status == 200 ){ 
-			        	console.log("RESPONSE TEXT:\n"+ xmlhttp.responseText);
-				        var response = xmlhttp.responseXML.getElementsByTagName("result")[0].childNodes[0].nodeValue;
-				        console.log("VALUE:\n"+ response);
-				        if(response == "OK"){
-				        	console.log("OK\n");
-				        	//TODO remove message if exists
-							//removeAbility(ability);
-				        } else {
-							var error = xmlhttp.responseXML.getElementsByTagName("error")[0].childNodes[0].nodeValue;
-							manageMessage('error', error);
-						}
-			        } else {
-			        	manageMessage('error','Problems during the request');
-			     	}
-			    }
-			};
-			xmlhttp.open("GET", url, true);
-			xmlhttp.send(null);
-		};
-
-		function manageMessage(clazz,message){
-			if(document.getElementById("message")){
-				var abilitiesFieldset = document.getElementById('abilitiesFieldset');
-				abilitiesFieldset.removeChild(document.getElementById("message"));
+		function removeAbility(abilityName){
+			if(document.getElementById("spanError")){
+				var spanError = document.getElementById("spanError");
+				spanError.parentNode.removeChild(spanError);
 			}
-			var span = document.createElement("span");
-            span.setAttribute("class",clazz);
-            span.setAttribute("id","message");
-            span.innerHTML = message;
-            var abilitiesFieldset = document.getElementById('abilitiesFieldset'); 
-            abilitiesFieldset.appendChild(span);
+			deleteLiElement(abilityName);
+			var abilityUl = document.getElementById("abilityUl");
+			/*if((abilityUl.childNodes.length)-4 == 0){
+				addSpanWarning(abilityUl, "you don't have any ability yet!");
+			}*/		
+            addHidden('remove', abilityName);
+            removeHidden('add', abilityName);
 		};
-
-		/*function removeAbility(abilityID){
-			//remove ability from the list (the entire <li>)
-		};
-
-		function addAbility(abilityID){
-			//add ability to the list (creante new <li>)
-		};*/
 		
+		function addAbility(username){
+			var abilityList = document.getElementById("abilityList");
+			var abilityName = abilityList.options[abilityList.selectedIndex].value;
+			if(document.getElementById("spanError")){
+				var spanError = document.getElementById("spanError");
+				spanError.parentNode.removeChild(spanError);
+			}
+			if(!document.getElementById(abilityName)){
+				addLiElement(abilityName, username);
+			}else{
+				addSpanError("you already have this ability!");
+			}
+			if(document.getElementById("spanWarning")){
+				var spanWarning = document.getElementById("spanWarning");
+				spanWarning.parentNode.removeChild(spanWarning);
+			}
+            addHidden('add',abilityName);
+            removeHidden('remove', abilityName);
+		};
+
+		function addLiElement(abilityName){			
+			var li = document.createElement("li");
+            li.setAttribute("id",abilityName);
+            li.innerHTML = abilityName + " ";
+            var input = document.createElement("input");
+            input.setAttribute("type","button");
+            input.setAttribute("id",abilityName);
+            input.setAttribute("onclick","removeAbility('"+ abilityName +"', '"+ username +"');");
+            input.setAttribute("value","Delete");
+            li.appendChild(input);
+            var abilityUl = document.getElementById("abilityUl");
+            abilityUl.appendChild(li);
+		};
+
+		function deleteLiElement(abilityName){
+			var abilityLi = document.getElementById(abilityName);
+			abilityLi.parentNode.removeChild(abilityLi);
+		};
+
+		function addSpanError(message){
+			var span = document.createElement("span");
+			span.setAttribute("class","error");
+			span.setAttribute("id","spanError");
+			span.innerHTML = message;
+            var form = document.getElementById("modifyAbilities");
+			form.appendChild(span);
+		};
+
+		function addSpanWarning(ul , message){
+			var span = document.createElement("span");
+			span.setAttribute("class","message");
+			span.setAttribute("id","spanWarning");
+			span.innerHTML = message;
+			ul.appendChild(span);
+		};
+		
+
+		function addHidden(action, abilityName){
+			var elements = document.getElementsByTagName("input");
+			var exists = false;
+			for(var i=0; i < elements.lenght; i++){
+				if(elements[i].type == "hidden" 
+						&& elements[i].name == action 
+						&& elements[i].value == abilityName){
+					exists = true;
+				}
+			}
+			if(!exists){
+				var hidden = document.createElement("input");
+				hidden.setAttribute("type","hidden");
+				hidden.setAttribute("name",action);
+				hidden.setAttribute("value",abilityName);
+	            var form = document.getElementById("modifyAbilities");
+	            form.appendChild(hidden);
+			}			
+        };
+
+        function removeHidden(action, abilityName){
+        	var elements = document.getElementsByTagName("input");
+			var exists = false;
+			var hidden = null;
+			for (var i=0; i < elements.length; i++){
+				if(elements[i].type == "hidden" 
+						&& elements[i].name == action 
+						&& elements[i].value == abilityName){
+					exists = true;
+					hidden = elements[i];
+				}
+			}
+			if(exists){
+	            var form = document.getElementById("modifyAbilities");
+	            form.removeChild(hidden);
+			}
+        };
 	</script>
 	
 	<jsp:include page="/common/footer.jsp"></jsp:include>

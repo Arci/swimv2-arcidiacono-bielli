@@ -2,6 +2,7 @@ package it.polimi.swim.servlet;
 
 import it.polimi.swim.model.User;
 import it.polimi.swim.session.AbilityManagerRemote;
+import it.polimi.swim.session.ProfileManagerRemote;
 import it.polimi.swim.session.exceptions.AbilityException;
 
 import java.io.IOException;
@@ -58,7 +59,10 @@ public class AbilitySuggestionServlet extends HttpServlet {
 
 				abilityManager.insertSuggestion(user,
 						request.getParameter("suggestion"));
-				user = abilityManager.reloadUser(user);
+
+				ref = jndiContext.lookup("ProfileManager/remote");
+				ProfileManagerRemote profileManager = (ProfileManagerRemote) ref;
+				user = profileManager.reloadUser(user);
 				request.getSession().removeAttribute("User");
 				request.getSession().setAttribute("User", user);
 				System.out

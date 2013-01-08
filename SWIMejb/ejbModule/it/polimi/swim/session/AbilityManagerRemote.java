@@ -24,13 +24,6 @@ public interface AbilityManagerRemote {
 			throws AbilityException;
 
 	/**
-	 * 
-	 * @param user
-	 * @return the user reloaded
-	 */
-	public User reloadUser(User user);
-
-	/**
 	 * @return list of all ability in the system
 	 */
 	public List<Ability> getAbilityList();

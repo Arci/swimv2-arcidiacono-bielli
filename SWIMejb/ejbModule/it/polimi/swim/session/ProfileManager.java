@@ -47,6 +47,15 @@ public class ProfileManager implements ProfileManagerRemote,
 	}
 
 	@Override
+	public User reloadUser(User user) {
+		try {
+			return manager.find(User.class, user.getId());
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	@Override
 	public User updateProfile(User user, Hashtable<String, String> params) {
 		// TODO ricevuti i parametri aggiorna user se new!=old, poi fa
 		// manager.merge(user)
@@ -178,7 +187,10 @@ public class ProfileManager implements ProfileManagerRemote,
 			AbilityManagerLocal abilityManager = (AbilityManagerLocal) ref;
 
 			Ability ability = abilityManager.getAbilityByName(abilityName);
-			User user = this.getUserByUsername(username);
+
+			ref = jndiContext.lookup("ProfileManager/local");
+			ProfileManagerLocal profileManager = (ProfileManagerLocal) ref;
+			User user = profileManager.getUserByUsername(username);
 
 			if (user.getAbilities().contains(ability)) {
 				user.removeAbility(ability);
@@ -206,7 +218,11 @@ public class ProfileManager implements ProfileManagerRemote,
 			AbilityManagerLocal abilityManager = (AbilityManagerLocal) ref;
 
 			Ability ability = abilityManager.getAbilityByName(abilityName);
-			User user = this.getUserByUsername(username);
+
+			ref = jndiContext.lookup("ProfileManager/local");
+			ProfileManagerLocal profileManager = (ProfileManagerLocal) ref;
+			User user = profileManager.getUserByUsername(username);
+
 			if (!user.getAbilities().contains(ability)) {
 				user.addAbility(ability);
 			} else {

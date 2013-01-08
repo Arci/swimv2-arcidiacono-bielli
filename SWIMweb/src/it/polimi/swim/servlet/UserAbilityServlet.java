@@ -1,5 +1,6 @@
 package it.polimi.swim.servlet;
 
+import it.polimi.swim.model.User;
 import it.polimi.swim.session.ProfileManagerRemote;
 import it.polimi.swim.session.exceptions.AbilityException;
 import it.polimi.swim.session.exceptions.UserException;
@@ -30,15 +31,8 @@ public class UserAbilityServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		if (haveToAddAbility(request, response)) {
-			System.out.println("*** [UserAbilityServlet] add ability ***");
-			addAbility(request, response);
-		} else if (haveToRemoveAbility(request, response)) {
-			System.out.println("*** [UserAbilityServlet] remove ability ***");
-			removeAbility(request, response);
-		} else {
-			sendError("operation not recognized", request, response);
-		}
+		// not to implement
+		sendError("wrong http mode", request, response);
 	}
 
 	/**
@@ -47,93 +41,90 @@ public class UserAbilityServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// not to implement
-		sendError("wrong http mode", request, response);
-	}
-
-	private boolean haveToAddAbility(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		if (request.getParameter("action") != null
-				&& request.getParameter("action") != ""
-				&& request.getParameter("action").equals("add")) {
-			return true;
+		User user = (User) request.getSession().getAttribute("User");
+		if (request.getParameterValues("add") != null
+				&& request.getParameterValues("add").length > 0) {
+			String[] add = request.getParameterValues("add");
+			for (int i = 0; i < add.length; i++) {
+				System.out.println("[UserAbilityServlet] add ability: "
+						+ add[i]);
+				addAbility(add[i], user);
+			}
 		}
-		return false;
-	}
-
-	private void addAbility(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/xml;charset=UTF-8");
-		PrintWriter out = response.getWriter();
-		out.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-		out.println("<response>");
+		if (request.getParameterValues("remove") != null
+				&& request.getParameterValues("remove").length > 0) {
+			String[] remove = request.getParameterValues("remove");
+			for (int i = 0; i < remove.length; i++) {
+				System.out.println("[UserAbilityServlet] remove ability: "
+						+ remove[i]);
+				removeAbility(remove[i], user);
+			}
+		}
 		try {
 			Hashtable<String, String> env = new Hashtable<String, String>();
 			env.put(Context.INITIAL_CONTEXT_FACTORY,
 					"org.jnp.interfaces.NamingContextFactory");
 			env.put(Context.PROVIDER_URL, "localhost:1099");
-			InitialContext jndiContext = new InitialContext(env);
+			InitialContext jndiContext;
+			jndiContext = new InitialContext(env);
 			Object ref = jndiContext.lookup("ProfileManager/remote");
 			ProfileManagerRemote profileManager = (ProfileManagerRemote) ref;
 
-			profileManager.addAbility(request.getParameter("username"),
-					request.getParameter("ability"));
+			user = profileManager.reloadUser(user);
+			request.getSession().removeAttribute("User");
+			request.getSession().setAttribute("User", user);
 
-			out.println("<result>OK</result>");
-		} catch (UserException uex) {
-			out.println("<result>KO</result>");
-			out.println("<error>" + uex.getMessage() + "</error>");
-		} catch (NamingException nex) {
-			out.println("<result>KO</result>");
-			out.println("<error>can't reach the server</error>");
-		} catch (AbilityException ae) {
-			out.println("<result>KO</result>");
-			out.println("<error>" + ae.getMessage() + "</error>");
+		} catch (NamingException e) {
+			e.printStackTrace();
 		}
-		out.println("</response>");
+
+		getServletConfig().getServletContext()
+				.getRequestDispatcher("/user/modifyProfile.jsp")
+				.forward(request, response);
 	}
 
-	private boolean haveToRemoveAbility(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		if (request.getParameter("action") != null
-				&& request.getParameter("action") != ""
-				&& request.getParameter("action").equals("remove")) {
-			return true;
-		}
-		return false;
-	}
-
-	private void removeAbility(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/xml;charset=UTF-8");
-		PrintWriter out = response.getWriter();
-		out.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-		out.println("<response>");
+	private void removeAbility(String ability, User user) {
 		try {
 			Hashtable<String, String> env = new Hashtable<String, String>();
 			env.put(Context.INITIAL_CONTEXT_FACTORY,
 					"org.jnp.interfaces.NamingContextFactory");
 			env.put(Context.PROVIDER_URL, "localhost:1099");
-			InitialContext jndiContext = new InitialContext(env);
+			InitialContext jndiContext;
+			jndiContext = new InitialContext(env);
 			Object ref = jndiContext.lookup("ProfileManager/remote");
 			ProfileManagerRemote profileManager = (ProfileManagerRemote) ref;
 
-			profileManager.removeAbility(request.getParameter("username"),
-					request.getParameter("ability"));
+			profileManager.removeAbility(user.getUsername(), ability);
 
-			out.println("<result>OK</result>");
-		} catch (UserException uex) {
-			out.println("<result>KO</result>");
-			out.println("<error>" + uex.getMessage() + "</error>");
-		} catch (NamingException nex) {
-			out.println("<result>KO</result>");
-			out.println("<error>can't reach the server</error>");
-		} catch (AbilityException ae) {
-			out.println("<result>KO</result>");
-			out.println("<error>" + ae.getMessage() + "</error>");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		} catch (AbilityException e) {
+			e.printStackTrace();
+		} catch (UserException e) {
+			e.printStackTrace();
 		}
-		out.println("</response>");
+	}
 
+	private void addAbility(String ability, User user) {
+		try {
+			Hashtable<String, String> env = new Hashtable<String, String>();
+			env.put(Context.INITIAL_CONTEXT_FACTORY,
+					"org.jnp.interfaces.NamingContextFactory");
+			env.put(Context.PROVIDER_URL, "localhost:1099");
+			InitialContext jndiContext;
+			jndiContext = new InitialContext(env);
+			Object ref = jndiContext.lookup("ProfileManager/remote");
+			ProfileManagerRemote profileManager = (ProfileManagerRemote) ref;
+
+			profileManager.addAbility(user.getUsername(), ability);
+
+		} catch (NamingException e) {
+			e.printStackTrace();
+		} catch (AbilityException e) {
+			e.printStackTrace();
+		} catch (UserException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void sendError(String message, HttpServletRequest request,

@@ -44,15 +44,6 @@ public class AbilityManager implements AbilityManagerRemote,
 		}
 	}
 
-	@Override
-	public User reloadUser(User user) {
-		try {
-			return manager.find(User.class, user.getId());
-		} catch (NoResultException e) {
-			return null;
-		}
-	}
-
 	private boolean existSuggest(String text) {
 		try {
 			Query q = manager

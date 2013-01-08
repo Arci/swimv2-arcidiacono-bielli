@@ -16,7 +16,7 @@ public interface ProfileManagerRemote {
 	/**
 	 * remove the specified ability from the user
 	 * 
-	 * @param username
+	 * @param user
 	 * @param abilityName
 	 * @throws UserException
 	 *             if user not found
@@ -99,5 +99,12 @@ public interface ProfileManagerRemote {
 	 *         requested ability, return -1d if some problems occurs
 	 */
 	public Double getAbilityRating(User user, Ability ability);
+
+	/**
+	 * 
+	 * @param user
+	 * @return the user reloaded
+	 */
+	public User reloadUser(User user);
 
 }

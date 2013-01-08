@@ -186,9 +186,8 @@
 			};
 	
 			function manageButtonDiv(type){
-				var buttonsDiv = document.getElementById('buttons'); 
 				var friend = document.getElementById(type);
-	            buttonsDiv.removeChild(friend);
+	            friend.parentNode.removeChild(friend);
 			};
 	
 			function manageMessage(clazz,id,message){
