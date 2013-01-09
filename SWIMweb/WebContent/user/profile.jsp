@@ -37,7 +37,7 @@
 						</jsp:include><%
 					}else if(request.getAttribute("from").equals("helps")){
 						%><jsp:include page="/common/header.jsp">
-							<jsp:param name="page" value="profile" />
+							<jsp:param name="page" value="helps" />
 						</jsp:include><%
 					}else{
 						%><!--  default -->

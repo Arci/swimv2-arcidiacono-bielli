@@ -240,6 +240,11 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 						.println("*** [HelpsManager] accepted set and update help ***");
 				help.setState(state);
 				manager.merge(help);
+			} else if (state.equals(HelpState.CLOSED)) {
+				System.out.println("*** [HelpsManager] help closed ***");
+				help.setState(state);
+				help.setClosingDate(new Date());
+				manager.merge(help);
 			}
 			System.out
 					.println("*** [HelpsManager] state was pending? don't know what to do ***");

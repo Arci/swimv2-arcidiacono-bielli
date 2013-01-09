@@ -37,7 +37,7 @@
 						} else {
 							out.println("<ul>");
 							for (HelpRequest help : giving) {
-								out.println("<li>You have asked for help from <span class=\"italic\">"
+								out.println("<li>You're helping <span class=\"italic\">"
 										+ help.getUser().getName() + "</span> <span class=\"italic\">"
 										+ help.getUser().getSurname() + "</span> for <span class=\"italic\">"
 										+ help.getAbility().getName()
@@ -61,10 +61,10 @@
 						} else {
 							out.println("<ul>");
 							for (HelpRequest help : open) {
-								out.println("<li>You have asked help from <span class=\"italic\">"
-										+ help.getUser().getName()
+								out.println("<li>You have asked help at <span class=\"italic\">"
+										+ help.getHelper().getName()
 										+ " "
-										+ help.getUser().getSurname()
+										+ help.getHelper().getSurname()
 										+ "</span> for <span class=\"italic\">"
 										+ help.getAbility().getName()
 										+ "</span> <a href=\"helps?show=" +
@@ -94,7 +94,7 @@
 										+ "</span> asked you help for  <span class=\"italic\">"
 										+ help.getAbility().getName()
 										+ "</span> <a href=\"helps?help=" + help.getId()
-										+ "&state=accept\">Accept</a> <a href=\"help?help=" + help.getId()
+										+ "&state=accept\">Accept</a> <a href=\"helps?help=" + help.getId()
 										+ "&state=reject\">Reject</a> <a href=\"helps?show=" +
 										+ help.getId() +"\">Show</a></li>");
 							}
@@ -115,9 +115,9 @@
 						} else {
 							out.println("<ul>");
 							for (HelpRequest help : pendingAsAsker) {
-								out.println("<li>You have asked for help from <span class=\"italic\">"
-										+ help.getUser().getName() + " "
-										+ help.getUser().getSurname() + "</span> for <span class=\"italic\">"
+								out.println("<li>You have asked for help at <span class=\"italic\">"
+										+ help.getHelper().getName() + " "
+										+ help.getHelper().getSurname() + "</span> for <span class=\"italic\">"
 										+ help.getAbility().getName()
 										+ "</span> <a href=\"helps?show=" +
 										+ help.getId() +"\">Show</a></li>");
