@@ -49,7 +49,13 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 			AbilityManagerLocal abilityManager = (AbilityManagerLocal) ref;
 			Ability helpAbility = abilityManager.getAbilityByName(ability);
 
-			if (!helpAlreadyExist(user, helperUser)) {
+			if (!helpAlreadyExist(user, helperUser, helpAbility)) {
+				System.out
+						.println("[HelpsManager] user: " + user.getUsername());
+				System.out.println("[HelpsManager] helper: "
+						+ helperUser.getUsername());
+				System.out.println("[HelpsManager] same user? "
+						+ user.equals(helperUser));
 				if (!user.equals(helperUser)) {
 					if (helperUser.getAbilities().contains(helpAbility)) {
 						HelpRequest help = new HelpRequest();
@@ -67,7 +73,8 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 					throw new HelpException("you can't ask help to yourself!");
 				}
 			} else {
-				throw new HelpException("help request already exists!");
+				throw new HelpException("help request for '" + ability
+						+ "' already exists!");
 			}
 
 		} catch (NamingException e) {
@@ -79,11 +86,12 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 		}
 	}
 
-	private boolean helpAlreadyExist(User user, User helperUser) {
+	private boolean helpAlreadyExist(User user, User helperUser, Ability ability) {
 		try {
 			Query q = manager
-					.createQuery("SELECT OBJECT(h) FROM HelpRequest h WHERE h.user=:user AND h.helper=:helper");
+					.createQuery("SELECT OBJECT(h) FROM HelpRequest h WHERE h.user=:user AND h.helper=:helper AND h.ability=:ability");
 			q.setParameter("user", user);
+			q.setParameter("ability", ability);
 			q.setParameter("helper", helperUser);
 			HelpRequest help = (HelpRequest) q.getSingleResult();
 			if (help == null) {

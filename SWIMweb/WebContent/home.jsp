@@ -28,7 +28,7 @@
 				initializationManager.addFakeUsers();
 				initializationManager.addFakeAbilities();
 				initializationManager.addAbilitiesToUsers();
-				initializationManager.addFakeHelpRequest();
+				//initializationManager.addFakeHelpRequest();
 				initializationManager.addFakeFriendship();
 			} catch (NamingException e) {
 				e.printStackTrace();

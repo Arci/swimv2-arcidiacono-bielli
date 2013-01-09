@@ -54,7 +54,7 @@ public class Ability implements Serializable {
 		if (name != other.name) {
 			return false;
 		}
-		return false;
+		return true;
 	}
 
 }

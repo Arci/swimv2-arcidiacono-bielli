@@ -121,27 +121,39 @@
 				</div>
 				<% if(buttons){ %>
 					<div id="buttons" class="right">
+						<div id="friendship">
 						<% if(request.getAttribute("friendState") != null
 								&& request.getAttribute("friendState") != ""){
-								if(request.getAttribute("friendState")=="friend"){
-									// TODO per help
-									// deve uscire una form da cui prendo
-									// l'abilità su cui chiede aiuto
+								if(request.getAttribute("friendState").equals("pending")){
 									%>
-									 <input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
-									<%
-								}else if(request.getAttribute("friendState")=="pending"){
-									%>
-									 <input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
 									 <span class="message">Friendship Request is pending</span>
 									<%
+								}else if(request.getAttribute("friendState").equals("friend")){
+									%>
+									 <span class="message">You are friends</span>
+									<%
+								}else{
+									%>
+									 <input type="button" id="friend" onclick="addRequest('friend','<%=user.getUsername()%>');" value="Ask friendship" />
+									<% 
 								}
-							}else{
-								%>
-								 <input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
-								 <input type="button" id="friend" onclick="addRequest('friend','<%=user.getUsername()%>');" value="Ask friendship" />
-								<% 
 							} %>
+							</div><br/>
+							<div id="helpRequest">
+								<%
+									if(user.getAbilities().isEmpty()){
+										out.println("<span class=\"message\">This user doesn't have abilities, you cannot ask him for help</span>");
+									}else{
+										%><select id="helperAbilities"><%
+											for(Ability ability : user.getAbilities()){
+												out.println("<option value=\"" + ability.getName() + "\">" + ability.getName() + "</option>");
+											}
+										%></select>
+										<input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
+										<%
+									}
+								%>
+							</div>
 					</div>
 				<%	} %>
 				</div>
@@ -154,12 +166,17 @@
 				xmlhttp = new XMLHttpRequest();
 				var url = null;
 				var messageSpan = null;
+				var okMessage = null;
 				if(type == "help"){
-					url = "/SWIMweb/user/friends?newHelper="+username+"&ability="+ability;
+					var helperAbilities = document.getElementById("helperAbilities");
+					var ability = helperAbilities.options[helperAbilities.selectedIndex].value;
+					url = "/SWIMweb/user/helps?newHelper="+username+"&ability="+ability;
 					messageSpan="helpMessage";
+					okMessage = 'Help request for \'' + ability + '\' added successfully';
 				}else if(type == "friend"){
 					url = "/SWIMweb/user/friends?newFriend="+username;
 					messageSpan="friendMessage";
+					okMessage = 'Friendship request added successfully';
 				}
 				console.log("AJAX REQUEST TO:\n" + url+ "\n");
 				xmlhttp.onreadystatechange = function () {
@@ -170,7 +187,7 @@
 					        var response = xmlhttp.responseXML.getElementsByTagName("result")[0].childNodes[0].nodeValue;
 					        console.log("VALUE:\n"+ response);
 					        if(response == "OK"){
-					        	manageMessage('message',messageSpan,'Request added successfully');
+					        	manageMessage('message',messageSpan, okMessage);
 					        	manageButtonDiv(type);
 					        } else {
 								var error = xmlhttp.responseXML.getElementsByTagName("error")[0].childNodes[0].nodeValue;

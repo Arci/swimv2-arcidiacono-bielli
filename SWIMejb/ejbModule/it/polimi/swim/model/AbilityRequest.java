@@ -84,7 +84,7 @@ public class AbilityRequest implements Serializable {
 		if (id != other.id) {
 			return false;
 		}
-		return false;
+		return true;
 	}
 
 }

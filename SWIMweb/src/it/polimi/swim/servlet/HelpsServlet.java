@@ -4,6 +4,9 @@ import it.polimi.swim.enums.HelpState;
 import it.polimi.swim.model.HelpRequest;
 import it.polimi.swim.model.User;
 import it.polimi.swim.session.HelpsManagerRemote;
+import it.polimi.swim.session.exceptions.AbilityException;
+import it.polimi.swim.session.exceptions.HelpException;
+import it.polimi.swim.session.exceptions.UserException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -34,13 +37,14 @@ public class HelpsServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		if (haveToManageHelp(request, response)) {
-			System.out.println("*** [HelpsServlet] manage friendship ***");
+			System.out.println("*** [HelpsServlet] manage help ***");
 			manageHelp(request, response);
 		} else if (haveToAddHelp(request, response)) {
 			System.out.println("*** [HelpsServlet] add help ***");
 			addHelp(request, response);
+		} else {
+			getHelpsInformation(request, response);
 		}
-		getHelpsInformation(request, response);
 	}
 
 	/**
@@ -123,7 +127,9 @@ public class HelpsServlet extends HttpServlet {
 	private boolean haveToAddHelp(HttpServletRequest request,
 			HttpServletResponse response) {
 		if (request.getParameter("newHelper") != null
-				&& request.getParameter("newHelper") != "") {
+				&& request.getParameter("newHelper") != ""
+				&& request.getParameter("ability") != null
+				&& request.getParameter("ability") != "") {
 			return true;
 		}
 		return false;
@@ -149,9 +155,19 @@ public class HelpsServlet extends HttpServlet {
 					request.getParameter("newHelper"),
 					request.getParameter("ability"), new Date());
 
-			out.println("<value>OK</value>");
-		} catch (Exception e) {
-			out.println("<value>KO</value>");
+			out.println("<result>OK</result>");
+		} catch (NamingException e) {
+			out.println("<result>KO</result>");
+			out.println("<error>can't reach server</error>");
+		} catch (UserException ue) {
+			out.println("<result>KO</result>");
+			out.println("<error>" + ue.getMessage() + "</error>");
+		} catch (HelpException he) {
+			out.println("<result>KO</result>");
+			out.println("<error>" + he.getMessage() + "</error>");
+		} catch (AbilityException ae) {
+			out.println("<result>KO</result>");
+			out.println("<error>" + ae.getMessage() + "</error>");
 		}
 		out.println("</response>");
 	}
