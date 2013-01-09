@@ -42,23 +42,32 @@ public class UserAbilityServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		User user = (User) request.getSession().getAttribute("User");
-		if (request.getParameterValues("add") != null
-				&& request.getParameterValues("add").length > 0) {
-			String[] add = request.getParameterValues("add");
-			for (int i = 0; i < add.length; i++) {
-				System.out.println("[UserAbilityServlet] add ability: "
-						+ add[i]);
-				addAbility(add[i], user);
-			}
-		}
+		boolean haveModifyedSomething = false;
 		if (request.getParameterValues("remove") != null
 				&& request.getParameterValues("remove").length > 0) {
 			String[] remove = request.getParameterValues("remove");
 			for (int i = 0; i < remove.length; i++) {
 				System.out.println("[UserAbilityServlet] remove ability: "
 						+ remove[i]);
-				removeAbility(remove[i], user);
+				removeAbility(remove[i], user, request, response);
+				System.out.println("[UserAbilityServlet] remove ability: "
+						+ remove[i]);
 			}
+			haveModifyedSomething = true;
+			System.out.println("[UserAbilityServlet] abilities removed");
+		}
+		if (request.getParameterValues("add") != null
+				&& request.getParameterValues("add").length > 0) {
+			String[] add = request.getParameterValues("add");
+			for (int i = 0; i < add.length; i++) {
+				System.out.println("[UserAbilityServlet] add ability: "
+						+ add[i]);
+				addAbility(add[i], user, request, response);
+				System.out.println("[UserAbilityServlet] add ability: "
+						+ add[i]);
+			}
+			haveModifyedSomething = true;
+			System.out.println("[UserAbilityServlet] abilities added");
 		}
 		try {
 			Hashtable<String, String> env = new Hashtable<String, String>();
@@ -74,8 +83,14 @@ public class UserAbilityServlet extends HttpServlet {
 			request.getSession().removeAttribute("User");
 			request.getSession().setAttribute("User", user);
 
+			if (haveModifyedSomething) {
+				request.setAttribute("result",
+						"abilities chenges applyed succesfull!");
+			}
+			System.out.println("[UserAbilityServlet] user reloaded");
+
 		} catch (NamingException e) {
-			e.printStackTrace();
+			request.setAttribute("error", "can't reach the server!");
 		}
 
 		getServletConfig().getServletContext()
@@ -83,7 +98,9 @@ public class UserAbilityServlet extends HttpServlet {
 				.forward(request, response);
 	}
 
-	private void removeAbility(String ability, User user) {
+	private void removeAbility(String ability, User user,
+			HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		try {
 			Hashtable<String, String> env = new Hashtable<String, String>();
 			env.put(Context.INITIAL_CONTEXT_FACTORY,
@@ -97,15 +114,16 @@ public class UserAbilityServlet extends HttpServlet {
 			profileManager.removeAbility(user.getUsername(), ability);
 
 		} catch (NamingException e) {
-			e.printStackTrace();
-		} catch (AbilityException e) {
-			e.printStackTrace();
-		} catch (UserException e) {
-			e.printStackTrace();
+			request.setAttribute("error", "can't reach the server!");
+		} catch (AbilityException ae) {
+		} catch (UserException ue) {
+			request.setAttribute("error", ue.getMessage());
 		}
 	}
 
-	private void addAbility(String ability, User user) {
+	private void addAbility(String ability, User user,
+			HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		try {
 			Hashtable<String, String> env = new Hashtable<String, String>();
 			env.put(Context.INITIAL_CONTEXT_FACTORY,
@@ -119,11 +137,10 @@ public class UserAbilityServlet extends HttpServlet {
 			profileManager.addAbility(user.getUsername(), ability);
 
 		} catch (NamingException e) {
-			e.printStackTrace();
-		} catch (AbilityException e) {
-			e.printStackTrace();
-		} catch (UserException e) {
-			e.printStackTrace();
+			request.setAttribute("error", "can't reach the server!");
+		} catch (AbilityException ae) {
+		} catch (UserException ue) {
+			request.setAttribute("error", ue.getMessage());
 		}
 	}
 

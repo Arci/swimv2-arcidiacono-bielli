@@ -57,7 +57,7 @@ public class FriendsServlet extends HttpServlet {
 		System.out
 				.println("*** [FriendsServlet] doGet, forwarding to friends ***");
 		getServletConfig().getServletContext()
-				.getRequestDispatcher("/user/friends")
+				.getRequestDispatcher("/user/friends.jsp")
 				.forward(request, response);
 	}
 

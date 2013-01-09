@@ -19,9 +19,14 @@
 			User user = (User) session.getAttribute("User");
 	%>
 	<div id="pageContent">
-		<div class="error">
-			<% if (session.getAttribute("error") != null) {
-				out.println(request.getAttribute("error")); 
+		<div>
+			<% if (request.getAttribute("error") != null) {
+				String error= (String) request.getAttribute("error");
+				out.println("<span class=\"error\">" + error + "</span>");
+			} %>
+			<% if (request.getAttribute("result") != null) {
+				String result= (String) request.getAttribute("result");
+				out.println("<span class=\"message\">" + result + "</span>"); 
 			} %>
 		</div>
 		<div>
@@ -70,7 +75,8 @@
 							}
 							Set<Ability> abilities = user.getAbilities();
 							if (abilities.isEmpty()) {
-								out.println("<span class=\"warning\">you don't have any ability yet!</span>");
+								out.println("<ul id=\"abilityUl\">");
+								out.println("<span class=\"message\" id=\"spanWarning\">you don't have any ability yet!</span>");
 							} else {
 								out.println("<ul id=\"abilityUl\">");
 								for (Ability a : abilities) {
@@ -80,8 +86,8 @@
 												a.getName() + "\', '" + 
 												user.getUsername() + "');\" value=\"Delete\"></li>");
 								}
-								out.println("</ul>");
 							}
+							out.println("</ul>");
 						%>
 						<input type='submit' name='Submit' value='Apply' />
 					</form>
@@ -100,9 +106,10 @@
 			}
 			deleteLiElement(abilityName);
 			var abilityUl = document.getElementById("abilityUl");
-			/*if((abilityUl.childNodes.length)-4 == 0){
+			var childs = abilityUl.getElementsByTagName("li");
+			if(childs.length == 0){
 				addSpanWarning(abilityUl, "you don't have any ability yet!");
-			}*/		
+			}		
             addHidden('remove', abilityName);
             removeHidden('add', abilityName);
 		};

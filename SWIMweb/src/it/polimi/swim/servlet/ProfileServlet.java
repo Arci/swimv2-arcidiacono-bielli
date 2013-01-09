@@ -91,6 +91,7 @@ public class ProfileServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO manage modify profile
+		// then reload user and replace it in the session
 	}
 
 	private void getUserInformation(User user, HttpServletRequest request,
