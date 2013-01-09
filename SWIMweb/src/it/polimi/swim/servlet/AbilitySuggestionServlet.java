@@ -4,6 +4,7 @@ import it.polimi.swim.model.User;
 import it.polimi.swim.session.AbilityManagerRemote;
 import it.polimi.swim.session.ProfileManagerRemote;
 import it.polimi.swim.session.exceptions.AbilityException;
+import it.polimi.swim.session.exceptions.UserException;
 
 import java.io.IOException;
 import java.util.Hashtable;
@@ -75,6 +76,8 @@ public class AbilitySuggestionServlet extends HttpServlet {
 				request.setAttribute("error", "can't reach the server");
 			} catch (AbilityException asex) {
 				request.setAttribute("error", asex.getMessage());
+			} catch (UserException ue) {
+				request.setAttribute("error", ue.getMessage());
 			}
 			getServletConfig().getServletContext()
 					.getRequestDispatcher("/user/abilitySuggestion.jsp")

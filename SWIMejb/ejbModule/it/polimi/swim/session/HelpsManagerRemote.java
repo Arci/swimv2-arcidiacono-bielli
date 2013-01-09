@@ -1,7 +1,6 @@
 package it.polimi.swim.session;
 
 import it.polimi.swim.enums.HelpState;
-import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.HelpRequest;
 import it.polimi.swim.model.User;
 import it.polimi.swim.session.exceptions.AbilityException;
@@ -31,6 +30,16 @@ public interface HelpsManagerRemote {
 	public void addRequest(User user, String helper, String ability,
 			Date opening_date) throws UserException, HelpException,
 			AbilityException;
+
+	/**
+	 * 
+	 * @param the
+	 *            id of the desired help request
+	 * @return the help request
+	 * @throws HelpException
+	 *             if help request not found
+	 */
+	public HelpRequest loadRequest(int identifier) throws HelpException;
 
 	/**
 	 * Get the list of help that user is giving
@@ -80,12 +89,5 @@ public interface HelpsManagerRemote {
 	 * @param helpID
 	 */
 	public void updateHelpRequest(HelpState state, int helpID);
-
-	/**
-	 * @param user1
-	 * @param user2
-	 * @return the ability on witch the user are in a hel request
-	 */
-	public Ability isRequestPending(User user1, User user2);
 
 }

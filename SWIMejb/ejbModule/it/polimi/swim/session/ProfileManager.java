@@ -47,11 +47,11 @@ public class ProfileManager implements ProfileManagerRemote,
 	}
 
 	@Override
-	public User reloadUser(User user) {
+	public User reloadUser(User user) throws UserException {
 		try {
 			return manager.find(User.class, user.getId());
 		} catch (NoResultException e) {
-			return null;
+			throw new UserException("can't reload user");
 		}
 	}
 

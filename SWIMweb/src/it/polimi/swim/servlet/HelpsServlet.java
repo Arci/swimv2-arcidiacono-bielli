@@ -42,6 +42,9 @@ public class HelpsServlet extends HttpServlet {
 		} else if (haveToAddHelp(request, response)) {
 			System.out.println("*** [HelpsServlet] add help ***");
 			addHelp(request, response);
+		} else if (haveToShowHelp(request, response)) {
+			System.out.println("*** [HelpsServlet] show help ***");
+			showHelp(request, response);
 		} else {
 			getHelpsInformation(request, response);
 		}
@@ -86,39 +89,6 @@ public class HelpsServlet extends HttpServlet {
 						Integer.parseInt(request.getParameter("help")));
 			}
 
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void getHelpsInformation(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		try {
-			Hashtable<String, String> env = new Hashtable<String, String>();
-			env.put(Context.INITIAL_CONTEXT_FACTORY,
-					"org.jnp.interfaces.NamingContextFactory");
-			env.put(Context.PROVIDER_URL, "localhost:1099");
-			InitialContext jndiContext = new InitialContext(env);
-			Object ref = jndiContext.lookup("HelpsManager/remote");
-			HelpsManagerRemote helpsManager = (HelpsManagerRemote) ref;
-
-			User user = (User) request.getSession().getAttribute("User");
-			List<HelpRequest> giving = helpsManager.getGivingHelpRequests(user);
-			request.setAttribute("giving", giving);
-			List<HelpRequest> open = helpsManager.getOpenHelpRequests(user);
-			request.setAttribute("open", open);
-			List<HelpRequest> pendingAsHelper = helpsManager
-					.getPendingAsHelper(user);
-			request.setAttribute("pendingAsHelper", pendingAsHelper);
-			List<HelpRequest> pendingAsAsker = helpsManager
-					.getPendingAsAsker(user);
-			request.setAttribute("pendingAsAsker", pendingAsAsker);
-			List<HelpRequest> closed = helpsManager.getClosedHelpRequests(user);
-			request.setAttribute("closed", closed);
-
-			getServletConfig().getServletContext()
-					.getRequestDispatcher("/user/helps.jsp")
-					.forward(request, response);
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
@@ -170,6 +140,75 @@ public class HelpsServlet extends HttpServlet {
 			out.println("<error>" + ae.getMessage() + "</error>");
 		}
 		out.println("</response>");
+	}
+
+	private boolean haveToShowHelp(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		if (request.getParameter("show") != null
+				&& request.getParameter("show") != "") {
+			return true;
+		}
+		return false;
+	}
+
+	private void showHelp(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		try {
+			Hashtable<String, String> env = new Hashtable<String, String>();
+			env.put(Context.INITIAL_CONTEXT_FACTORY,
+					"org.jnp.interfaces.NamingContextFactory");
+			env.put(Context.PROVIDER_URL, "localhost:1099");
+			InitialContext jndiContext = new InitialContext(env);
+			Object ref = jndiContext.lookup("HelpsManager/remote");
+			HelpsManagerRemote helpsManager = (HelpsManagerRemote) ref;
+
+			HelpRequest help = helpsManager.loadRequest(Integer
+					.parseInt(request.getParameter("show")));
+
+			request.setAttribute("helpToShow", help);
+
+		} catch (NamingException e) {
+			e.printStackTrace();
+		} catch (HelpException he) {
+			request.setAttribute("error", he.getMessage());
+		}
+		getServletConfig().getServletContext()
+				.getRequestDispatcher("/user/helps.jsp")
+				.forward(request, response);
+
+	}
+
+	private void getHelpsInformation(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		try {
+			Hashtable<String, String> env = new Hashtable<String, String>();
+			env.put(Context.INITIAL_CONTEXT_FACTORY,
+					"org.jnp.interfaces.NamingContextFactory");
+			env.put(Context.PROVIDER_URL, "localhost:1099");
+			InitialContext jndiContext = new InitialContext(env);
+			Object ref = jndiContext.lookup("HelpsManager/remote");
+			HelpsManagerRemote helpsManager = (HelpsManagerRemote) ref;
+
+			User user = (User) request.getSession().getAttribute("User");
+			List<HelpRequest> giving = helpsManager.getGivingHelpRequests(user);
+			request.setAttribute("giving", giving);
+			List<HelpRequest> open = helpsManager.getOpenHelpRequests(user);
+			request.setAttribute("open", open);
+			List<HelpRequest> pendingAsHelper = helpsManager
+					.getPendingAsHelper(user);
+			request.setAttribute("pendingAsHelper", pendingAsHelper);
+			List<HelpRequest> pendingAsAsker = helpsManager
+					.getPendingAsAsker(user);
+			request.setAttribute("pendingAsAsker", pendingAsAsker);
+			List<HelpRequest> closed = helpsManager.getClosedHelpRequests(user);
+			request.setAttribute("closed", closed);
+
+			getServletConfig().getServletContext()
+					.getRequestDispatcher("/user/helps.jsp")
+					.forward(request, response);
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

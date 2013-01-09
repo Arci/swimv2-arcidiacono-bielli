@@ -91,6 +91,8 @@ public class UserAbilityServlet extends HttpServlet {
 
 		} catch (NamingException e) {
 			request.setAttribute("error", "can't reach the server!");
+		} catch (UserException ue) {
+			request.setAttribute("error", ue.getMessage());
 		}
 
 		getServletConfig().getServletContext()

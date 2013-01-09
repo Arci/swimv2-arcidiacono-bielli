@@ -32,6 +32,15 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 	}
 
 	@Override
+	public HelpRequest loadRequest(int identifier) throws HelpException {
+		try {
+			return manager.find(HelpRequest.class, identifier);
+		} catch (NoResultException e) {
+			throw new HelpException("can't reload user");
+		}
+	}
+
+	@Override
 	public void addRequest(User user, String helper, String ability,
 			Date opening_date) throws UserException, HelpException,
 			AbilityException {
@@ -237,12 +246,6 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 		} catch (NoResultException exc) {
 			System.out.println("*** [HelpsManager] help request not found ***");
 		}
-	}
-
-	@Override
-	public Ability isRequestPending(User user1, User user2) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

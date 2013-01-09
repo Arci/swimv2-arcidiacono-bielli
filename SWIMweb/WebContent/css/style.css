@@ -109,11 +109,12 @@
 	font-weight: bold;
 }
 
-.text {
-	font-weight: bold;
+fieldset {
+	width: 300px;
 }
 
-.warning,.italic {
+/* MESSAGE AND ERRORS */
+.warning {
 	font-style: italic;
 }
 
@@ -127,13 +128,34 @@
 	float: right;
 }
 
+/* TEXT STYLES */
+.text {
+	font-weight: bold;
+}
+
+.italic {
+	font-style: italic;
+}
+
 .message {
 	font-style: italic;
 	color: #228B22;
 }
 
-fieldset {
-	width: 300px;
+.capital {
+	text-transform: uppercase;
+}
+
+.red {
+	color: #D10000;
+}
+
+.green {
+	color: #228B22;
+}
+
+.blue {
+	color: #0066FF;
 }
 
 /* FLOATING */

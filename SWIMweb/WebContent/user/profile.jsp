@@ -15,33 +15,45 @@
 		boolean buttons = false;
 		if (request.getAttribute("userLoaded") != null
 				&& request.getAttribute("userLoaded") != "") {
-			user = (User) request.getAttribute("userLoaded");
-			buttons = true;
-		} else if (session.getAttribute("User") != null) {
-			user = (User) session.getAttribute("User");
-			buttons = false;
-		} 
-		
-		if(request.getAttribute("from") != null && request.getAttribute("from") != ""){
-			if(request.getAttribute("from").equals("search")){
-				%><jsp:include page="/common/header.jsp">
-					<jsp:param name="page" value="search" />
-				</jsp:include><%
-			}else if(request.getAttribute("from").equals("friends")){
-				%><jsp:include page="/common/header.jsp">
-					<jsp:param name="page" value="friends" />
-				</jsp:include><%
-			}else if(request.getAttribute("from").equals("helps")){
+			User sessionUser = (User) session.getAttribute("User");
+			User userLoaded = (User) request.getAttribute("userLoaded");
+			if(sessionUser.equals(userLoaded)){
+				user = sessionUser;
+				buttons = false;
 				%><jsp:include page="/common/header.jsp">
 					<jsp:param name="page" value="profile" />
 				</jsp:include><%
 			}else{
-				%><!--  default -->
-				<jsp:include page="/common/header.jsp">
-					<jsp:param name="page" value="profile" />
-				</jsp:include><%
+				user = userLoaded;
+				buttons = true;
+				if(request.getAttribute("from") != null && request.getAttribute("from") != ""){
+					if(request.getAttribute("from").equals("search")){
+						%><jsp:include page="/common/header.jsp">
+							<jsp:param name="page" value="search" />
+						</jsp:include><%
+					}else if(request.getAttribute("from").equals("friends")){
+						%><jsp:include page="/common/header.jsp">
+							<jsp:param name="page" value="friends" />
+						</jsp:include><%
+					}else if(request.getAttribute("from").equals("helps")){
+						%><jsp:include page="/common/header.jsp">
+							<jsp:param name="page" value="profile" />
+						</jsp:include><%
+					}else{
+						%><!--  default -->
+						<jsp:include page="/common/header.jsp">
+							<jsp:param name="page" value="profile" />
+						</jsp:include><%
+					}
+				}else{
+					%><jsp:include page="/common/header.jsp">
+						<jsp:param name="page" value="profile" />
+					</jsp:include><%
+				}
 			}
-		}else{
+		}else if (session.getAttribute("User") != null) {
+			user = (User) session.getAttribute("User");
+			buttons = false;
 			%><jsp:include page="/common/header.jsp">
 				<jsp:param name="page" value="profile" />
 			</jsp:include><%
@@ -203,8 +215,10 @@
 			};
 	
 			function manageButtonDiv(type){
-				var friend = document.getElementById(type);
-	            friend.parentNode.removeChild(friend);
+				var button = document.getElementById(type);
+				if(type != "help"){
+					button.parentNode.removeChild(button);
+				}
 			};
 	
 			function manageMessage(clazz,id,message){

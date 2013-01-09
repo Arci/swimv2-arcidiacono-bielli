@@ -104,7 +104,9 @@ public interface ProfileManagerRemote {
 	 * 
 	 * @param user
 	 * @return the user reloaded
+	 * @throws UserException
+	 *             if problems
 	 */
-	public User reloadUser(User user);
+	public User reloadUser(User user) throws UserException;
 
 }
