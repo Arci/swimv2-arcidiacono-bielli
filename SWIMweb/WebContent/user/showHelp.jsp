@@ -21,7 +21,9 @@
 				<div id="votes" style="display: none;">
 					give a feedback to: <span class='italic'><%=help.getHelper().getName()%> <%=help.getHelper().getSurname()%> </span>
 					<% for(int i=1; i<6; i++){
-						%><a href="helps?help=<%=help.getId()%>&vote=<%=i%>&state=close"><%=i%></a> <%
+						%><a href="helps?help=<%=help.getId()%>&vote=<%=i%>&state=close" 
+						 onMouseOver="changeToFull('<%=i%>');" onMouseOut="backToEmpty('vote<%=i%>');">
+						<img src="/SWIMweb/img/emptyStar.png" id="vote<%=i%>" class="rating"/></a> <%
 					} %>
 				</div>
 		<% } %>
@@ -65,5 +67,24 @@
 		buttonClose.parentNode.removeChild(buttonClose);
 		var votes = document.getElementById("votes");
 		votes.style.display = "inline";
+	};
+
+	function changeToFull(id){
+		var link = null;
+		var number = parseInt(id);
+		for(var i=1; i <= number; i++){
+			link = document.getElementById("vote"+i);
+			console.log("id: "+ id +" link: " + link);
+			link.src="/SWIMweb/img/fullStar.png";
+		};
+	};
+
+	function backToEmpty(id){
+		var link = null;
+		for(var i=1; i < 6; i++){
+			link = document.getElementById("vote"+i);
+			console.log("id: "+ id +" link: " + link);
+			link.src="/SWIMweb/img/emptyStar.png";
+		};
 	};
 </script>
