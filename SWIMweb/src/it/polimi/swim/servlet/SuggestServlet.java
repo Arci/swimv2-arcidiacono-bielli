@@ -51,7 +51,7 @@ public class SuggestServlet extends HttpServlet {
 				// System.out.println("*** [SuggestServlet] reload /admin/suspended.jsp ***");
 				//
 				// abilityRequests = abilityManager.getAbilityRequests();
-				resp.sendRedirect("/SWIMweb/admin/suspended.jsp");
+				resp.sendRedirect("/SWIMweb/admin/suspended");
 				return;
 			}
 
