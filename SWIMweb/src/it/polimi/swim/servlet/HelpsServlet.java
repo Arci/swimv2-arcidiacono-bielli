@@ -87,9 +87,12 @@ public class HelpsServlet extends HttpServlet {
 			} else if (request.getParameter("state").equals("reject")) {
 				helpsManager.updateHelpRequest(HelpState.REJECTED,
 						Integer.parseInt(request.getParameter("help")));
-			} else if (request.getParameter("state").equals("close")) {
-				helpsManager.updateHelpRequest(HelpState.CLOSED,
-						Integer.parseInt(request.getParameter("help")));
+			} else if (request.getParameter("state").equals("close")
+					&& Integer.parseInt(request.getParameter("vote")) > 0
+					&& Integer.parseInt(request.getParameter("vote")) < 6) {
+				helpsManager.closeHelpRequest(HelpState.CLOSED,
+						Integer.parseInt(request.getParameter("help")),
+						Integer.parseInt(request.getParameter("vote")));
 			}
 
 		} catch (NamingException e) {

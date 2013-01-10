@@ -253,4 +253,23 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 		}
 	}
 
+	@Override
+	public void closeHelpRequest(HelpState state, int helpID, int vote) {
+		try {
+			HelpRequest help = manager.find(HelpRequest.class, helpID);
+			if (state.equals(HelpState.CLOSED)) {
+				System.out.println("*** [HelpsManager] help closed ***");
+				help.setState(state);
+				help.setClosingDate(new Date());
+				help.setVote(vote);
+				manager.merge(help);
+			}
+			System.out
+					.println("*** [HelpsManager] state was pending? don't know what to do ***");
+		} catch (NoResultException exc) {
+			System.out.println("*** [HelpsManager] help request not found ***");
+		}
+
+	}
+
 }

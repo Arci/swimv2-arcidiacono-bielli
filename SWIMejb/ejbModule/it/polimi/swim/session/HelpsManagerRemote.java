@@ -90,4 +90,13 @@ public interface HelpsManagerRemote {
 	 */
 	public void updateHelpRequest(HelpState state, int helpID);
 
+	/**
+	 * close an help request
+	 * 
+	 * @param closed
+	 * @param parseInt
+	 * @param parseInt2
+	 */
+	public void closeHelpRequest(HelpState state, int helpID, int vote);
+
 }

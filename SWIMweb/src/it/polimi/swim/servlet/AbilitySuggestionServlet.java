@@ -50,13 +50,13 @@ public class AbilitySuggestionServlet extends HttpServlet {
 			InitialContext jndiContext = new InitialContext(env);
 			Object ref = jndiContext.lookup("ProfileManager/remote");
 			ProfileManagerRemote profileManager = (ProfileManagerRemote) ref;
-			
+
 			User user = (User) request.getSession().getAttribute("User");
 
 			user = profileManager.reloadUser(user);
 			request.getSession().removeAttribute("User");
 			request.getSession().setAttribute("User", user);
-			
+
 		} catch (UserException ue) {
 			request.setAttribute("error", ue.getMessage());
 		} catch (NamingException e) {

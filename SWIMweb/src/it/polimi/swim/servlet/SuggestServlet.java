@@ -34,17 +34,15 @@ public class SuggestServlet extends HttpServlet {
 			List<AbilityRequest> abilityRequests = abilityManager
 					.getAbilityRequests();
 
-
-			
 			if (hasDecided(req, resp)) {
 				String id = req.getParameter("ability");
 				String state = req.getParameter("decision");
-				
+
 				abilityManager.updateAbilityRequestState(id, state);
 				resp.sendRedirect("/SWIMweb/admin/suspended");
 				return;
 			}
-			
+
 			if (abilityRequests != null && abilityRequests.size() > 0) {
 				req.setAttribute("suggests", abilityRequests);
 				System.out
@@ -53,7 +51,7 @@ public class SuggestServlet extends HttpServlet {
 				System.out
 						.println("*** [SuggestServlet] suspended abilities not found ***");
 			}
-			
+
 			getServletConfig().getServletContext()
 					.getRequestDispatcher("/admin/suspended.jsp")
 					.forward(req, resp);
