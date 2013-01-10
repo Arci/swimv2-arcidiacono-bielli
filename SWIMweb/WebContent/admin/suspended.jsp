@@ -25,7 +25,9 @@
 						<a href="suspended?ability=<%=req.getId()%>&decision=<%=RequestState.ACCEPTED.toString() %>">Accept</a>
 						<a href="suspended?ability=<%=req.getId()%>&decision=<%=RequestState.REJECTED.toString() %>">Refuse</a>
 						<br> <%
-					}
+					} 
+				} else {
+					out.println("<span class=\"error italic\">You don't have any suggest requests.</span><br>");
 				}
 			%>
 		</p>

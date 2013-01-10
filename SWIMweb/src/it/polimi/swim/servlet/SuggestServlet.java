@@ -23,7 +23,6 @@ public class SuggestServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		try {
-
 			Hashtable<String, String> env = new Hashtable<String, String>();
 			env.put(Context.INITIAL_CONTEXT_FACTORY,
 					"org.jnp.interfaces.NamingContextFactory");
@@ -35,26 +34,17 @@ public class SuggestServlet extends HttpServlet {
 			List<AbilityRequest> abilityRequests = abilityManager
 					.getAbilityRequests();
 
+
+			
 			if (hasDecided(req, resp)) {
 				String id = req.getParameter("ability");
 				String state = req.getParameter("decision");
-
+				
 				abilityManager.updateAbilityRequestState(id, state);
-
-				// if(suspended.equals(RequestState.ACCEPTED)){
-				// System.out.println("*** [SuggestServlet] ability '" +
-				// suspended.getText() + "' accepted ***");
-				// } else {
-				// System.out.println("*** [SuggestServlet] ability '" +
-				// suspended.getText() + "' refuse ***");
-				// }
-				// System.out.println("*** [SuggestServlet] reload /admin/suspended.jsp ***");
-				//
-				// abilityRequests = abilityManager.getAbilityRequests();
 				resp.sendRedirect("/SWIMweb/admin/suspended");
 				return;
 			}
-
+			
 			if (abilityRequests != null && abilityRequests.size() > 0) {
 				req.setAttribute("suggests", abilityRequests);
 				System.out
@@ -63,7 +53,7 @@ public class SuggestServlet extends HttpServlet {
 				System.out
 						.println("*** [SuggestServlet] suspended abilities not found ***");
 			}
-
+			
 			getServletConfig().getServletContext()
 					.getRequestDispatcher("/admin/suspended.jsp")
 					.forward(req, resp);
