@@ -24,12 +24,16 @@
 		
 		if(request.getAttribute("missingParameters") != null){ 
 			hasMissingParameters = true;
-			missingParameters = (Set <String>) request.getAttribute("missingParameters");
+			@SuppressWarnings("unchecked")
+			Set <String> tmp = (Set <String>) request.getAttribute("missingParameters");
+			missingParameters = tmp;
 		}
 		
 		if(request.getAttribute("duplicatedParameters") != null){
 			hasDuplicatedParameters = true;
-			duplicatedParameters = (Set <String>) request.getAttribute("duplicatedParameters");
+			@SuppressWarnings("unchecked")
+			Set <String> tmp = (Set <String>) request.getAttribute("duplicatedParameters");
+			duplicatedParameters = tmp;
 		}
 		
 		if(request.getAttribute("passwordError") != null){

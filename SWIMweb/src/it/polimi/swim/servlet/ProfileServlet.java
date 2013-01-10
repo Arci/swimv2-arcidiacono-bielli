@@ -92,6 +92,35 @@ public class ProfileServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO manage modify profile
 		// then reload user and replace it in the session
+		try{
+			Hashtable<String, String> env = new Hashtable<String, String>();
+			env.put(Context.INITIAL_CONTEXT_FACTORY,
+					"org.jnp.interfaces.NamingContextFactory");
+			env.put(Context.PROVIDER_URL, "localhost:1099");
+			InitialContext jndiContext = new InitialContext(env);
+			Object ref = jndiContext.lookup("ProfileManager/remote");
+			ProfileManagerRemote profileManager = (ProfileManagerRemote) ref;
+			
+			User user = (User) request.getSession().getAttribute("User");
+			
+			Hashtable<String, String> params = new Hashtable<String, String>();
+			params.put("name", request.getParameter("name"));
+			params.put("surname", request.getParameter("surname"));
+			params.put("username", request.getParameter("username"));
+			params.put("email", request.getParameter("email"));
+			params.put("city", request.getParameter("city"));
+			params.put("phone", request.getParameter("phone"));
+//			params.put("password", request.getParameter("password"));	
+			
+			request.getSession().removeAttribute("User");
+			request.getSession().setAttribute("User", profileManager.updateProfile(user, params));
+			getServletConfig().getServletContext()
+			.getRequestDispatcher("/user/modifyProfile.jsp")
+			.forward(request, response);
+			
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void getUserInformation(User user, HttpServletRequest request,

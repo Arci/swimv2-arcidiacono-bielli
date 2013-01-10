@@ -59,6 +59,15 @@ public class ProfileManager implements ProfileManagerRemote,
 	public User updateProfile(User user, Hashtable<String, String> params) {
 		// TODO ricevuti i parametri aggiorna user se new!=old, poi fa
 		// manager.merge(user)
+
+		user.setName(params.get("name"));
+		user.setSurname(params.get("surname"));
+		user.setUsername(params.get("username"));
+		user.setEmail(params.get("email"));
+		user.setCity(params.get("city"));
+		user.setPhone(Integer.parseInt(params.get("phone")));
+//		user.setPassword(params.get("password"));
+		manager.merge(user);
 		return user;
 	}
 
