@@ -113,6 +113,10 @@ fieldset {
 	width: 300px;
 }
 
+#helpState {
+	display: inline;
+}
+
 /* MESSAGE AND ERRORS */
 .warning {
 	font-style: italic;
@@ -165,4 +169,20 @@ fieldset {
 
 .right {
 	float: right;
+}
+
+/* RATING */
+.rating {
+	width: 12px;
+	height: 12px;
+}
+
+.giveVote {
+	width: 20px;
+	height: 20px;
+	background-image: url(/SWIMweb/img/emptyStar.png);
+}
+
+.giveVote:hover {
+	background-image: url(/SWIMweb/img/fullStar.png);
 }

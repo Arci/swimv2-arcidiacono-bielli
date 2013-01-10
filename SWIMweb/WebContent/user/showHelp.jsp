@@ -8,22 +8,22 @@
 		User sessionUser = (User) session.getAttribute("User");
 	%>
 	<div id="helpState">
-		<span class="text">State: </span>
+		<span id="helpText" class="text">State: </span>
 		<% if(help.getState().equals(HelpState.PENDING)){ %>
-			<span class="capital blue"><%=help.getState().toString()%></span>
+			<span id="state" class="capital blue"><%=help.getState().toString()%></span>
 		<% } else if(help.getState().equals(HelpState.CLOSED)){ %>
-			<span class="capital red"><%=help.getState().toString()%></span>
+			<span id="state" class="capital red"><%=help.getState().toString()%></span>
 		<% } else if(help.getState().equals(HelpState.OPEN)){ %>
-			<span class="capital green"><%=help.getState().toString()%></span>
+			<span id="state" class="capital green"><%=help.getState().toString()%></span>
 		<% } %>
 		<% if(sessionUser.equals(help.getUser()) && help.getState().equals(HelpState.OPEN)){ %>
 				<input type="button" id="buttonClose" onclick="showFeedbacks();" value="Close this help request"/>
-				<p id="votes" style="display: none;">
-					<span>give a feedback to: <%=help.getHelper().getName()%> <%=help.getHelper().getSurname()%> </span>
+				<div id="votes" style="display: none;">
+					give a feedback to: <span class='italic'><%=help.getHelper().getName()%> <%=help.getHelper().getSurname()%> </span>
 					<% for(int i=1; i<6; i++){
 						%><a href="helps?help=<%=help.getId()%>&vote=<%=i%>&state=close"><%=i%></a> <%
 					} %>
-				</p>
+				</div>
 		<% } %>
 	</div>
 	<p><span class="text">Applicant user: </span>
@@ -41,29 +41,29 @@
 	<p><span class="text">Ability involved: </span><%=help.getAbility().getName()%></p>
 	<p><span class="text">Opening date: </span><%=help.getOpeningDate()%></p>
 		<% if(help.getClosingDate() != null){
-			%><p><span class="text">Closing date: </span><%=help.getClosingDate()%></p><%
+			%><p><span class="text">Closing date: </span><%=help.getClosingDate()%><%
 		} %>
-	<p><span class="text">Feedback: </span>
-		<%  if (help.getVote() > 0) {	
-				String star = "";	
-				for (int i = 0; i < help.getVote(); i++) {
-					star += "* ";
-				}
-				out.println(star);
-			} else {
-				out.println("<span class=\"warning\">no rating yet</span></li>");
-			}
-	%></p>
+	</p><%
+	if (help.getVote() > 0) {	
+		%><p><span class="text">Feedback: </span><%
+		for (int i = 0; i < help.getVote(); i++) {
+			%><img src="/SWIMweb/img/fullStar.png" class="rating" /> <%;
+		}
+	}
+	%>
 </div>
 <div id="chat">
 
 </div>
 <script type="text/javascript">
 	function showFeedbacks(){
-		var divFeedbacks = document.getElementById("votes");
-		divFeedbacks.style.display = "inline";buttonClose
+		var helpText = document.getElementById("helpText");
+		helpText.parentNode.removeChild(helpText);
+		var state = document.getElementById("state");
+		state.parentNode.removeChild(state);
 		var buttonClose = document.getElementById("buttonClose");
 		buttonClose.parentNode.removeChild(buttonClose);
-		
+		var votes = document.getElementById("votes");
+		votes.style.display = "inline";
 	};
 </script>

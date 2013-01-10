@@ -90,15 +90,13 @@
 					<p><span class="text">Rating: </span>
 					<%
 						int rating = (Integer) request.getAttribute("rating");
-						String star = "";	
 						if (rating > 0) {	
 							for (int i = 0; i < rating; i++) {
-								star += "* ";
+								%><img src="/SWIMweb/img/fullStar.png" class="rating" /> <%
 							}
 						} else {
 							out.println("<span class=\"warning\">no rating yet</span></li>");
 						}
-						out.println(star);
 					%></p>
 					<p>
 					<span class="text">You have the following abilities:</span><br/>
@@ -112,11 +110,11 @@
 								int abilityRating = (Integer) request.getAttribute(a
 										.getName());
 								if (abilityRating > 0) {
-									star = "";
+									out.println("<li>" + a.getName() + " ");
 									for (int i = 0; i < abilityRating; i++) {
-										star += "* ";
+										%><img src="/SWIMweb/img/fullStar.png" class="rating" /> <%
 									}
-									out.println("<li>" + a.getName() + " " + star + "</li>");
+									out.println("</li>");
 								} else {
 									out.println("<li>"
 											+ a.getName()
