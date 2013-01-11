@@ -11,7 +11,7 @@
 </head>
 <body>
 	<jsp:include page="/common/header.jsp">
-		<jsp:param name="page" value="home" />
+		<jsp:param name="page" value="search" />
 	</jsp:include>
 
 	<div id="pageContent">
@@ -33,6 +33,9 @@
 			} catch (NamingException e) {
 				e.printStackTrace();
 			}
+			getServletConfig().getServletContext()
+					.getRequestDispatcher("/search.jsp")
+					.forward(request, response);
 		%>
 	</div>
 

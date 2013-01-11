@@ -1,13 +1,16 @@
 package it.polimi.swim.servlet;
 
 import it.polimi.swim.model.User;
+import it.polimi.swim.session.FriendsManagerRemote;
 import it.polimi.swim.session.SearchManagerRemote;
 
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Set;
 
+import javax.mail.search.SearchException;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -46,111 +49,166 @@ public class SearchServlet extends HttpServlet {
 
 	private void checkSearchType(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		if (issetToSearch(request, response)) {
-			if (issetKeywords(request, response)) {
-				if (isPersonToSearch(request, response)) {
+		try {
+			User user = (User) request.getSession().getAttribute("User");
+			Set<User> results = new HashSet<User>();
+			if (user != null) {
+				// extended search
+				System.out
+						.println("*** [SearchServlet] user logged in: extended search ***");
+				Hashtable<String, String> env = new Hashtable<String, String>();
+				env.put(Context.INITIAL_CONTEXT_FACTORY,
+						"org.jnp.interfaces.NamingContextFactory");
+				env.put(Context.PROVIDER_URL, "localhost:1099");
+				InitialContext jndiContext = new InitialContext(env);
+
+				Object ref = jndiContext.lookup("FriendsManager/remote");
+				FriendsManagerRemote friendsManager = (FriendsManagerRemote) ref;
+				List<User> friends = friendsManager.getFriends(user);
+
+				if (isSetPersonPattern(request, response)) {
+					// search person
 					System.out
-							.println("*** [SearchServlet] searching for people ***");
-					searchForPeople(request, response);
-				} else if (isAbilityToSearch(request, response)) {
+							.println("*** [SearchServlet] {extended search} person search ***");
+					if (areKeywordsSet(request, response)) {
+						System.out
+								.println("*** [SearchServlet] keywords set ***");
+						if (isSetCityPattern(request, response)) {
+							// search person and city
+							System.out
+									.println("*** [SearchServlet] {extended search} (person search) city search ***");
+							results = searchForPeople(
+									(String) request.getParameter("keywords"),
+									(String) request.getParameter("city"));
+						} else {
+							// search only person
+							System.out
+									.println("*** [SearchServlet] {extended search} (person search) search without city ***");
+							results = searchForPeople((String) request
+									.getParameter("keywords"));
+						}
+					} else {
+						// keyword error
+						System.out
+								.println("*** [SearchServlet] {extended search} (person search) no keywords ***");
+						request.setAttribute("error",
+								"you must enter one or more keyword to search!");
+					}
+				} else if (isSetAbilityPattern(request, response)) {
+					// ability search
 					System.out
-							.println("*** [SearchServlet] searching for abilities ***");
-					searchForAbilities(request, response);
+							.println("*** [SearchServlet] {extended search} ability search ***");
+					if (areKeywordsSet(request, response)) {
+						System.out
+								.println("*** [SearchServlet] keywords set ***");
+						if (isSetCityPattern(request, response)) {
+							// search ability and city
+							System.out
+									.println("*** [SearchServlet] {extended search} (ability search) city search ***");
+							results = searchForAbilities(
+									(String) request.getParameter("keywords"),
+									(String) request.getParameter("city"));
+						} else {
+							// search only ability
+							System.out
+									.println("*** [SearchServlet] {extended search} (ability search) search without city ***");
+							results = searchForAbilities((String) request
+									.getParameter("keywords"));
+						}
+					} else {
+						// keyword error
+						System.out
+								.println("*** [SearchServlet] {extended search} (ability search) no keywords ***");
+						request.setAttribute("error",
+								"you must enter one or more keyword to search!");
+					}
+				} else if (isSetOnlyCityPattern(request, response)) {
+					// search only by city
+					System.out
+							.println("*** [SearchServlet] {extended search} (city search) search only by city ***");
+					results = searchForCity((String) request
+							.getParameter("city"));
 				} else {
+					// what to do error
 					System.out
-							.println("*** [SearchServlet] radio button hacked, forwarding to search.jsp ***");
-					redirect(request, response);
+							.println("*** [SearchServlet] problem with type of search ***");
+					request.setAttribute("error",
+							"problem with the search engine");
 				}
+
+				Set<User> friendsResults = new HashSet<User>();
+				Set<User> otherResults = new HashSet<User>();
+
+				for (User resultUser : results) {
+					for (User friend : friends) {
+						if (resultUser.equals(friend)) {
+							System.out.println("*** [SearchServlet] '"
+									+ resultUser.getUsername()
+									+ "' added to friendsResults list ***");
+							friendsResults.add(resultUser);
+						} else if (!resultUser.equals(user)) {
+							System.out.println("*** [SearchServlet] '"
+									+ resultUser.getUsername()
+									+ "' added to otherResults list ***");
+							otherResults.add(resultUser);
+						} else {
+							System.out
+									.println("*** [SearchServlet] user was searcher user ***");
+						}
+					}
+				}
+
+				if (friendsResults.isEmpty() && otherResults.isEmpty()
+						&& areKeywordsSet(request, response)) {
+					request.setAttribute("message", "sorry, no result found");
+				} else {
+					request.setAttribute("friendsResults", friendsResults);
+					request.setAttribute("otherResults", otherResults);
+				}
+
 			} else {
+				// normal search
 				System.out
-						.println("*** [SearchServlet] no keyword, forwarding to search.jsp ***");
-				request.setAttribute("error", "keyword can not be empty");
-				redirect(request, response);
-			}
-		} else {
-			System.out
-					.println("*** [SearchServlet] radio button not selected, forwarding to search.jsp ***");
-			redirect(request, response);
-		}
-	}
+						.println("*** [SearchServlet] user not logged in: normal search ***");
+				if (isSetPersonPattern(request, response)) {
+					System.out
+							.println("*** [SearchServlet] {normal search} person pattern set ***");
+					if (areKeywordsSet(request, response)) {
+						System.out
+								.println("*** [SearchServlet] keywords set ***");
+						results = searchForPeople((String) request
+								.getParameter("keywords"));
 
-	private void searchForPeople(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		try {
-			Hashtable<String, String> env = new Hashtable<String, String>();
-			env.put(Context.INITIAL_CONTEXT_FACTORY,
-					"org.jnp.interfaces.NamingContextFactory");
-			env.put(Context.PROVIDER_URL, "localhost:1099");
-			InitialContext jndiContext = new InitialContext(env);
-			Object ref = jndiContext.lookup("SearchManager/remote");
-			SearchManagerRemote searchManager = (SearchManagerRemote) ref;
-
-			String keywords = request.getParameter("keywords");
-			String[] key = keywords.split(" ");
-			Set<User> results = new HashSet<User>();
-
-			for (int i = 0; i < key.length; i++) {
-				results.addAll(searchManager.searchPerson(key[i]));
-			}
-
-			if (results.isEmpty() || results == null) {
-				System.out.println("*** [SearchServlet] no users result ***");
-				request.setAttribute("message", "sorry no results found");
-				redirect(request, response);
-			} else {
-				System.out
-						.println("*** [SearchServlet] setting users results, forwarding to search.jsp ***");
-				request.setAttribute("results", results);
-				redirect(request, response);
+						request.setAttribute("otherResults", results);
+					} else {
+						// keyword error
+						System.out
+								.println("*** [SearchServlet] no keywords ***");
+						request.setAttribute("error",
+								"you must enter one or more keyword to search!");
+					}
+				} else {
+					// what to do error
+					System.out
+							.println("*** [SearchServlet] problem with type of search ***");
+					request.setAttribute("error",
+							"problem with the search engine");
+				}
 			}
 		} catch (NamingException e) {
 			e.printStackTrace();
+		} catch (SearchException se) {
+			request.setAttribute("message", se.getMessage());
+			System.out.println("*** [SearchServlet] " + se.getMessage()
+					+ " ***");
 		}
+		request.setAttribute("keywords", request.getParameter("keywords"));
+		redirect(request, response);
+
 	}
 
-	private void searchForAbilities(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		try {
-			Hashtable<String, String> env = new Hashtable<String, String>();
-			env.put(Context.INITIAL_CONTEXT_FACTORY,
-					"org.jnp.interfaces.NamingContextFactory");
-			env.put(Context.PROVIDER_URL, "localhost:1099");
-			InitialContext jndiContext = new InitialContext(env);
-			Object ref = jndiContext.lookup("SearchManager/remote");
-			SearchManagerRemote searchManager = (SearchManagerRemote) ref;
-
-			String keywords = request.getParameter("keywords");
-			String[] key = keywords.split(" ");
-			Set<User> results = new HashSet<User>();
-			for (int i = 0; i < key.length; i++) {
-				results.addAll(searchManager.searchAbility(key[i]));
-			}
-			if (results.isEmpty() || results == null) {
-				System.out
-						.println("*** [SearchServlet] no result for ability ***");
-				request.setAttribute("message", "sorry no results found");
-				redirect(request, response);
-			} else {
-				System.out
-						.println("*** [SearchServlet] setting ability results, forwarding to search.jsp ***");
-				request.setAttribute("results", results);
-				redirect(request, response);
-			}
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private boolean issetToSearch(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		if (request.getParameter("toSearch") != null) {
-			return true;
-		}
-		return false;
-	}
-
-	private boolean issetKeywords(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	private boolean areKeywordsSet(HttpServletRequest request,
+			HttpServletResponse response) {
 		if (request.getParameter("keywords") != null
 				&& request.getParameter("keywords") != "") {
 			return true;
@@ -158,27 +216,178 @@ public class SearchServlet extends HttpServlet {
 		return false;
 	}
 
-	private boolean isPersonToSearch(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		if (request.getParameter("toSearch").equals("persons")) {
+	private boolean isSetAbilityPattern(HttpServletRequest request,
+			HttpServletResponse response) {
+		if (request.getParameter("searchType") != null
+				&& request.getParameter("searchType") != ""
+				&& request.getParameter("searchType").equals("ability")) {
 			return true;
 		}
 		return false;
 	}
 
-	private boolean isAbilityToSearch(HttpServletRequest request,
+	private boolean isSetPersonPattern(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		if (request.getParameter("toSearch").equals("abilities")) {
+		if (request.getParameter("searchType") != null
+				&& request.getParameter("searchType") != ""
+				&& request.getParameter("searchType").equals("person")) {
 			return true;
 		}
 		return false;
+	}
+
+	private boolean isSetCityPattern(HttpServletRequest request,
+			HttpServletResponse response) {
+		if (request.getParameter("city") != null
+				&& request.getParameter("city") != "") {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean isSetOnlyCityPattern(HttpServletRequest request,
+			HttpServletResponse response) {
+		if (request.getParameter("city") != null
+				&& request.getParameter("city") != "") {
+			if (request.getParameter("keywords") == null
+					|| request.getParameter("keywords") == "") {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private Set<User> searchForPeople(String keywords) throws SearchException {
+		try {
+			Hashtable<String, String> env = new Hashtable<String, String>();
+			env.put(Context.INITIAL_CONTEXT_FACTORY,
+					"org.jnp.interfaces.NamingContextFactory");
+			env.put(Context.PROVIDER_URL, "localhost:1099");
+			InitialContext jndiContext = new InitialContext(env);
+			Object ref = jndiContext.lookup("SearchManager/remote");
+			SearchManagerRemote searchManager = (SearchManagerRemote) ref;
+
+			String[] keys = keywords.split(" ");
+			Set<User> results = new HashSet<User>();
+			for (int i = 0; i < keys.length; i++) {
+				results.addAll(searchManager.searchPerson(keys[i]));
+			}
+			if (results.isEmpty() || results == null) {
+				throw new SearchException("sorry, no result found");
+			}
+			return results;
+		} catch (NamingException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private Set<User> searchForAbilities(String keywords)
+			throws SearchException {
+		try {
+			Hashtable<String, String> env = new Hashtable<String, String>();
+			env.put(Context.INITIAL_CONTEXT_FACTORY,
+					"org.jnp.interfaces.NamingContextFactory");
+			env.put(Context.PROVIDER_URL, "localhost:1099");
+			InitialContext jndiContext = new InitialContext(env);
+			Object ref = jndiContext.lookup("SearchManager/remote");
+			SearchManagerRemote searchManager = (SearchManagerRemote) ref;
+
+			String[] keys = keywords.split(" ");
+			Set<User> results = new HashSet<User>();
+			for (int i = 0; i < keys.length; i++) {
+				results.addAll(searchManager.searchAbility(keys[i]));
+			}
+			if (results.isEmpty() || results == null) {
+				throw new SearchException("sorry, no result found");
+			}
+			return results;
+		} catch (NamingException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private Set<User> searchForAbilities(String keywords, String cityPattern)
+			throws SearchException {
+		try {
+			Hashtable<String, String> env = new Hashtable<String, String>();
+			env.put(Context.INITIAL_CONTEXT_FACTORY,
+					"org.jnp.interfaces.NamingContextFactory");
+			env.put(Context.PROVIDER_URL, "localhost:1099");
+			InitialContext jndiContext = new InitialContext(env);
+			Object ref = jndiContext.lookup("SearchManager/remote");
+			SearchManagerRemote searchManager = (SearchManagerRemote) ref;
+
+			String[] keys = keywords.split(" ");
+			Set<User> results = new HashSet<User>();
+			for (int i = 0; i < keys.length; i++) {
+				results.addAll(searchManager
+						.searchAbility(keys[i], cityPattern));
+			}
+			if (results.isEmpty() || results == null) {
+				throw new SearchException("sorry, no result found");
+			}
+			return results;
+		} catch (NamingException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private Set<User> searchForPeople(String keywords, String cityPattern)
+			throws SearchException {
+		try {
+			Hashtable<String, String> env = new Hashtable<String, String>();
+			env.put(Context.INITIAL_CONTEXT_FACTORY,
+					"org.jnp.interfaces.NamingContextFactory");
+			env.put(Context.PROVIDER_URL, "localhost:1099");
+			InitialContext jndiContext = new InitialContext(env);
+			Object ref = jndiContext.lookup("SearchManager/remote");
+			SearchManagerRemote searchManager = (SearchManagerRemote) ref;
+
+			String[] keys = keywords.split(" ");
+			Set<User> results = new HashSet<User>();
+			for (int i = 0; i < keys.length; i++) {
+				results.addAll(searchManager.searchPerson(keys[i], cityPattern));
+			}
+			if (results.isEmpty() || results == null) {
+				throw new SearchException("sorry, no result found");
+			}
+			return results;
+		} catch (NamingException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private Set<User> searchForCity(String cityPattern) throws SearchException {
+		try {
+			Hashtable<String, String> env = new Hashtable<String, String>();
+			env.put(Context.INITIAL_CONTEXT_FACTORY,
+					"org.jnp.interfaces.NamingContextFactory");
+			env.put(Context.PROVIDER_URL, "localhost:1099");
+			InitialContext jndiContext = new InitialContext(env);
+			Object ref = jndiContext.lookup("SearchManager/remote");
+			SearchManagerRemote searchManager = (SearchManagerRemote) ref;
+
+			Set<User> results = new HashSet<User>();
+			results.addAll(searchManager.searchByCity(cityPattern));
+
+			if (results.isEmpty() || results == null) {
+				throw new SearchException("sorry, no result found");
+			}
+			return results;
+		} catch (NamingException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	private void redirect(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		getServletConfig().getServletContext()
-				.getRequestDispatcher("/user/search.jsp")
-				.forward(request, response);
+				.getRequestDispatcher("/search.jsp").forward(request, response);
 	}
 
 }

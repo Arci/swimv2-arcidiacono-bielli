@@ -18,11 +18,39 @@ public interface SearchManagerRemote {
 	public List<User> searchPerson(String pattern);
 
 	/**
+	 * Given some text, search it in the abilities of the users and restrict the
+	 * research by the city
+	 * 
+	 * @param string
+	 * @param cityPattern
+	 * @return the list of user matching the pattern
+	 */
+	public List<User> searchPerson(String pattern, String cityPattern);
+
+	/**
 	 * Given some text, search it in the abilities of the users
 	 * 
 	 * @param pattern
 	 * @return the list of user having that ability
 	 */
 	public List<User> searchAbility(String pattern);
+
+	/**
+	 * Given some text, search it in all the fields of a user and restrict the
+	 * research by the city
+	 * 
+	 * @param string
+	 * @param cityPattern
+	 * @return the list of user having that ability
+	 */
+	public List<User> searchAbility(String pattern, String cityPattern);
+
+	/**
+	 * Given a city search user in that city
+	 * 
+	 * @param cityPattern
+	 * @return the list of user matching the pattern
+	 */
+	public List<User> searchByCity(String cityPattern);
 
 }
