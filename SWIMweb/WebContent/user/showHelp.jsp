@@ -1,6 +1,6 @@
 <%@page import="it.polimi.swim.enums.HelpState"%>
 <%@page
-	import="java.util.*,javax.naming.Context,javax.naming.InitialContext,it.polimi.swim.model.*,it.polimi.swim.session.*,javax.naming.NamingException"%>
+	import="java.util.*,javax.naming.Context,javax.naming.InitialContext,it.polimi.swim.model.*,it.polimi.swim.session.*,javax.naming.NamingException,java.text.SimpleDateFormat"%>
 
 <div id="helpInformation">
 	<%
@@ -60,6 +60,7 @@
 		<% 
 		@SuppressWarnings("unchecked")
 		List<Message> messages = (List<Message>) request.getAttribute("messages");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("d MMM 'at' h:mm");
 		if(messages == null || messages.isEmpty()){
 			%><span id="initialWarning" class="message">There aren't any message yet!</span><%
 		}else{
@@ -69,13 +70,19 @@
 				message = itr.next();
 				if(message.getUser().equals(sessionUser)){
 					%><div id="sessionUser" class="left">
-						<span class="text user"><%=sessionUser.getName() %>: </span>
-						<span><%=message.getText()%></span>
+						<div>
+							<span class="text user"><%=sessionUser.getName() %>: </span>
+							<span><%=message.getText()%></span>
+						</div>
+						<span class="smaller left">&nbsp;&nbsp;<%=new StringBuilder(dateFormat.format(message.getTimestamp()))%></span>
 					</div><%
 				} else {
 					%><div id="otherUser" class="right">
-						<span class="text user"><%=help.getHelper().getName() %>: </span>
-						<span><%=message.getText()%></span>
+						<div>
+							<span class="text user"><%=help.getHelper().getName() %>: </span>
+							<span><%=message.getText()%></span>
+						</div>
+						<span class="smaller right"><%=new StringBuilder(dateFormat.format(message.getTimestamp()))%>&nbsp;&nbsp;</span>
 					</div><%
 				} 
 				if(itr.hasNext()){
@@ -88,7 +95,7 @@
 		<% if(help.getState().equals(HelpState.OPEN)){ %>
 		<div id="replyForm">
 			<p><input type="text" id="messageText" name="messageText" value="" />
-			<input id="addReply" type="button" name="Submit" value="reply" onclick="insertMessage('<%=help.getId()%>','<%= sessionUser.getName()%>');"/></p>
+			<input id="addReply" type="button" name="Submit" value="reply" onclick="insertMessage('<%=help.getId()%>','<%= sessionUser.getName()%>','<%=new StringBuilder(dateFormat.format(new Date().getTime()))%>');"/></p>
 		</div>
 		<% } %>
 	</div>
@@ -125,10 +132,9 @@
 		};
 	};
 
-	function insertMessage(helpID, name) {
+	function insertMessage(helpID, name, dateString) {
 		xmlhttp = new XMLHttpRequest();
 		var message = 	document.getElementById("messageText").value;
-		console.log("MESSAGE:\n" + message+ "\n");
 		if(message != ""){
 			var url =  "/SWIMweb/user/helps?help=" + helpID + "&message="+message;
 			console.log("AJAX REQUEST TO:\n" + url+ "\n");
@@ -140,7 +146,7 @@
 				        var response = xmlhttp.responseXML.getElementsByTagName("result")[0].childNodes[0].nodeValue;
 				        console.log("VALUE:\n"+ response);
 				        if(response == "OK"){
-				        	addMessage(message, name);
+				        	addMessage(message, name, dateString);
 				        } else {
 							var error = xmlhttp.responseXML.getElementsByTagName("error")[0].childNodes[0].nodeValue;
 							addError(error);
@@ -170,7 +176,7 @@
         replyForm.appendChild(span);
 	};
 
-	function addMessage(message, name){
+	function addMessage(message, name, dateString){
 		document.getElementById("messageText").value = "";
 		var messageDiv = document.getElementById('messages'); 
 		if(document.getElementById("initialWarning")){
@@ -187,13 +193,19 @@
 		var div = document.createElement("div");
 		div.setAttribute("class","left");
 		div.setAttribute("id","sessionUser");
+		var internalDiv = document.createElement("div");
 		var nameSpan = document.createElement("span");
 		nameSpan.setAttribute("class","text user");
 		nameSpan.innerHTML = name + ": ";
-		div.appendChild(nameSpan);
+		internalDiv.appendChild(nameSpan);
 		var messageSpan = document.createElement("span");
 		messageSpan.innerHTML = message;
-		div.appendChild(messageSpan);
+		internalDiv.appendChild(messageSpan);
+		div.appendChild(internalDiv);
+		var dateSpan = document.createElement("span");
+		dateSpan.setAttribute("class","smaller");
+		dateSpan.innerHTML = "&nbsp;&nbsp;" + dateString;
+		div.appendChild(dateSpan);
         var messageDiv = document.getElementById('messages'); 
         messageDiv.appendChild(div);
         var br2 = document.createElement("br");

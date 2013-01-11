@@ -1,7 +1,6 @@
 package it.polimi.swim.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,8 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "message")
@@ -32,8 +29,7 @@ public class Message implements Serializable, Comparable<Message> {
 	private String text;
 
 	@Column(name = "timestamp", nullable = false)
-	@Temporal(TemporalType.DATE)
-	private Date timestamp;
+	private long timestamp;
 
 	@OneToOne
 	@JoinColumn(name = "userID", nullable = false)
@@ -59,12 +55,12 @@ public class Message implements Serializable, Comparable<Message> {
 		this.text = text;
 	}
 
-	public Date getTimestamp() {
+	public long getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
+	public void setTimestamp(long dateTime) {
+		this.timestamp = dateTime;
 	}
 
 	public User getUser() {
@@ -101,11 +97,11 @@ public class Message implements Serializable, Comparable<Message> {
 
 	@Override
 	public int compareTo(Message other) {
-		if(this.timestamp.after(other.timestamp)){
+		if (this.timestamp > other.timestamp) {
 			return 1;
-		}else if(this.timestamp.before(other.timestamp)){
+		} else if (this.timestamp < other.timestamp) {
 			return -1;
-		}else if(this.timestamp.equals(other.timestamp)){
+		} else if (this.timestamp == other.timestamp) {
 			return 0;
 		}
 		return 0;

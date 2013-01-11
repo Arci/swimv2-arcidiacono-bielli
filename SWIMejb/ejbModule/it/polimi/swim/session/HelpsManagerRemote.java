@@ -107,12 +107,10 @@ public interface HelpsManagerRemote {
 	 * @param helpID
 	 * @param text
 	 *            the message text
-	 * @param date
-	 *            the timestamp of the message
 	 * @throws HelpException
 	 *             if help request not found
 	 */
-	public void addMessage(User writer, int helpID, String text, Date date)
+	public void addMessage(User writer, int helpID, String text)
 			throws HelpException;
 
 	/**

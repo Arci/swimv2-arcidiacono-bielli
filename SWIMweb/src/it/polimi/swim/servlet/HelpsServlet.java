@@ -178,9 +178,9 @@ public class HelpsServlet extends HttpServlet {
 					.parseInt(request.getParameter("show")));
 
 			request.setAttribute("helpToShow", help);
-			
+
 			List<Message> messages = helpsManager.getMessages(help.getId());
-			
+
 			request.setAttribute("messages", messages);
 
 		} catch (NamingException e) {
@@ -212,7 +212,7 @@ public class HelpsServlet extends HttpServlet {
 			helpsManager.addMessage(
 					(User) request.getSession().getAttribute("User"),
 					Integer.parseInt(request.getParameter("help")),
-					request.getParameter("message"), new Date());
+					request.getParameter("message"));
 
 			out.println("<result>OK</result>");
 		} catch (NamingException e) {

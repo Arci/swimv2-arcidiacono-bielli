@@ -9,6 +9,7 @@ import it.polimi.swim.session.exceptions.AbilityException;
 import it.polimi.swim.session.exceptions.HelpException;
 import it.polimi.swim.session.exceptions.UserException;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
@@ -274,7 +275,7 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 	}
 
 	@Override
-	public void addMessage(User writer, int helpID, String text, Date date)
+	public void addMessage(User writer, int helpID, String text)
 			throws HelpException {
 		try {
 			HelpRequest help = manager.find(HelpRequest.class, helpID);
@@ -282,11 +283,9 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 			Message message = new Message();
 			message.setHelpRequest(help);
 			message.setText(text);
-			message.setTimestamp(new Date());
+			message.setTimestamp(new Date().getTime());
 			message.setUser(writer);
 			manager.persist(message);
-
-			manager.merge(help);
 
 		} catch (NoResultException e) {
 			throw new HelpException("Help request not found");
@@ -302,6 +301,7 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 					.createQuery("FROM Message m WHERE m.helpRequest=:help");
 			q.setParameter("help", help);
 			List<Message> messages = (List<Message>) q.getResultList();
+			Collections.sort(messages);
 			return messages;
 		} catch (NoResultException e) {
 			throw new HelpException("Help request not found");

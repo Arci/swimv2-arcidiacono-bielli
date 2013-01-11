@@ -66,7 +66,7 @@ public class ProfileManager implements ProfileManagerRemote,
 		user.setEmail(params.get("email"));
 		user.setCity(params.get("city"));
 		user.setPhone(Integer.parseInt(params.get("phone")));
-//		user.setPassword(params.get("password"));
+		// user.setPassword(params.get("password"));
 		manager.merge(user);
 		return user;
 	}

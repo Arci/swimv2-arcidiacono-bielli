@@ -33,10 +33,6 @@
 	matgin-right: 3px;
 }
 
-.access .submit {
-	
-}
-
 /* MENU */
 .invertedshiftdown {
 	margin: 20px 40px;
@@ -165,6 +161,11 @@ fieldset {
 .user{
 	text-transform: capitalize;
 }
+
+.smaller {
+	font-size: xx-small;
+}
+
 /* FLOATING */
 .left {
 	float: left;
