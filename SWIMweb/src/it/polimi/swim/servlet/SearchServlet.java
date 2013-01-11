@@ -77,8 +77,9 @@ public class SearchServlet extends HttpServlet {
 							// search person and city
 							System.out
 									.println("*** [SearchServlet] {extended search} (person search) city search ***");
-							results = searchForPeople(
-									(String) request.getParameter("keywords"),
+							String keywords = (String) request
+									.getParameter("keywords");
+							results = searchForPeople(keywords,
 									(String) request.getParameter("city"));
 						} else {
 							// search only person
@@ -105,8 +106,9 @@ public class SearchServlet extends HttpServlet {
 							// search ability and city
 							System.out
 									.println("*** [SearchServlet] {extended search} (ability search) city search ***");
-							results = searchForAbilities(
-									(String) request.getParameter("keywords"),
+							String keywords = (String) request
+									.getParameter("keywords");
+							results = searchForAbilities(keywords,
 									(String) request.getParameter("city"));
 						} else {
 							// search only ability
@@ -142,18 +144,9 @@ public class SearchServlet extends HttpServlet {
 				for (User resultUser : results) {
 					for (User friend : friends) {
 						if (resultUser.equals(friend)) {
-							System.out.println("*** [SearchServlet] '"
-									+ resultUser.getUsername()
-									+ "' added to friendsResults list ***");
 							friendsResults.add(resultUser);
 						} else if (!resultUser.equals(user)) {
-							System.out.println("*** [SearchServlet] '"
-									+ resultUser.getUsername()
-									+ "' added to otherResults list ***");
 							otherResults.add(resultUser);
-						} else {
-							System.out
-									.println("*** [SearchServlet] user was searcher user ***");
 						}
 					}
 				}
@@ -176,8 +169,9 @@ public class SearchServlet extends HttpServlet {
 					if (areKeywordsSet(request, response)) {
 						System.out
 								.println("*** [SearchServlet] keywords set ***");
-						results = searchForPeople((String) request
-								.getParameter("keywords"));
+						String keywords = (String) request
+								.getParameter("keywords");
+						results = searchForPeople(keywords);
 
 						request.setAttribute("otherResults", results);
 					} else {
@@ -202,6 +196,7 @@ public class SearchServlet extends HttpServlet {
 			System.out.println("*** [SearchServlet] " + se.getMessage()
 					+ " ***");
 		}
+		request.setAttribute("searchType", request.getParameter("searchType"));
 		request.setAttribute("keywords", request.getParameter("keywords"));
 		redirect(request, response);
 

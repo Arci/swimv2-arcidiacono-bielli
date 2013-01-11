@@ -21,16 +21,27 @@
 				<form id="searchForm" action="search" method="post">
 					<%
 					User sessionUser = (User) session.getAttribute("User");
-					if (sessionUser != null) { %>
-						<input type="radio" name="searchType" value="person" checked="checked" /> Person 
-						<input type="radio" name="searchType" value="ability" />Abilities<br />
+					if (sessionUser != null) { 
+						if(request.getAttribute("searchType") != null){
+							String searchType = (String) request.getAttribute("searchType");
+							if(searchType.equals("person")){
+								%><input type="radio" name="searchType" value="person" checked="checked"/> Person
+								<input type="radio" name="searchType" value="ability"/> Ability<%
+							}else if(searchType.equals("ability")){
+								%><input type="radio" name="searchType" value="person"/> Person
+								<input type="radio" name="searchType" value="ability" checked="checked"/> Ability<%
+							}
+						} else {
+							%><input type="radio" name="searchType" value="person" checked="checked"/> Person
+							<input type="radio" name="searchType" value="ability"/> Ability<%
+						} %><br />
 					<% } else { %>
 						<input type="hidden" name="searchType" value="person" />
 					<% }
 					if(request.getAttribute("keywords") != null){
 						String keywords = (String) request.getAttribute("keywords");
-						out.println("<input type=\"text\" name=\"keywords\" value="
-							+ keywords + ">");
+						out.println("<input type=\"text\" name=\"keywords\" value='"
+							+ keywords + "'>");
 					}else{
 						out.println("<input type=\"text\" name=\"keywords\" />");
 					} %>
