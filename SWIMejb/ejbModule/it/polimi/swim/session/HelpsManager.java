@@ -286,9 +286,25 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 			message.setUser(writer);
 			manager.persist(message);
 
+			manager.merge(help);
+
 		} catch (NoResultException e) {
 			throw new HelpException("Help request not found");
 		}
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Message> getMessages(int id) throws HelpException {
+		try {
+			HelpRequest help = manager.find(HelpRequest.class, id);
+			Query q = manager
+					.createQuery("FROM Message m WHERE m.helpRequest=:help");
+			q.setParameter("help", help);
+			List<Message> messages = (List<Message>) q.getResultList();
+			return messages;
+		} catch (NoResultException e) {
+			throw new HelpException("Help request not found");
+		}
+	}
 }

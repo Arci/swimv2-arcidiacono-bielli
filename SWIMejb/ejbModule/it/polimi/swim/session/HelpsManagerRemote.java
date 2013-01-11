@@ -2,6 +2,7 @@ package it.polimi.swim.session;
 
 import it.polimi.swim.enums.HelpState;
 import it.polimi.swim.model.HelpRequest;
+import it.polimi.swim.model.Message;
 import it.polimi.swim.model.User;
 import it.polimi.swim.session.exceptions.AbilityException;
 import it.polimi.swim.session.exceptions.HelpException;
@@ -108,8 +109,20 @@ public interface HelpsManagerRemote {
 	 *            the message text
 	 * @param date
 	 *            the timestamp of the message
+	 * @throws HelpException
+	 *             if help request not found
 	 */
 	public void addMessage(User writer, int helpID, String text, Date date)
 			throws HelpException;
+
+	/**
+	 * return the sorted list of messages for the passed help request
+	 * 
+	 * @param id
+	 * @throws HelpException
+	 *             if help request not found
+	 * @return
+	 */
+	public List<Message> getMessages(int id) throws HelpException;
 
 }

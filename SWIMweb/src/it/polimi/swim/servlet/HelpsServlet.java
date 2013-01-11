@@ -2,6 +2,7 @@ package it.polimi.swim.servlet;
 
 import it.polimi.swim.enums.HelpState;
 import it.polimi.swim.model.HelpRequest;
+import it.polimi.swim.model.Message;
 import it.polimi.swim.model.User;
 import it.polimi.swim.session.HelpsManagerRemote;
 import it.polimi.swim.session.exceptions.AbilityException;
@@ -177,6 +178,10 @@ public class HelpsServlet extends HttpServlet {
 					.parseInt(request.getParameter("show")));
 
 			request.setAttribute("helpToShow", help);
+			
+			List<Message> messages = helpsManager.getMessages(help.getId());
+			
+			request.setAttribute("messages", messages);
 
 		} catch (NamingException e) {
 			e.printStackTrace();

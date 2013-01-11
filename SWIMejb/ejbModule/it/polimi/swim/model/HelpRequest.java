@@ -3,21 +3,17 @@ package it.polimi.swim.model;
 import it.polimi.swim.enums.HelpState;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -62,12 +58,6 @@ public class HelpRequest implements Serializable {
 	@Column(name = "state", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private HelpState state;
-
-	/**
-	 * List of messages associated in this help request
-	 */
-	@OneToMany(mappedBy = "helpRequest", fetch = FetchType.EAGER)
-	private List<Message> messages;
 
 	public int getId() {
 		return id;
@@ -131,23 +121,6 @@ public class HelpRequest implements Serializable {
 
 	public void setState(HelpState state) {
 		this.state = state;
-	}
-
-	public List<Message> getMessages() {
-		Collections.sort(messages);
-		return messages;
-	}
-
-	public void setMessages(List<Message> messages) {
-		this.messages = messages;
-	}
-
-	public void addMessage(Message message) {
-		messages.add(message);
-	}
-
-	public void removeMessage(Message message) {
-		messages.remove(message);
 	}
 
 	@Override

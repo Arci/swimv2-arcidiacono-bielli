@@ -53,12 +53,13 @@
 		}
 	}
 	%>
-</div><hr>
-<% if(help.getState().equals(HelpState.OPEN)){%>
-	<div id="chat">
+</div>
+<% if(!help.getState().equals(HelpState.PENDING)){%>
+	<hr><div id="chat">
 		<div id="messages">
 		<% 
-		List<Message> messages = help.getMessages();
+		@SuppressWarnings("unchecked")
+		List<Message> messages = (List<Message>) request.getAttribute("messages");
 		if(messages == null || messages.isEmpty()){
 			%><span id="initialWarning" class="message">There aren't any message yet!</span><%
 		}else{
@@ -84,10 +85,12 @@
 				}
 			}
 		} %></div><div style="clear: both;"></div>
+		<% if(help.getState().equals(HelpState.OPEN)){ %>
 		<div id="replyForm">
 			<p><input type="text" id="messageText" name="messageText" value="" />
-			<input type="button" name="Submit" value="reply" onclick="insertMessage('<%=help.getId()%>','<%= sessionUser.getName()%>');"/></p>
+			<input id="addReply" type="button" name="Submit" value="reply" onclick="insertMessage('<%=help.getId()%>','<%= sessionUser.getName()%>');"/></p>
 		</div>
+		<% } %>
 	</div>
 <% } %>
 
@@ -168,6 +171,7 @@
 	};
 
 	function addMessage(message, name){
+		document.getElementById("messageText").value = "";
 		var messageDiv = document.getElementById('messages'); 
 		if(document.getElementById("initialWarning")){
 			var initialWarning = document.getElementById("initialWarning");
@@ -194,5 +198,13 @@
         messageDiv.appendChild(div);
         var br2 = document.createElement("br");
         messageDiv.appendChild(br2);
+	};
+
+	window.onkeyup=function(){
+		//if press return then submit
+		var tasto = window.event.keyCode;
+		if (tasto == 13) {
+			document.getElementById("addReply").click();
+		}
 	};
 </script>
