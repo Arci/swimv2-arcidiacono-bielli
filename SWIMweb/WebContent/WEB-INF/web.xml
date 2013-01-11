@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>SWIMweb</display-name>
+	<welcome-file-list>
+		<welcome-file>home.jsp</welcome-file>
+	</welcome-file-list>
+	
+	<!--  common pages -->
+	<servlet>
+		<servlet-name>registrationServlet</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.RegistrationServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>registrationServlet</servlet-name>
+		<url-pattern>/registrationManager</url-pattern>
+	</servlet-mapping>	
+		<servlet>
+		<servlet-name>searchServlet</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.SearchServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>searchServlet</servlet-name>
+		<url-pattern>/search</url-pattern>
+	</servlet-mapping>
+	
+	<!-- registered user pages -->
+	<servlet>
+		<servlet-name>accessServlet</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.AccessServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>accessServlet</servlet-name>
+		<url-pattern>/accessManager</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>profileServlet</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.ProfileServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>profileServlet</servlet-name>
+		<url-pattern>/user/profile</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>abilitySuggestionServlet</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.AbilitySuggestionServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>abilitySuggestionServlet</servlet-name>
+		<url-pattern>/user/abilitySuggestion</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>friendsServlet</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.FriendsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>friendsServlet</servlet-name>
+		<url-pattern>/user/friends</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>helpsServlet</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.HelpsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>helpsServlet</servlet-name>
+		<url-pattern>/user/helps</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>userAbilityServlet</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.UserAbilityServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>userAbilityServlet</servlet-name>
+		<url-pattern>/user/ability</url-pattern>
+	</servlet-mapping>
+	
+	<!--  admin pages -->
+	<servlet>
+		<servlet-name>suggestServlet</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.SuggestServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>suggestServlet</servlet-name>
+		<url-pattern>/admin/suspended</url-pattern>
+	</servlet-mapping>	
+		<servlet>
+		<servlet-name>abilities</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.AbilityServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>abilities</servlet-name>
+		<url-pattern>/admin/newAbility</url-pattern>
+	</servlet-mapping>	
+</web-app>

@@ -1,0 +1,13 @@
+# System Files #
+*.DS_Store
+# Binary #
+*.class
+# Eclipse Files #
+.classpath
+.settings/
+*/bin
+*/build
+# Package Files #
+*.jar
+*.war
+*.ear
