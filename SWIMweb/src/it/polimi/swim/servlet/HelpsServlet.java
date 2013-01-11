@@ -45,6 +45,9 @@ public class HelpsServlet extends HttpServlet {
 		} else if (haveToShowHelp(request, response)) {
 			System.out.println("*** [HelpsServlet] show help ***");
 			showHelp(request, response);
+		} else if (haveToAddMessage(request, response)) {
+			System.out.println("*** [HelpsServlet] add message ***");
+			addMessage(request, response);
 		} else {
 			getHelpsInformation(request, response);
 		}
@@ -184,6 +187,48 @@ public class HelpsServlet extends HttpServlet {
 				.getRequestDispatcher("/user/helps.jsp")
 				.forward(request, response);
 
+	}
+
+	private void addMessage(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/xml;charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		out.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+		out.println("<response>");
+		try {
+			Hashtable<String, String> env = new Hashtable<String, String>();
+			env.put(Context.INITIAL_CONTEXT_FACTORY,
+					"org.jnp.interfaces.NamingContextFactory");
+			env.put(Context.PROVIDER_URL, "localhost:1099");
+			InitialContext jndiContext = new InitialContext(env);
+			Object ref = jndiContext.lookup("HelpsManager/remote");
+			HelpsManagerRemote helpsManager = (HelpsManagerRemote) ref;
+
+			helpsManager.addMessage(
+					(User) request.getSession().getAttribute("User"),
+					Integer.parseInt(request.getParameter("help")),
+					request.getParameter("message"), new Date());
+
+			out.println("<result>OK</result>");
+		} catch (NamingException e) {
+			out.println("<result>KO</result>");
+			out.println("<error>can't reach server</error>");
+		} catch (HelpException he) {
+			out.println("<result>KO</result>");
+			out.println("<error>" + he.getMessage() + "</error>");
+		}
+		out.println("</response>");
+	}
+
+	private boolean haveToAddMessage(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		if (request.getParameter("help") != null
+				&& request.getParameter("help") != ""
+				&& request.getParameter("message") != ""
+				&& request.getParameter("message") != "") {
+			return true;
+		}
+		return false;
 	}
 
 	private void getHelpsInformation(HttpServletRequest request,

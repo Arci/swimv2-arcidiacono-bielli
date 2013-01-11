@@ -29,13 +29,13 @@
 		<% } %>
 	</div>
 	<p><span class="text">Applicant user: </span>
-		<%=help.getUser().getName()%> <%=help.getUser().getSurname()%> 
+		<span class="user"><%=help.getUser().getName()%> <%=help.getUser().getSurname()%></span> 
 		<% if(!sessionUser.equals(help.getUser())) { %>
 			<a href="profile?username=<%=help.getUser().getUsername()%>&from=helps">Visualizza Profilo</a>
 		<% } %>
 	</p>
 	<p><span class="text">Helper user: </span>
-		<%=help.getHelper().getName()%> <%=help.getHelper().getSurname()%> 
+		<span class="user"><%=help.getHelper().getName()%> <%=help.getHelper().getSurname()%></span> 
 		<% if(!sessionUser.equals(help.getHelper())) { %>
 			<a href="profile?username=<%=help.getHelper().getUsername()%>&from=helps">Visualizza Profilo</a>
 		<% } %>
@@ -53,10 +53,44 @@
 		}
 	}
 	%>
-</div>
-<div id="chat">
+</div><hr>
+<% if(help.getState().equals(HelpState.OPEN)){%>
+	<div id="chat">
+		<div id="messages">
+		<% 
+		List<Message> messages = help.getMessages();
+		if(messages == null || messages.isEmpty()){
+			%><span id="initialWarning" class="message">There aren't any message yet!</span><%
+		}else{
+			Iterator<Message> itr = messages.iterator();
+			Message message = null;
+			while(itr.hasNext()){
+				message = itr.next();
+				if(message.getUser().equals(sessionUser)){
+					%><div id="sessionUser" class="left">
+						<span class="text user"><%=sessionUser.getName() %>: </span>
+						<span><%=message.getText()%></span>
+					</div><%
+				} else {
+					%><div id="otherUser" class="right">
+						<span class="text user"><%=help.getHelper().getName() %>: </span>
+						<span><%=message.getText()%></span>
+					</div><%
+				} 
+				if(itr.hasNext()){
+					%><br/><br/><%
+				}else{
+					%><br/><%
+				}
+			}
+		} %></div><div style="clear: both;"></div>
+		<div id="replyForm">
+			<p><input type="text" id="messageText" name="messageText" value="" />
+			<input type="button" name="Submit" value="reply" onclick="insertMessage('<%=help.getId()%>','<%= sessionUser.getName()%>');"/></p>
+		</div>
+	</div>
+<% } %>
 
-</div>
 <script type="text/javascript">
 	function showFeedbacks(){
 		var helpText = document.getElementById("helpText");
@@ -86,5 +120,79 @@
 			console.log("id: "+ id +" link: " + link);
 			link.src="/SWIMweb/img/emptyStar.png";
 		};
+	};
+
+	function insertMessage(helpID, name) {
+		xmlhttp = new XMLHttpRequest();
+		var message = 	document.getElementById("messageText").value;
+		console.log("MESSAGE:\n" + message+ "\n");
+		if(message != ""){
+			var url =  "/SWIMweb/user/helps?help=" + helpID + "&message="+message;
+			console.log("AJAX REQUEST TO:\n" + url+ "\n");
+			xmlhttp.onreadystatechange = function () {
+			    if (xmlhttp.readyState == 4) {
+			        if( xmlhttp.status == 200 ){ 
+			        	console.log("RESPONSE TEXT:\n"+ xmlhttp.responseText);
+				        console.log("RESPONSE XML:\n"+ xmlhttp.responseXML);
+				        var response = xmlhttp.responseXML.getElementsByTagName("result")[0].childNodes[0].nodeValue;
+				        console.log("VALUE:\n"+ response);
+				        if(response == "OK"){
+				        	addMessage(message, name);
+				        } else {
+							var error = xmlhttp.responseXML.getElementsByTagName("error")[0].childNodes[0].nodeValue;
+							addError(error);
+						};
+			        } else {
+			        	addError('Problems during the request');
+			     	};
+			    };
+			};
+			xmlhttp.open("GET", url, true);
+			xmlhttp.send(null);
+		}else{
+			addError("You must enter a message!");
+		};
+	};
+
+	function addError(message){
+		if(document.getElementById("errorSpan")){
+			var errorSpan = document.getElementById("errorSpan");
+			errorSpan.parentNode.removeChild(errorSpan);
+		}
+		var span = document.createElement("span");
+		span.setAttribute("class","error");
+		span.setAttribute("id","errorSpan");
+		span.innerHTML = message;
+        var replyForm = document.getElementById('replyForm'); 
+        replyForm.appendChild(span);
+	};
+
+	function addMessage(message, name){
+		var messageDiv = document.getElementById('messages'); 
+		if(document.getElementById("initialWarning")){
+			var initialWarning = document.getElementById("initialWarning");
+			initialWarning.parentNode.removeChild(initialWarning);
+		}else{
+			var br1 = document.createElement("br");
+		    messageDiv.appendChild(br1);
+		}
+		if(document.getElementById("errorSpan")){
+			var errorSpan = document.getElementById("errorSpan");
+			errorSpan.parentNode.removeChild(errorSpan);
+		}
+		var div = document.createElement("div");
+		div.setAttribute("class","left");
+		div.setAttribute("id","sessionUser");
+		var nameSpan = document.createElement("span");
+		nameSpan.setAttribute("class","text user");
+		nameSpan.innerHTML = name + ": ";
+		div.appendChild(nameSpan);
+		var messageSpan = document.createElement("span");
+		messageSpan.innerHTML = message;
+		div.appendChild(messageSpan);
+        var messageDiv = document.getElementById('messages'); 
+        messageDiv.appendChild(div);
+        var br2 = document.createElement("br");
+        messageDiv.appendChild(br2);
 	};
 </script>

@@ -99,4 +99,17 @@ public interface HelpsManagerRemote {
 	 */
 	public void closeHelpRequest(HelpState state, int helpID, int vote);
 
+	/**
+	 * add a message to the specified help request
+	 * 
+	 * @param attribute
+	 * @param helpID
+	 * @param text
+	 *            the message text
+	 * @param date
+	 *            the timestamp of the message
+	 */
+	public void addMessage(User writer, int helpID, String text, Date date)
+			throws HelpException;
+
 }

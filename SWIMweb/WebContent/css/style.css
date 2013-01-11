@@ -162,6 +162,9 @@ fieldset {
 	color: #0066FF;
 }
 
+.user{
+	text-transform: capitalize;
+}
 /* FLOATING */
 .left {
 	float: left;

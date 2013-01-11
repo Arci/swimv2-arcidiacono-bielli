@@ -3,6 +3,7 @@ package it.polimi.swim.session;
 import it.polimi.swim.enums.HelpState;
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.HelpRequest;
+import it.polimi.swim.model.Message;
 import it.polimi.swim.model.User;
 import it.polimi.swim.session.exceptions.AbilityException;
 import it.polimi.swim.session.exceptions.HelpException;
@@ -270,6 +271,24 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 			System.out.println("*** [HelpsManager] help request not found ***");
 		}
 
+	}
+
+	@Override
+	public void addMessage(User writer, int helpID, String text, Date date)
+			throws HelpException {
+		try {
+			HelpRequest help = manager.find(HelpRequest.class, helpID);
+
+			Message message = new Message();
+			message.setHelpRequest(help);
+			message.setText(text);
+			message.setTimestamp(new Date());
+			message.setUser(writer);
+			manager.persist(message);
+
+		} catch (NoResultException e) {
+			throw new HelpException("Help request not found");
+		}
 	}
 
 }

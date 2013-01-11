@@ -1,5 +1,6 @@
 package it.polimi.swim.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -17,7 +18,9 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "message")
-public class Message {
+public class Message implements Serializable, Comparable<Message> {
+
+	private static final long serialVersionUID = 2362561311034019242L;
 
 	@Id
 	@SequenceGenerator(name = "Sequence", sequenceName = "SEQ_CUSTOM_WD")
@@ -94,6 +97,18 @@ public class Message {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public int compareTo(Message other) {
+		if(this.timestamp.after(other.timestamp)){
+			return 1;
+		}else if(this.timestamp.before(other.timestamp)){
+			return -1;
+		}else if(this.timestamp.equals(other.timestamp)){
+			return 0;
+		}
+		return 0;
 	}
 
 }
