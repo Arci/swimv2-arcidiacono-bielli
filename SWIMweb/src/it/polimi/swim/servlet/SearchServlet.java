@@ -198,6 +198,7 @@ public class SearchServlet extends HttpServlet {
 			System.out.println("*** [SearchServlet] " + se.getMessage()
 					+ " ***");
 		}
+		request.setAttribute("city", request.getParameter("city"));
 		request.setAttribute("searchType", request.getParameter("searchType"));
 		request.setAttribute("keywords", request.getParameter("keywords"));
 		redirect(request, response);

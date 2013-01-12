@@ -23,11 +23,11 @@
 					User sessionUser = (User) session.getAttribute("User");
 					if (sessionUser != null) { 
 						if(request.getAttribute("searchType") != null){
-							String searchType = (String) request.getAttribute("searchType");
-							if(searchType.equals("person")){
+							String oldSearchType = (String) request.getAttribute("searchType");
+							if(oldSearchType.equals("person")){
 								%><input type="radio" name="searchType" value="person" checked="checked"/> Person
 								<input type="radio" name="searchType" value="ability"/> Ability<%
-							}else if(searchType.equals("ability")){
+							}else if(oldSearchType.equals("ability")){
 								%><input type="radio" name="searchType" value="person"/> Person
 								<input type="radio" name="searchType" value="ability" checked="checked"/> Ability<%
 							}
@@ -39,9 +39,9 @@
 						<input type="hidden" name="searchType" value="person" />
 					<% }
 					if(request.getAttribute("keywords") != null){
-						String keywords = (String) request.getAttribute("keywords");
+						String oldKeywords = (String) request.getAttribute("keywords");
 						out.println("<input type=\"text\" name=\"keywords\" value='"
-							+ keywords + "'>");
+							+ oldKeywords + "'>");
 					}else{
 						out.println("<input type=\"text\" name=\"keywords\" />");
 					} 
@@ -50,10 +50,19 @@
 								@SuppressWarnings("unchecked")
 								List<String> cities = (List<String>) request.getAttribute("cities");
 								if (!cities.isEmpty()) {
+									String oldCity = (String) request.getAttribute("city");
 									%><br /><select name="city"><%
-										out.println("<option value=\"allCities\">all cities</option>");
+										if(oldCity == null){
+											out.println("<option selected value=\"allCities\">all cities</option>");
+										}else{
+											out.println("<option value=\"allCities\">all cities</option>");
+										}
 										for(String city : cities){
-											out.println("<option value=\"" + city + "\">" + city+ "</option>");
+											if(oldCity != null && oldCity.equals(city)){
+												out.println("<option selected value=\"" + city + "\">" + city+ "</option>");
+											}else{
+												out.println("<option value=\"" + city + "\">" + city+ "</option>");
+											}
 										}
 									%></select> <%
 								}else{
