@@ -30,7 +30,7 @@ public class SearchManager implements SearchManagerRemote, SearchManagerLocal {
 							+ "AND u.type=:normal");
 			q.setParameter("pattern", pattern);
 			q.setParameter("normal", UserType.NORMAL);
-			List<User> result = (List<User>) q.getResultList();
+			List<User> result = q.getResultList();
 			return result;
 		} catch (NoResultException exc) {
 			return null;
@@ -45,7 +45,7 @@ public class SearchManager implements SearchManagerRemote, SearchManagerLocal {
 					.createQuery("SELECT OBJECT(u) FROM User u JOIN u.abilities AS a WHERE a.name=:pattern AND u.type=:normal");
 			q.setParameter("pattern", pattern);
 			q.setParameter("normal", UserType.NORMAL);
-			List<User> result = (List<User>) q.getResultList();
+			List<User> result = q.getResultList();
 			return result;
 		} catch (NoResultException exc) {
 			return null;
@@ -63,7 +63,7 @@ public class SearchManager implements SearchManagerRemote, SearchManagerLocal {
 			q.setParameter("pattern", pattern);
 			q.setParameter("city", cityPattern);
 			q.setParameter("normal", UserType.NORMAL);
-			List<User> result = (List<User>) q.getResultList();
+			List<User> result = q.getResultList();
 			return result;
 		} catch (NoResultException exc) {
 			return null;
@@ -79,7 +79,7 @@ public class SearchManager implements SearchManagerRemote, SearchManagerLocal {
 			q.setParameter("pattern", pattern);
 			q.setParameter("city", cityPattern);
 			q.setParameter("normal", UserType.NORMAL);
-			List<User> result = (List<User>) q.getResultList();
+			List<User> result = q.getResultList();
 			return result;
 		} catch (NoResultException exc) {
 			return null;
@@ -100,7 +100,7 @@ public class SearchManager implements SearchManagerRemote, SearchManagerLocal {
 				q.setParameter("city", cityPattern);
 			}
 			q.setParameter("normal", UserType.NORMAL);
-			List<User> result = (List<User>) q.getResultList();
+			List<User> result = q.getResultList();
 			return result;
 		} catch (NoResultException exc) {
 			return null;
@@ -114,7 +114,7 @@ public class SearchManager implements SearchManagerRemote, SearchManagerLocal {
 			Query q = manager
 					.createQuery("SELECT DISTINCT u.city FROM User u WHERE u.type=:normal");
 			q.setParameter("normal", UserType.NORMAL);
-			List<String> result = (List<String>) q.getResultList();
+			List<String> result = q.getResultList();
 			return result;
 		} catch (NoResultException exc) {
 			return null;

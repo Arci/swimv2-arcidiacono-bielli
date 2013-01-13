@@ -88,7 +88,7 @@ public class AbilityManager implements AbilityManagerRemote,
 	public List<Ability> getAbilityList() {
 		try {
 			Query q = manager.createQuery("FROM Ability a");
-			List<Ability> abilities = (List<Ability>) q.getResultList();
+			List<Ability> abilities = q.getResultList();
 			System.out.println("*** [AbilityManager] abilities found ***");
 			return abilities;
 		} catch (NoResultException exc) {
@@ -124,8 +124,9 @@ public class AbilityManager implements AbilityManagerRemote,
 				System.out
 						.println("*** [AbilityManager] there are ability requests ***");
 				return result;
-			} else
+			} else {
 				throw new NoResultException();
+			}
 		} catch (NoResultException e) {
 			System.out
 					.println("*** [AbilityManager] there aren't ability requests ***");
@@ -153,8 +154,9 @@ public class AbilityManager implements AbilityManagerRemote,
 				request.setState(RequestState.REJECTED);
 				System.out.println("*** [AbilityManager] state of '"
 						+ request.getText() + "' became refused ***");
-			} else
+			} else {
 				System.out.println("*** [AbilityManager] error state ***");
+			}
 			manager.merge(request);
 
 		} catch (NoResultException exc) {

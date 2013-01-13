@@ -1,5 +1,4 @@
 package it.polimi.swim.session;
-
 import it.polimi.swim.enums.UserType;
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.User;
@@ -19,6 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 
 @Stateless
 public class ProfileManager implements ProfileManagerRemote,
@@ -76,7 +76,7 @@ public class ProfileManager implements ProfileManagerRemote,
 	public boolean isUsernameUnique(String username) {
 		try {
 			Query q = manager.createQuery("SELECT u.username FROM User AS u");
-			List<String> usernames = (List<String>) q.getResultList();
+			List<String> usernames = q.getResultList();
 			Iterator<String> itr = usernames.iterator();
 			while (itr.hasNext()) {
 				String name = itr.next();
@@ -99,7 +99,7 @@ public class ProfileManager implements ProfileManagerRemote,
 	public boolean isEmailUnique(String email) {
 		try {
 			Query q = manager.createQuery("SELECT u.email FROM User AS u");
-			List<String> mails = (List<String>) q.getResultList();
+			List<String> mails = q.getResultList();
 			Iterator<String> itr = mails.iterator();
 			while (itr.hasNext()) {
 				String mail = itr.next();
@@ -170,7 +170,7 @@ public class ProfileManager implements ProfileManagerRemote,
 			normal.setType(UserType.NORMAL);
 			normal.setName((String) params.get("name"));
 			normal.setSurname((String) params.get("surname"));
-			normal.setUsername((String) normalUsername);
+			normal.setUsername(normalUsername);
 			normal.setEmail((String) params.get("email"));
 			normal.setPassword((String) params.get("password"));
 			// normal.setCity((String) params.get("city"));

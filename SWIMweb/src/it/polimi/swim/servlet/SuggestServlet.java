@@ -75,8 +75,9 @@ public class SuggestServlet extends HttpServlet {
 		if (req.getParameter("ability") != null
 				&& !req.getParameter("ability").equals("")) {
 			return true;
-		} else
+		} else {
 			return false;
+		}
 	}
 
 }

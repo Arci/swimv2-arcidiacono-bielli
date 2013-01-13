@@ -7,6 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css" href="../css/style.css" />
+<script type="text/javascript" src="../js/showHelps.js"></script>
 <title>SWIM - Richieste di aiuto</title>
 </head>
 <body>

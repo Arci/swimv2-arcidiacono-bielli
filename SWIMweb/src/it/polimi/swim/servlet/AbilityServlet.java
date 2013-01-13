@@ -30,7 +30,7 @@ public class AbilityServlet extends HttpServlet {
 			AbilityManagerRemote abilityManager = (AbilityManagerRemote) ref;
 
 			if (hasNewAbility(req, resp)) {
-				String name = (String) req.getParameter("newAbility");
+				String name = req.getParameter("newAbility");
 				abilityManager.insertNewAbility(name);
 				resp.sendRedirect("/SWIMweb/admin/newAbility");
 				return;
@@ -57,7 +57,8 @@ public class AbilityServlet extends HttpServlet {
 			HttpServletResponse resp) {
 		if (req.getParameter("newAbility") != null) {
 			return true;
-		} else
+		} else {
 			return false;
+		}
 	}
 }

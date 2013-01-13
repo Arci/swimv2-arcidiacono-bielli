@@ -1,5 +1,4 @@
 package it.polimi.swim.session;
-
 import it.polimi.swim.enums.HelpState;
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.HelpRequest;
@@ -23,6 +22,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 
 @Stateless
 public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
@@ -127,7 +127,7 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 					.createQuery("FROM HelpRequest h WHERE h.helper=:user AND h.state=:state");
 			q.setParameter("user", user);
 			q.setParameter("state", HelpState.OPEN);
-			List<HelpRequest> request = (List<HelpRequest>) q.getResultList();
+			List<HelpRequest> request = q.getResultList();
 			if (request == null || request.isEmpty()) {
 				System.out
 						.println("*** [HelpsManager] help request list found ***");
@@ -149,7 +149,7 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 					.createQuery("FROM HelpRequest h WHERE h.user=:user AND h.state=:state");
 			q.setParameter("user", user);
 			q.setParameter("state", HelpState.OPEN);
-			List<HelpRequest> request = (List<HelpRequest>) q.getResultList();
+			List<HelpRequest> request = q.getResultList();
 			if (request == null || request.isEmpty()) {
 				System.out
 						.println("*** [HelpsManager] help request list found ***");
@@ -171,7 +171,7 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 					.createQuery("FROM HelpRequest h WHERE (h.user=:user OR h.helper=:user) AND h.state=:state");
 			q.setParameter("user", user);
 			q.setParameter("state", HelpState.CLOSED);
-			List<HelpRequest> request = (List<HelpRequest>) q.getResultList();
+			List<HelpRequest> request = q.getResultList();
 			if (request == null || request.isEmpty()) {
 				System.out
 						.println("*** [HelpsManager] help request list found ***");
@@ -193,7 +193,7 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 					.createQuery("FROM HelpRequest h WHERE h.user=:user AND h.state=:state");
 			q.setParameter("user", user);
 			q.setParameter("state", HelpState.PENDING);
-			List<HelpRequest> request = (List<HelpRequest>) q.getResultList();
+			List<HelpRequest> request = q.getResultList();
 			if (request == null || request.isEmpty()) {
 				System.out
 						.println("*** [HelpsManager] help request list found ***");
@@ -215,7 +215,7 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 					.createQuery("FROM HelpRequest h WHERE h.helper=:user AND h.state=:state");
 			q.setParameter("user", user);
 			q.setParameter("state", HelpState.PENDING);
-			List<HelpRequest> request = (List<HelpRequest>) q.getResultList();
+			List<HelpRequest> request = q.getResultList();
 			if (request == null || request.isEmpty()) {
 				System.out
 						.println("*** [HelpsManager] help request list found ***");
@@ -300,7 +300,7 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 			Query q = manager
 					.createQuery("FROM Message m WHERE m.helpRequest=:help");
 			q.setParameter("help", help);
-			List<Message> messages = (List<Message>) q.getResultList();
+			List<Message> messages = q.getResultList();
 			Collections.sort(messages);
 			return messages;
 		} catch (NoResultException e) {

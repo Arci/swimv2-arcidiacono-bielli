@@ -1,5 +1,4 @@
 package it.polimi.swim.session;
-
 import it.polimi.swim.enums.HelpState;
 import it.polimi.swim.enums.RequestState;
 import it.polimi.swim.enums.UserType;
@@ -18,6 +17,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 
 @Stateless
 public class InitializationManager implements InitializationManagerLocal,
@@ -189,9 +189,9 @@ public class InitializationManager implements InitializationManagerLocal,
 	public void addAbilitiesToUsers() {
 		try {
 			Query q = manager.createQuery("FROM User u");
-			List<User> users = (List<User>) q.getResultList();
+			List<User> users = q.getResultList();
 			q = manager.createQuery("FROM Ability a");
-			List<Ability> abilities = (List<Ability>) q.getResultList();
+			List<Ability> abilities = q.getResultList();
 			Iterator<User> itr = users.iterator();
 			while (itr.hasNext()) {
 				User normal = itr.next();
@@ -217,9 +217,9 @@ public class InitializationManager implements InitializationManagerLocal,
 		// sempre uguale ma con rating generato random [0,5]
 		try {
 			Query q = manager.createQuery("FROM User u");
-			List<User> users = (List<User>) q.getResultList();
+			List<User> users = q.getResultList();
 			q = manager.createQuery("FROM Ability a");
-			List<Ability> abilities = (List<Ability>) q.getResultList();
+			List<Ability> abilities = q.getResultList();
 			HelpRequest help = new HelpRequest();
 			for (User u : users) {
 				if (u.getType().equals(UserType.NORMAL)) {

@@ -24,6 +24,7 @@ public class RegistrationServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO do get
@@ -33,6 +34,7 @@ public class RegistrationServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
@@ -97,34 +99,33 @@ public class RegistrationServlet extends HttpServlet {
 		MissingRegistrationParametersException e1 = new MissingRegistrationParametersException();
 		DuplicatedRegistrationParameterException e2 = new DuplicatedRegistrationParameterException();
 
-		if ((String) request.getParameter("name") == null
-				|| (String) request.getParameter("name") == "") {
+		if (request.getParameter("name") == null
+				|| request.getParameter("name") == "") {
 			e1.addMissingParameter("name");
 		}
 
-		if ((String) request.getParameter("username") == null
-				|| (String) request.getParameter("username") == "") {
+		if (request.getParameter("username") == null
+				|| request.getParameter("username") == "") {
 			e1.addMissingParameter("username");
-		} else if (!profileManager.isUsernameUnique((String) request
+		} else if (!profileManager.isUsernameUnique(request
 				.getParameter("username"))) {
 			e2.addDuplicatedParameter("username");
 		}
 
-		if ((String) request.getParameter("email") == null
-				|| (String) request.getParameter("email") == "") {
+		if (request.getParameter("email") == null
+				|| request.getParameter("email") == "") {
 			e1.addMissingParameter("email");
-		} else if (!profileManager.isEmailUnique((String) request
-				.getParameter("email"))) {
+		} else if (!profileManager.isEmailUnique(request.getParameter("email"))) {
 			e2.addDuplicatedParameter("email");
 		}
 
-		if ((String) request.getParameter("password") == null
-				|| (String) request.getParameter("password") == "") {
+		if (request.getParameter("password") == null
+				|| request.getParameter("password") == "") {
 			e1.addMissingParameter("password");
 		}
 
-		if ((String) request.getParameter("checkPassword") == null
-				|| (String) request.getParameter("checkPassword") == "") {
+		if (request.getParameter("checkPassword") == null
+				|| request.getParameter("checkPassword") == "") {
 			e1.addMissingParameter("checkPassword");
 		}
 

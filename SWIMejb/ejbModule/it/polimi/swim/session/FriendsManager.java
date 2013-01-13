@@ -94,7 +94,7 @@ public class FriendsManager implements FriendsManagerRemote,
 					.createQuery("SELECT f.friend FROM Friendship f WHERE f.user=:user AND f.state=:accepted");
 			q.setParameter("user", user);
 			q.setParameter("accepted", RequestState.ACCEPTED);
-			List<User> friends = (List<User>) q.getResultList();
+			List<User> friends = q.getResultList();
 			if (friends == null || friends.isEmpty()) {
 				System.out
 						.println("*** [FriendsManager] friends list not found ***");
@@ -117,7 +117,7 @@ public class FriendsManager implements FriendsManagerRemote,
 					.createQuery("FROM Friendship f WHERE f.friend=:user AND f.state=:pending");
 			q.setParameter("user", user);
 			q.setParameter("pending", RequestState.PENDING);
-			List<Friendship> request = (List<Friendship>) q.getResultList();
+			List<Friendship> request = q.getResultList();
 			if (request == null || request.isEmpty()) {
 				System.out
 						.println("*** [FriendsManager] friendship request list found ***");
@@ -139,7 +139,7 @@ public class FriendsManager implements FriendsManagerRemote,
 					.createQuery("FROM Friendship f WHERE f.user=:user AND f.state=:pending");
 			q.setParameter("user", user);
 			q.setParameter("pending", RequestState.PENDING);
-			List<Friendship> pending = (List<Friendship>) q.getResultList();
+			List<Friendship> pending = q.getResultList();
 			if (pending == null || pending.isEmpty()) {
 				System.out
 						.println("*** [FriendsManager] pending list found ***");

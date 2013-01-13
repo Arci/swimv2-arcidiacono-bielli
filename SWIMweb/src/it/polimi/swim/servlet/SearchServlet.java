@@ -31,6 +31,7 @@ public class SearchServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		System.out
@@ -43,6 +44,7 @@ public class SearchServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("cities", getCities());
@@ -72,8 +74,7 @@ public class SearchServlet extends HttpServlet {
 					// search only by city
 					System.out
 							.println("*** [SearchServlet] {extended search} (city search) search only by city ***");
-					results = searchForCity((String) request
-							.getParameter("city"));
+					results = searchForCity(request.getParameter("city"));
 				} else if (isSetPersonPattern(request, response)) {
 					// search person
 					System.out
@@ -85,15 +86,14 @@ public class SearchServlet extends HttpServlet {
 							// search person and city
 							System.out
 									.println("*** [SearchServlet] {extended search} (person search) city search ***");
-							String keywords = (String) request
-									.getParameter("keywords");
+							String keywords = request.getParameter("keywords");
 							results = searchForPeople(keywords,
-									(String) request.getParameter("city"));
+									request.getParameter("city"));
 						} else {
 							// search only person
 							System.out
 									.println("*** [SearchServlet] {extended search} (person search) search without city ***");
-							results = searchForPeople((String) request
+							results = searchForPeople(request
 									.getParameter("keywords"));
 						}
 					} else {
@@ -114,15 +114,14 @@ public class SearchServlet extends HttpServlet {
 							// search ability and city
 							System.out
 									.println("*** [SearchServlet] {extended search} (ability search) city search ***");
-							String keywords = (String) request
-									.getParameter("keywords");
+							String keywords = request.getParameter("keywords");
 							results = searchForAbilities(keywords,
-									(String) request.getParameter("city"));
+									request.getParameter("city"));
 						} else {
 							// search only ability
 							System.out
 									.println("*** [SearchServlet] {extended search} (ability search) search without city ***");
-							results = searchForAbilities((String) request
+							results = searchForAbilities(request
 									.getParameter("keywords"));
 						}
 					} else {
@@ -171,8 +170,7 @@ public class SearchServlet extends HttpServlet {
 					if (areKeywordsSet(request, response)) {
 						System.out
 								.println("*** [SearchServlet] keywords set ***");
-						String keywords = (String) request
-								.getParameter("keywords");
+						String keywords = request.getParameter("keywords");
 						results = searchForPeople(keywords);
 
 						request.setAttribute("otherResults", results);

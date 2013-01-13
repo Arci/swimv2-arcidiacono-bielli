@@ -1,10 +1,10 @@
 package it.polimi.swim.session;
-
 import it.polimi.swim.model.User;
 
 import java.util.List;
 
 import javax.ejb.Remote;
+
 
 @Remote
 public interface SearchManagerRemote {

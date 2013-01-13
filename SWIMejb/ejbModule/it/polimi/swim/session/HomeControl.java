@@ -18,6 +18,7 @@ public class HomeControl implements HomeControlRemote, HomeControlLocal {
 		super();
 	}
 
+	@Override
 	public User checkLogin(String username, String password) {
 		try {
 			Query q = manager

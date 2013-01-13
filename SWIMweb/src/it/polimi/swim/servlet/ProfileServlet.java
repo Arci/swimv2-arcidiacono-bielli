@@ -1,5 +1,4 @@
 package it.polimi.swim.servlet;
-
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.User;
 import it.polimi.swim.session.FriendsManagerRemote;
@@ -17,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 public class ProfileServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -4806101806094670071L;
@@ -29,6 +29,7 @@ public class ProfileServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		if (!haveToShowSessionUserProfile(request, response)) {
@@ -43,9 +44,8 @@ public class ProfileServlet extends HttpServlet {
 				ref = jndiContext.lookup("FriendsManager/remote");
 				FriendsManagerRemote friendsManager = (FriendsManagerRemote) ref;
 
-				User userLoaded = profileManager
-						.getUserByUsername((String) request
-								.getParameter("username"));
+				User userLoaded = profileManager.getUserByUsername(request
+						.getParameter("username"));
 				request.setAttribute("userLoaded", userLoaded);
 				getUserInformation(userLoaded, request, response);
 
@@ -88,6 +88,7 @@ public class ProfileServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO manage modify profile
