@@ -132,7 +132,7 @@
 				</div>
 				<% if(buttons){ %>
 					<div id="buttons" class="right">
-						<div id="friendship">
+						<div id="friendDiv">
 						<% if(request.getAttribute("friendState") != null
 								&& request.getAttribute("friendState") != ""){
 								if(request.getAttribute("friendState").equals("pending")){
@@ -150,7 +150,7 @@
 								}
 							} %>
 							</div><br/>
-							<div id="helpRequest">
+							<div id="helpDiv">
 								<%
 									if(user.getAbilities().isEmpty()){
 										out.println("<span class=\"message\">This user doesn't have abilities, you cannot ask him for help</span>");
@@ -160,7 +160,7 @@
 												out.println("<option value=\"" + ability.getName() + "\">" + ability.getName() + "</option>");
 											}
 										%></select>
-										<input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" />
+										<input type="button" id="help" onclick="addRequest('help','<%=user.getUsername()%>');" value="Ask for help" /><br/>
 										<%
 									}
 								%>

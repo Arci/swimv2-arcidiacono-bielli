@@ -5,9 +5,7 @@ import it.polimi.swim.model.User;
 import it.polimi.swim.session.HomeControlRemote;
 
 import java.io.IOException;
-import java.util.Hashtable;
 
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
@@ -52,11 +50,8 @@ public class AccessServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		try {
-			Hashtable<String, String> env = new Hashtable<String, String>();
-			env.put(Context.INITIAL_CONTEXT_FACTORY,
-					"org.jnp.interfaces.NamingContextFactory");
-			env.put(Context.PROVIDER_URL, "localhost:1099");
-			InitialContext jndiContext = new InitialContext(env);
+			InitialContext jndiContext = new InitialContext();
+
 			Object ref = jndiContext.lookup("HomeControl/remote");
 			HomeControlRemote homeControl = (HomeControlRemote) ref;
 			if (request.getParameter("username") != null

@@ -18,11 +18,7 @@
 		<%
 			//inserimento fake users
 			try {
-				Hashtable<String, String> env = new Hashtable<String, String>();
-				env.put(Context.INITIAL_CONTEXT_FACTORY,
-						"org.jnp.interfaces.NamingContextFactory");
-				env.put(Context.PROVIDER_URL, "localhost:1099");
-				InitialContext jndiContext = new InitialContext(env);
+				InitialContext jndiContext = new InitialContext();
 				Object ref = jndiContext.lookup("InitializationManager/remote");
 				InitializationManagerRemote initializationManager = (InitializationManagerRemote) ref;
 				initializationManager.addFakeUsers();

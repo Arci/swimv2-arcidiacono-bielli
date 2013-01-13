@@ -27,15 +27,16 @@ function addRequest(type, username) {
 				var response = xmlhttp.responseXML
 						.getElementsByTagName("result")[0].childNodes[0].nodeValue;
 				if (response === "OK") {
-					manageMessage('message', messageSpan, okMessage);
+					manageMessage('message', messageSpan, type, okMessage);
 					manageButtonDiv(type);
 				} else {
 					var error = xmlhttp.responseXML
 							.getElementsByTagName("error")[0].childNodes[0].nodeValue;
-					manageMessage('error', messageSpan, error);
+					manageMessage('error', messageSpan, type, error);
 				}
 			} else {
-				manageMessage('error', errorSpan, 'Problems during the request');
+				manageMessage('error', errorSpan, type,
+						'Problems during the request');
 			}
 		}
 	};
@@ -51,15 +52,20 @@ function manageButtonDiv(type) {
 	}
 }
 
-function manageMessage(clazz, id, message) {
+function manageMessage(clazz, spanId, type, message) {
 	"use strict";
-	var buttonsDiv = document.getElementById('buttons');
-	if (document.getElementById(id)) {
-		buttonsDiv.removeChild(document.getElementById(id));
+	var div = null;
+	if (type === "help") {
+		div = document.getElementById('helpDiv');
+	} else if (type === "friend") {
+		div = document.getElementById('friendDiv');
+	}
+	if (document.getElementById(spanId)) {
+		div.removeChild(document.getElementById(spanId));
 	}
 	var span = document.createElement("span");
 	span.setAttribute("class", clazz);
-	span.setAttribute("id", id);
+	span.setAttribute("id", spanId);
 	span.innerHTML = message;
-	buttonsDiv.appendChild(span);
+	div.appendChild(span);
 }

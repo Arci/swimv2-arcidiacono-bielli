@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
 
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
@@ -27,7 +26,6 @@ public class RegistrationServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO do get
 	}
 
 	/**
@@ -39,11 +37,7 @@ public class RegistrationServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 
 		try {
-			Hashtable<String, String> env = new Hashtable<String, String>();
-			env.put(Context.INITIAL_CONTEXT_FACTORY,
-					"org.jnp.interfaces.NamingContextFactory");
-
-			InitialContext jndiContext = new InitialContext(env);
+			InitialContext jndiContext = new InitialContext();
 			Object ref = jndiContext.lookup("ProfileManager/remote");
 
 			ProfileManagerRemote profileManager = (ProfileManagerRemote) ref;

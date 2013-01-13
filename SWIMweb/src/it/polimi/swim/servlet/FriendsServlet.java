@@ -9,10 +9,8 @@ import it.polimi.swim.session.exceptions.UserException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Hashtable;
 import java.util.List;
 
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
@@ -77,11 +75,8 @@ public class FriendsServlet extends HttpServlet {
 	private void manageFriendship(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		try {
-			Hashtable<String, String> env = new Hashtable<String, String>();
-			env.put(Context.INITIAL_CONTEXT_FACTORY,
-					"org.jnp.interfaces.NamingContextFactory");
-			env.put(Context.PROVIDER_URL, "localhost:1099");
-			InitialContext jndiContext = new InitialContext(env);
+			InitialContext jndiContext = new InitialContext();
+
 			Object ref = jndiContext.lookup("FriendsManager/remote");
 			FriendsManagerRemote friendsManager = (FriendsManagerRemote) ref;
 
@@ -103,11 +98,8 @@ public class FriendsServlet extends HttpServlet {
 	private void getUserInformation(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		try {
-			Hashtable<String, String> env = new Hashtable<String, String>();
-			env.put(Context.INITIAL_CONTEXT_FACTORY,
-					"org.jnp.interfaces.NamingContextFactory");
-			env.put(Context.PROVIDER_URL, "localhost:1099");
-			InitialContext jndiContext = new InitialContext(env);
+			InitialContext jndiContext = new InitialContext();
+
 			Object ref = jndiContext.lookup("FriendsManager/remote");
 			FriendsManagerRemote friendsManager = (FriendsManagerRemote) ref;
 
@@ -143,11 +135,8 @@ public class FriendsServlet extends HttpServlet {
 		out.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		out.println("<response>");
 		try {
-			Hashtable<String, String> env = new Hashtable<String, String>();
-			env.put(Context.INITIAL_CONTEXT_FACTORY,
-					"org.jnp.interfaces.NamingContextFactory");
-			env.put(Context.PROVIDER_URL, "localhost:1099");
-			InitialContext jndiContext = new InitialContext(env);
+			InitialContext jndiContext = new InitialContext();
+
 			Object ref = jndiContext.lookup("FriendsManager/remote");
 			FriendsManagerRemote friendsManager = (FriendsManagerRemote) ref;
 

@@ -60,11 +60,7 @@ public class SearchServlet extends HttpServlet {
 				// extended search
 				System.out
 						.println("*** [SearchServlet] user logged in: extended search ***");
-				Hashtable<String, String> env = new Hashtable<String, String>();
-				env.put(Context.INITIAL_CONTEXT_FACTORY,
-						"org.jnp.interfaces.NamingContextFactory");
-				env.put(Context.PROVIDER_URL, "localhost:1099");
-				InitialContext jndiContext = new InitialContext(env);
+				InitialContext jndiContext = new InitialContext();
 
 				Object ref = jndiContext.lookup("FriendsManager/remote");
 				FriendsManagerRemote friendsManager = (FriendsManagerRemote) ref;
@@ -142,12 +138,16 @@ public class SearchServlet extends HttpServlet {
 				Set<User> friendsResults = new HashSet<User>();
 				Set<User> otherResults = new HashSet<User>();
 
-				for (User resultUser : results) {
-					for (User friend : friends) {
-						if (resultUser.equals(friend)) {
-							friendsResults.add(resultUser);
-						} else if (!resultUser.equals(user)) {
-							otherResults.add(resultUser);
+				if (friends == null || friends.isEmpty()) {
+					otherResults.addAll(results);
+				} else {
+					for (User resultUser : results) {
+						for (User friend : friends) {
+							if (resultUser.equals(friend)) {
+								friendsResults.add(resultUser);
+							} else if (!resultUser.equals(user)) {
+								otherResults.add(resultUser);
+							}
 						}
 					}
 				}
@@ -256,11 +256,8 @@ public class SearchServlet extends HttpServlet {
 
 	private Set<User> searchForPeople(String keywords) throws SearchException {
 		try {
-			Hashtable<String, String> env = new Hashtable<String, String>();
-			env.put(Context.INITIAL_CONTEXT_FACTORY,
-					"org.jnp.interfaces.NamingContextFactory");
-			env.put(Context.PROVIDER_URL, "localhost:1099");
-			InitialContext jndiContext = new InitialContext(env);
+			InitialContext jndiContext = new InitialContext();
+
 			Object ref = jndiContext.lookup("SearchManager/remote");
 			SearchManagerRemote searchManager = (SearchManagerRemote) ref;
 
@@ -282,11 +279,8 @@ public class SearchServlet extends HttpServlet {
 	private Set<User> searchForAbilities(String keywords)
 			throws SearchException {
 		try {
-			Hashtable<String, String> env = new Hashtable<String, String>();
-			env.put(Context.INITIAL_CONTEXT_FACTORY,
-					"org.jnp.interfaces.NamingContextFactory");
-			env.put(Context.PROVIDER_URL, "localhost:1099");
-			InitialContext jndiContext = new InitialContext(env);
+			InitialContext jndiContext = new InitialContext();
+
 			Object ref = jndiContext.lookup("SearchManager/remote");
 			SearchManagerRemote searchManager = (SearchManagerRemote) ref;
 
@@ -308,11 +302,8 @@ public class SearchServlet extends HttpServlet {
 	private Set<User> searchForAbilities(String keywords, String cityPattern)
 			throws SearchException {
 		try {
-			Hashtable<String, String> env = new Hashtable<String, String>();
-			env.put(Context.INITIAL_CONTEXT_FACTORY,
-					"org.jnp.interfaces.NamingContextFactory");
-			env.put(Context.PROVIDER_URL, "localhost:1099");
-			InitialContext jndiContext = new InitialContext(env);
+			InitialContext jndiContext = new InitialContext();
+
 			Object ref = jndiContext.lookup("SearchManager/remote");
 			SearchManagerRemote searchManager = (SearchManagerRemote) ref;
 
@@ -360,11 +351,8 @@ public class SearchServlet extends HttpServlet {
 
 	private Set<User> searchForCity(String cityPattern) throws SearchException {
 		try {
-			Hashtable<String, String> env = new Hashtable<String, String>();
-			env.put(Context.INITIAL_CONTEXT_FACTORY,
-					"org.jnp.interfaces.NamingContextFactory");
-			env.put(Context.PROVIDER_URL, "localhost:1099");
-			InitialContext jndiContext = new InitialContext(env);
+			InitialContext jndiContext = new InitialContext();
+
 			Object ref = jndiContext.lookup("SearchManager/remote");
 			SearchManagerRemote searchManager = (SearchManagerRemote) ref;
 
@@ -383,11 +371,8 @@ public class SearchServlet extends HttpServlet {
 
 	private List<String> getCities() {
 		try {
-			Hashtable<String, String> env = new Hashtable<String, String>();
-			env.put(Context.INITIAL_CONTEXT_FACTORY,
-					"org.jnp.interfaces.NamingContextFactory");
-			env.put(Context.PROVIDER_URL, "localhost:1099");
-			InitialContext jndiContext = new InitialContext(env);
+			InitialContext jndiContext = new InitialContext();
+
 			Object ref = jndiContext.lookup("SearchManager/remote");
 			SearchManagerRemote searchManager = (SearchManagerRemote) ref;
 

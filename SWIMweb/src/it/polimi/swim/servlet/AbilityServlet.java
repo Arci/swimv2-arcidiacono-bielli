@@ -3,9 +3,7 @@ package it.polimi.swim.servlet;
 import it.polimi.swim.session.AbilityManagerRemote;
 
 import java.io.IOException;
-import java.util.Hashtable;
 
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
@@ -21,11 +19,8 @@ public class AbilityServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		try {
-			Hashtable<String, String> env = new Hashtable<String, String>();
-			env.put(Context.INITIAL_CONTEXT_FACTORY,
-					"org.jnp.interfaces.NamingContextFactory");
-			env.put(Context.PROVIDER_URL, "localhost:1099");
-			InitialContext jndiContext = new InitialContext(env);
+			InitialContext jndiContext = new InitialContext();
+
 			Object ref = jndiContext.lookup("AbilityManager/remote");
 			AbilityManagerRemote abilityManager = (AbilityManagerRemote) ref;
 
@@ -49,7 +44,6 @@ public class AbilityServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		super.doPost(req, resp);
 	}
 

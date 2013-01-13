@@ -7,9 +7,7 @@ import it.polimi.swim.session.exceptions.UserException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Hashtable;
 
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
@@ -72,12 +70,8 @@ public class UserAbilityServlet extends HttpServlet {
 			System.out.println("[UserAbilityServlet] abilities added");
 		}
 		try {
-			Hashtable<String, String> env = new Hashtable<String, String>();
-			env.put(Context.INITIAL_CONTEXT_FACTORY,
-					"org.jnp.interfaces.NamingContextFactory");
-			env.put(Context.PROVIDER_URL, "localhost:1099");
-			InitialContext jndiContext;
-			jndiContext = new InitialContext(env);
+			InitialContext jndiContext = new InitialContext();
+
 			Object ref = jndiContext.lookup("ProfileManager/remote");
 			ProfileManagerRemote profileManager = (ProfileManagerRemote) ref;
 
@@ -106,12 +100,8 @@ public class UserAbilityServlet extends HttpServlet {
 			HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			Hashtable<String, String> env = new Hashtable<String, String>();
-			env.put(Context.INITIAL_CONTEXT_FACTORY,
-					"org.jnp.interfaces.NamingContextFactory");
-			env.put(Context.PROVIDER_URL, "localhost:1099");
-			InitialContext jndiContext;
-			jndiContext = new InitialContext(env);
+			InitialContext jndiContext = new InitialContext();
+
 			Object ref = jndiContext.lookup("ProfileManager/remote");
 			ProfileManagerRemote profileManager = (ProfileManagerRemote) ref;
 
@@ -129,12 +119,8 @@ public class UserAbilityServlet extends HttpServlet {
 			HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			Hashtable<String, String> env = new Hashtable<String, String>();
-			env.put(Context.INITIAL_CONTEXT_FACTORY,
-					"org.jnp.interfaces.NamingContextFactory");
-			env.put(Context.PROVIDER_URL, "localhost:1099");
-			InitialContext jndiContext;
-			jndiContext = new InitialContext(env);
+			InitialContext jndiContext = new InitialContext();
+
 			Object ref = jndiContext.lookup("ProfileManager/remote");
 			ProfileManagerRemote profileManager = (ProfileManagerRemote) ref;
 

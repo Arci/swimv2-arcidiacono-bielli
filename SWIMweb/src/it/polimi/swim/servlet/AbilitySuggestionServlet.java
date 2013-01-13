@@ -7,9 +7,7 @@ import it.polimi.swim.session.exceptions.AbilityException;
 import it.polimi.swim.session.exceptions.UserException;
 
 import java.io.IOException;
-import java.util.Hashtable;
 
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
@@ -44,11 +42,8 @@ public class AbilitySuggestionServlet extends HttpServlet {
 	private void reloadUser(HttpServletRequest request,
 			HttpServletResponse response) {
 		try {
-			Hashtable<String, String> env = new Hashtable<String, String>();
-			env.put(Context.INITIAL_CONTEXT_FACTORY,
-					"org.jnp.interfaces.NamingContextFactory");
-			env.put(Context.PROVIDER_URL, "localhost:1099");
-			InitialContext jndiContext = new InitialContext(env);
+			InitialContext jndiContext = new InitialContext();
+
 			Object ref = jndiContext.lookup("ProfileManager/remote");
 			ProfileManagerRemote profileManager = (ProfileManagerRemote) ref;
 
@@ -76,12 +71,8 @@ public class AbilitySuggestionServlet extends HttpServlet {
 		if (request.getParameter("suggestion") != null
 				&& request.getParameter("suggestion") != "") {
 			try {
+				InitialContext jndiContext = new InitialContext();
 
-				Hashtable<String, String> env = new Hashtable<String, String>();
-				env.put(Context.INITIAL_CONTEXT_FACTORY,
-						"org.jnp.interfaces.NamingContextFactory");
-				env.put(Context.PROVIDER_URL, "localhost:1099");
-				InitialContext jndiContext = new InitialContext(env);
 				User user = (User) request.getSession().getAttribute("User");
 
 				Object ref = jndiContext.lookup("AbilityManager/remote");
