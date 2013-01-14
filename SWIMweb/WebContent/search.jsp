@@ -103,7 +103,7 @@
 					@SuppressWarnings("unchecked")
 					Set<User> otherResults = (Set<User>) request.getAttribute("otherResults");
 					if (firendsResults != null && !firendsResults.isEmpty()) {
-						out.println("<br/><div id=\"firendsResults\">");
+						out.println("<div id=\"firendsResults\">");
 						out.println("<span class=\"text\">Results among friends:</span><br/>");
 						out.println("<ul>");
 						for (User user : firendsResults) {
@@ -121,8 +121,6 @@
 							&& otherResults != null 
 							&& !otherResults.isEmpty() ){
 						out.println("<hr>");
-					}else{
-						out.println("<br/>");
 					}
 					if (otherResults != null && !otherResults.isEmpty()) {
 						out.println("<div id=\"otherResults\">");

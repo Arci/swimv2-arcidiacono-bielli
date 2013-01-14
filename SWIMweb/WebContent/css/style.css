@@ -156,10 +156,10 @@ fieldset {
 
 #messages {
 	margin-top: 5px;
-	width: 330px;
-	text-align: center;
-	margin-right: auto;
+	width: 340px;
+	text-align: center; margin-right : auto;
 	margin-left: auto;
+	margin-right: auto;
 }
 
 #searchFormContainer,#requestFormContainer {
@@ -201,6 +201,10 @@ select[name=city] {
 }
 
 /* FRIENDS */
+#friends {
+	margin-top: -10px;;
+}
+
 #friends .warning {
 	margin-left: 10px;
 }
@@ -214,6 +218,10 @@ select[name=city] {
 }
 
 /* HELPS */
+#helpAsHelpers {
+	margin-top: -10px;
+}
+
 #helpInformation {
 	margin-top: 15px;
 	margin-left: 5px;
