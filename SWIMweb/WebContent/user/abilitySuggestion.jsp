@@ -22,25 +22,26 @@
 					<input type="text" name="suggestion" /><br/> 
 					<input type="submit" name="submit" value="Submit" />
 				</form>
+			</fieldset>
+			<div id="messages">
 				<span class="error">
-					<%
-						if (request.getAttribute("error") != null
-								&& request.getAttribute("error") != "") {
-							out.println(request.getAttribute("error"));
-						}
-					%>
+				<%
+					if (request.getAttribute("error") != null
+							&& request.getAttribute("error") != "") {
+						out.println(request.getAttribute("error"));
+					}
+				%>
 				</span>
 				<span class="message">
-					<%
-						if (request.getAttribute("message") != null
-								&& request.getAttribute("message") != "") {
-							out.println(request.getAttribute("message"));
-						}
-					%>
+				<%
+					if (request.getAttribute("message") != null
+							&& request.getAttribute("message") != "") {
+						out.println(request.getAttribute("message"));
+					}
+				%>
 				</span>
-			</fieldset>
+			</div>
 		</div>
-		<br/>
 		<div id="otherRequest">
 			<span class="text">This is the list of your suggestions:</span><br/>
 			<%

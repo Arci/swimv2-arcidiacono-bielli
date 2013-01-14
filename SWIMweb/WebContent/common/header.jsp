@@ -17,17 +17,17 @@
 			%> </span>
 			<span class="extended">"Small World hypotesIs Machine"</span>
 		</div>
-		<div class="headerError">
-			<span class="error">
-				<%
-					if (request.getAttribute("headerError") != null
-							&& request.getAttribute("headerError") != "") {
-						out.println(request.getAttribute("headerError"));
-					}
-				%>
-			</span>
-		</div>
 		<div class="access">
+			<div class="headerError">
+				<span class="error">
+					<%
+						if (request.getAttribute("headerError") != null
+								&& request.getAttribute("headerError") != "") {
+							out.println(request.getAttribute("headerError"));
+						}
+					%>
+				</span>
+			</div>
 			<%
 				if (session.getAttribute("User") == null) {
 			%>

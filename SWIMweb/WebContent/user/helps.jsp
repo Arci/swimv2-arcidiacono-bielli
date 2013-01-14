@@ -16,11 +16,6 @@
 	</jsp:include>
 
 	<div id="pageContent">
-		<div class="error">
-			<% if(request.getAttribute("error") != null){
-				out.println(request.getAttribute("error"));
-			} %>
-		</div>
 		<% 
 		if(request.getAttribute("helpToShow") == null){
 			User user = (User) session.getAttribute("User");
@@ -155,6 +150,11 @@
 		<% }else if(request.getAttribute("helpToShow") != null){
 			%> <jsp:include page="/user/showHelp.jsp" />
 		<% } %>
+		<span class="error">
+			<% if(request.getAttribute("error") != null){
+				out.println(request.getAttribute("error"));
+			} %>
+		</span>
 	</div>
 
 	<jsp:include page="/common/footer.jsp"></jsp:include>

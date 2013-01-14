@@ -15,11 +15,6 @@
 	</jsp:include>
 
 	<div id="pageContent">
-		<div class="error">
-			<%if(request.getAttribute("error") != null){
-				out.println(request.getAttribute("error"));
-			} %>
-		</div>
 		<div id="friends">
 			<p>
 				<span class="text">These are your friends:</span><br/>
@@ -94,6 +89,11 @@
 				%>
 			</p>
 		</div>
+		<span class="error">
+			<%if(request.getAttribute("error") != null){
+				out.println(request.getAttribute("error"));
+			} %>
+		</span>
 	</div>
 
 	<jsp:include page="/common/footer.jsp"></jsp:include>

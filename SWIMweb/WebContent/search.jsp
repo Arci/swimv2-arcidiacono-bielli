@@ -74,23 +74,25 @@
 					<br />
 					<input type="submit" name="submit" value="Search" />
 				</form>
+			</fieldset>
+			<div id="messages">
 				<span class="error">
-				<%
-				 	if (request.getAttribute("error") != null
-				 			&& request.getAttribute("error") != "") {
-				 		out.println(request.getAttribute("error"));
-				 	}
-				 %>
+						<%
+						 	if (request.getAttribute("error") != null
+						 			&& request.getAttribute("error") != "") {
+						 		out.println(request.getAttribute("error"));
+						 	}
+						 %>
 				</span>
 				<span class="message">
-				<%
-				 	if (request.getAttribute("message") != null
-				 			&& request.getAttribute("message") != "") {
-				 		out.println(request.getAttribute("message"));
-				 	}
-				%> 
+						<%
+						 	if (request.getAttribute("message") != null
+						 			&& request.getAttribute("message") != "") {
+						 		out.println(request.getAttribute("message"));
+						 	}
+						%> 
 				</span>
-			</fieldset>
+			</div>
 		</div>
 
 		<div id="resultsContainer">

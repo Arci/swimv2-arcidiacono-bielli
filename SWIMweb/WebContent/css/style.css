@@ -10,6 +10,7 @@
 	background-color: black;
 	color: white;
 	line-height: 2.5;
+	margin-bottom: 0;
 }
 
 #top a {
@@ -30,6 +31,28 @@
 .access {
 	float: right;
 	margin-right: 3px;
+}
+
+/* FOOTER */
+#bottom {
+	margin: 20px 40px;
+	height: 30px;
+	font: normal 12px Verdana;
+	border: 5px solid #D10000;
+	background-color: black;
+	color: white;
+	text-align: center;
+	line-height: 1.8;
+}
+
+#bottom p,#bottom span {
+	font-size: xx-small;
+	padding: 0;
+}
+
+#authors {
+	margin-top: -3px;
+	margin-bottom: 0;
 }
 
 /* MENU */
@@ -94,8 +117,19 @@
 #pageContent {
 	margin: 20px 40px;
 	margin-top: 5px;
-	border: 2px solid #D10000;
-	padding: 5px 10px;
+	border: 3px solid #D10000;
+	padding-bottom: 20px;
+	padding-left: 15px;
+	padding-top: 10px;
+	padding-right: 15px;
+}
+
+ul {
+	margin-top: 7px;
+}
+
+p {
+	margin-bottom: 0;
 }
 
 .nameSurname {
@@ -109,6 +143,104 @@ fieldset {
 
 #helpState {
 	display: inline;
+}
+
+/* FORMS */
+#pageContent input[type=submit] {
+	margin-top: 9px;
+}
+
+#pageContent input[type=text] {
+	width: 300px;
+}
+
+#messages {
+	margin-left: -320px;
+	margin-top: 5px;
+	text-align: center;
+}
+
+/* PROFILE */
+#profile {
+	margin-top: -10px;
+}
+
+/* ABILITY SUGGESTION */
+#requestForm {
+	text-align: center;
+}
+
+#otherRequest {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#otherRequest .warning {
+	margin-left: 10px;
+}
+
+#requestFormContainer {
+	margin-left: 35%;
+}
+
+/* SEARCH */
+#searchForm {
+	text-align: center;
+}
+
+#searchFormContainer {
+	margin-left: 35%;
+}
+
+select[name=city] {
+	margin-top: 7px;
+}
+
+#resultsContainer {
+	margin-bottom: 10px;
+}
+
+/* FRIENDS */
+#friends .warning {
+	margin-left: 10px;
+}
+
+#request .warning {
+	margin-left: 10px;
+}
+
+#pending .warning {
+	margin-left: 10px;
+}
+
+/* HELPS */
+#helpInformation {
+	margin-top: 15px;
+	margin-left: 5px;
+}
+
+#helpAsHelpers .warning {
+	margin-left: 10px;
+}
+
+#helpsHaveAsked .warning {
+	margin-left: 10px;
+}
+
+#helpsHaveRequest .warning {
+	margin-left: 10px;
+}
+
+#helpsClosed .warning {
+	margin-left: 10px;
+}
+
+#helpsSuspended .warning {
+	margin-left: 10px;
+}
+
+#chat {
+	margin: 10px;
 }
 
 /* MESSAGE AND ERRORS */
@@ -156,7 +288,7 @@ fieldset {
 	color: #0066FF;
 }
 
-.user{
+.user {
 	text-transform: capitalize;
 }
 

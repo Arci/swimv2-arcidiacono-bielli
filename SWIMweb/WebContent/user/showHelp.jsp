@@ -19,7 +19,7 @@
 		<% if(sessionUser.equals(help.getUser()) && help.getState().equals(HelpState.OPEN)){ %>
 				<input type="button" id="buttonClose" onclick="showFeedbacks();" value="Close this help request"/>
 				<div id="votes" style="display: none;">
-					give a feedback to: <span class='italic'><%=help.getHelper().getName()%> <%=help.getHelper().getSurname()%> </span>
+					Give a feedback to <span class='italic'><%=help.getHelper().getName()%> <%=help.getHelper().getSurname()%> </span>
 					<% for(int i=1; i<6; i++){
 						%><a href="helps?help=<%=help.getId()%>&vote=<%=i%>&state=close" 
 						 onMouseOver="changeToFull('<%=i%>');" onMouseOut="backToEmpty('vote<%=i%>');">
@@ -56,7 +56,7 @@
 </div>
 <% if(!help.getState().equals(HelpState.PENDING)){%>
 	<hr><div id="chat">
-		<div id="messages">
+		<div id="messageList">
 		<% 
 		@SuppressWarnings("unchecked")
 		List<Message> messages = (List<Message>) request.getAttribute("messages");

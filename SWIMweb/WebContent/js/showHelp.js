@@ -78,7 +78,7 @@ function addError(message) {
 function addMessage(message, name, dateString) {
 	"use strict";
 	document.getElementById("messageText").value = "";
-	var messageDiv = document.getElementById('messages');
+	var messageDiv = document.getElementById('messageList');
 	if (document.getElementById("initialWarning")) {
 		var initialWarning = document.getElementById("initialWarning");
 		initialWarning.parentNode.removeChild(initialWarning);
@@ -107,7 +107,7 @@ function addMessage(message, name, dateString) {
 	dateSpan.setAttribute("class", "smaller");
 	dateSpan.innerHTML = "&nbsp;&nbsp;" + dateString;
 	div.appendChild(dateSpan);
-	messageDiv = document.getElementById('messages');
+	messageDiv = document.getElementById('messageList');
 	messageDiv.appendChild(div);
 	var br2 = document.createElement("br");
 	messageDiv.appendChild(br2);
