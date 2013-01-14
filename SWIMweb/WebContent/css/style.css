@@ -155,9 +155,17 @@ fieldset {
 }
 
 #messages {
-	margin-left: -320px;
 	margin-top: 5px;
+	width: 330px;
 	text-align: center;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+#searchFormContainer,#requestFormContainer {
+	width: 315px;
+	margin-right: auto;
+	margin-left: auto;
 }
 
 /* PROFILE */
@@ -179,17 +187,9 @@ fieldset {
 	margin-left: 10px;
 }
 
-#requestFormContainer {
-	margin-left: 35%;
-}
-
 /* SEARCH */
 #searchForm {
 	text-align: center;
-}
-
-#searchFormContainer {
-	margin-left: 35%;
 }
 
 select[name=city] {
