@@ -164,14 +164,14 @@ public class SearchServlet extends HttpServlet {
 				// normal search
 				System.out
 						.println("*** [SearchServlet] user not logged in: normal search ***");
-				if (isSetPersonPattern(request, response)) {
+				if (isSetAbilityPattern(request, response)) {
 					System.out
-							.println("*** [SearchServlet] {normal search} person pattern set ***");
+							.println("*** [SearchServlet] {normal search} ability pattern set ***");
 					if (areKeywordsSet(request, response)) {
 						System.out
 								.println("*** [SearchServlet] keywords set ***");
 						String keywords = request.getParameter("keywords");
-						results = searchForPeople(keywords);
+						results = searchForAbilities(keywords);
 
 						request.setAttribute("otherResults", results);
 					} else {

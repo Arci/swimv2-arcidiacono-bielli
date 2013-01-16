@@ -36,7 +36,7 @@
 							<input type="radio" name="searchType" value="ability"/> Ability<%
 						} %><br />
 					<% } else { %>
-						<input type="hidden" name="searchType" value="person" />
+						<input type="hidden" name="searchType" value="ability" />
 					<% }
 					if(request.getAttribute("keywords") != null){
 						String oldKeywords = (String) request.getAttribute("keywords");
