@@ -172,6 +172,14 @@ fieldset {
 	margin-left: auto;
 }
 
+#register input[type=text]{
+	width: 200px !important;
+}
+
+#register input[type=password]{
+	width: 200px !important;
+}
+
 /* PROFILE */
 #profile {
 	margin-top: -10px;

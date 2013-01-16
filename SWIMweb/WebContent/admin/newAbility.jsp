@@ -23,20 +23,42 @@
 					<input type="submit" name="submit" value="Submit" />
 				</form>
 			</fieldset>
+			<div id="messages">
+				<span class="error">
+						<%
+						 	if (request.getAttribute("error") != null
+						 			&& request.getAttribute("error") != "") {
+						 		out.println(request.getAttribute("error"));
+						 	}
+						 %>
+				</span>
+				<span class="message">
+						<%
+						 	if (request.getAttribute("message") != null
+						 			&& request.getAttribute("message") != "") {
+						 		out.println(request.getAttribute("message"));
+						 	}
+						%> 
+				</span>
+			</div>
 		</div>
+		<br/>
 		<div id="ability">
-			<label>Abilities of the system:</label><br>
-			<p>
+			<span class="text">Abilities of the system:</span><br>
 				<%
 					@SuppressWarnings("unchecked")
 					List<Ability> abilities = (List<Ability>) request
 							.getAttribute("abilities");
-					for (Ability ability : abilities) {
-				%><span id="ability"><%=ability.getName()%></span><br>
-				<%
-					}
-				%>
-			</p>
+					if(abilities == null || abilities.isEmpty()){
+						%><span class="message">There are not abilities in the system</span><br><%
+					}else{
+						%><ul><%
+						for (Ability ability : abilities) {
+							%><li><%=ability.getName()%></li>
+						<% }
+						%></ul><%
+					} 
+				%>	
 		</div>
 	</div>
 

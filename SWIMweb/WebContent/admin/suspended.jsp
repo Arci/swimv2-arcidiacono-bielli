@@ -27,7 +27,7 @@
 						<br> <%
 					} 
 				} else {
-					out.println("<span class=\"error italic\">You don't have any suggest requests.</span><br>");
+					out.println("<span class=\"error italic\">There aren't any ability suggestion reuqests.</span><br>");
 				}
 			%>
 		</p>
