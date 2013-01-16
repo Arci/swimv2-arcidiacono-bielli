@@ -125,7 +125,7 @@ form[name=accessManager] input[type=password] {
 	margin: 20px 40px;
 	margin-top: 5px;
 	border: 3px solid #D10000;
-	padding: 10px 15px 20px 10px;
+	padding: 10px 15px 0 10px;
 }
 
 ul {
@@ -176,6 +176,10 @@ fieldset {
 	margin-left: auto;
 }
 
+#newAbility form {
+	text-align: center;
+}
+
 #register input[type=text] {
 	width: 200px !important;
 }
@@ -192,6 +196,10 @@ fieldset {
 	width: 750px;
 }
 
+#contactInformation {
+	padding-bottom: 20px;
+}
+
 #contactInformation fieldset {
 	width: 330px;
 }
@@ -206,6 +214,24 @@ fieldset {
 
 #profile {
 	margin-top: -10px;
+	padding-bottom: 20px;
+	width: 49%;
+}
+
+#buttons {
+	margin-top: -10px;
+	padding-top: 20px;
+	width: 49%;
+	border-left: 3px solid #D10000;
+	height: 335px;
+}
+
+#friendDiv {
+	padding: 0 15px 15px 15px;
+}
+
+#helpDiv {
+	padding: 15px;
 }
 
 #modifyAbilities ul {
@@ -221,6 +247,11 @@ fieldset {
 	height: 13px;
 }
 
+/* REGISTRATION */
+#registration {
+	padding-bottom: 20px;
+}
+
 /* ABILITY SUGGESTION */
 #requestForm {
 	text-align: center;
@@ -233,6 +264,14 @@ fieldset {
 
 #otherRequest .warning {
 	margin-left: 10px;
+}
+
+#suspended {
+	padding-bottom: 20px;
+}
+
+#suspended ul {
+	margin-bottom: 0;
 }
 
 /* SEARCH */
@@ -261,20 +300,36 @@ select[name=city] {
 	margin-left: 10px;
 }
 
+#pending {
+	padding-bottom: 20px;
+}
+
 #pending .warning {
 	margin-left: 10px;
 }
 
 /* HELPS */
 #helpAsHelpers {
-	margin-top: -10px;
+	margin-top: 10px;
 }
 
-#helpInformation {
-	margin-top: 15px;
+#helpAsHelpers ul {
+	margin-bottom: 0;
 }
 
 #helpAsHelpers .warning {
+	margin-left: 10px;
+}
+
+#helpsHaveAsked {
+	padding-top: 10px;
+}
+
+#helpsHaveAsked ul {
+	margin-bottom: 0;
+}
+
+#helpsHaveAsked .warning {
 	margin-left: 10px;
 }
 
@@ -282,20 +337,46 @@ select[name=city] {
 	margin-left: 10px;
 }
 
+#helpsHaveRequest {
+	padding-top: 10px;
+}
+
+#helpsHaveRequest ul {
+	margin-bottom: 0;
+}
+
 #helpsHaveRequest .warning {
 	margin-left: 10px;
 }
 
-#helpsClosed .warning {
-	margin-left: 10px;
+#helpsSuspended {
+	padding-top: 10px;
+}
+
+#helpsSuspended ul {
+	margin-bottom: 0;
 }
 
 #helpsSuspended .warning {
 	margin-left: 10px;
 }
 
+#helpsClosed {
+	padding-top: 10px;
+	padding-bottom: 20px;
+}
+
+#helpsClosed ul {
+	margin-bottom: 0;
+}
+
+#helpsClosed .warning {
+	margin-left: 10px;
+}
+
 #chat {
-	margin: 10px;
+	margin: 10px 10px 0 10px;
+	padding-bottom: 20px;
 }
 
 /* MESSAGE AND ERRORS */

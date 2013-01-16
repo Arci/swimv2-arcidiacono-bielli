@@ -149,7 +149,7 @@
 									<% 
 								}
 							} %>
-						</div><br/>
+						</div>
 						<div id="helpDiv">
 							<%
 								if(user.getAbilities().isEmpty()){

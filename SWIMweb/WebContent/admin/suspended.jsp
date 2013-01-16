@@ -15,22 +15,25 @@
 		<jsp:param name="page" value="suspended" />
 	</jsp:include>
 	<div id="pageContent">
-		<p>
+		<div id="suspended">
 			<%
 				if (request.getAttribute("suggests") != null){
 					@SuppressWarnings("unchecked")
 					List <AbilityRequest> suspended = (List<AbilityRequest>) request.getAttribute("suggests");
+					%><span class="text">These are the pending ability requests:</span>
+					<ul><%
 					for (AbilityRequest req : suspended){
-						%><span><%out.println(req.getText() + " in state: <span class=\"message\">" + req.getState() + "</span>"); %></span>
+						%><li><%out.println(req.getText() + " in state: <span class=\"message\">" + req.getState() + "</span>"); %>
 						<a href="suspended?ability=<%=req.getId()%>&decision=<%=RequestState.ACCEPTED.toString() %>">Accept</a>
-						<a href="suspended?ability=<%=req.getId()%>&decision=<%=RequestState.REJECTED.toString() %>">Refuse</a>
-						<br> <%
+						<a href="suspended?ability=<%=req.getId()%>&decision=<%=RequestState.REJECTED.toString() %>">Refuse</a></li>
+						<%
 					} 
+					%></ul><%
 				} else {
-					out.println("<span class=\"error italic\">There aren't any ability suggestion reuqests.</span><br>");
+					out.println("<span class=\"error italic\">There aren't any pending ability suggestion requests.</span><br>");
 				}
 			%>
-		</p>
+		</div>
 	</div>
 
 	<jsp:include page="/common/footer.jsp"></jsp:include>
