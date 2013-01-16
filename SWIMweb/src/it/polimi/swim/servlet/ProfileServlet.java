@@ -89,8 +89,6 @@ public class ProfileServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO manage modify profile
-		// then reload user and replace it in the session
 		try {
 			InitialContext jndiContext = new InitialContext();
 
@@ -98,24 +96,26 @@ public class ProfileServlet extends HttpServlet {
 			ProfileManagerRemote profileManager = (ProfileManagerRemote) ref;
 
 			User user = (User) request.getSession().getAttribute("User");
+			if (hasChange(request, response)) {
+				if (request.getParameter("password").equals(user.getPassword())) {
 
-			if (request.getParameter("password").equals(user.getPassword())) {
+					Hashtable<String, String> params = new Hashtable<String, String>();
+					params.put("name", request.getParameter("name"));
+					params.put("surname", request.getParameter("surname"));
+					params.put("username", request.getParameter("username"));
+					params.put("email", request.getParameter("email"));
+					params.put("city", request.getParameter("city"));
+					params.put("phone", request.getParameter("phone"));
 
-				Hashtable<String, String> params = new Hashtable<String, String>();
-				params.put("name", request.getParameter("name"));
-				params.put("surname", request.getParameter("surname"));
-				params.put("username", request.getParameter("username"));
-				params.put("email", request.getParameter("email"));
-				params.put("city", request.getParameter("city"));
-				params.put("phone", request.getParameter("phone"));
-
-				request.getSession().removeAttribute("User");
-				request.getSession().setAttribute("User",
-						profileManager.updateProfile(user, params));
-				request.setAttribute("result", "your modifies has had success.");
-			} else {
-				request.setAttribute("error",
-						"your password was wrong, insert the correct password to make the changes.");
+					request.getSession().removeAttribute("User");
+					request.getSession().setAttribute("User",
+							profileManager.updateProfile(user, params));
+					request.setAttribute("result",
+							"your modifies has had success.");
+				} else {
+					request.setAttribute("error",
+							"your password was wrong, insert the correct password to make the changes.");
+				}
 			}
 			getServletConfig().getServletContext()
 					.getRequestDispatcher("/user/modifyProfile.jsp")
@@ -159,5 +159,41 @@ public class ProfileServlet extends HttpServlet {
 		} else {
 			return true;
 		}
+	}
+
+	private boolean hasChange(HttpServletRequest request,
+			HttpServletResponse response) {
+		User user = (User) request.getSession().getAttribute("User");
+		String attribute = request.getParameter("name");
+		if (!attribute.equals(user.getName())) {
+			return true;
+		}
+
+		attribute = request.getParameter("surname");
+		if (!attribute.equals(user.getSurname())) {
+			return true;
+		}
+
+		attribute = request.getParameter("username");
+		if (!attribute.equals(user.getUsername())) {
+			return true;
+		}
+
+		attribute = request.getParameter("email");
+		if (!attribute.equals(user.getEmail())) {
+			return true;
+		}
+
+		attribute = request.getParameter("city");
+		if (!attribute.equals(user.getCity())) {
+			return true;
+		}
+
+		attribute = request.getParameter("phone");
+		if (Integer.parseInt(attribute) != user.getPhone()) {
+			return true;
+		}
+
+		return false;
 	}
 }

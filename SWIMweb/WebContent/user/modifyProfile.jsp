@@ -64,11 +64,7 @@
 					<form id="modifyAbilities" action='ability' method='post' accept-charset='UTF-8'>			
 						<% 
 							try {	
-								Hashtable<String, String> env = new Hashtable<String, String>();
-								env.put(Context.INITIAL_CONTEXT_FACTORY,
-										"org.jnp.interfaces.NamingContextFactory");
-								env.put(Context.PROVIDER_URL, "localhost:1099");
-								InitialContext jndiContext = new InitialContext(env);
+								InitialContext jndiContext = new InitialContext();
 								Object ref = jndiContext.lookup("AbilityManager/remote");
 								AbilityManagerRemote abilityManager = (AbilityManagerRemote) ref;
 								

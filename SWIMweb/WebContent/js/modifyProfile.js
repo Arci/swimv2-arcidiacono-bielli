@@ -137,38 +137,3 @@ function checkMail() {
 		container.appendChild(image);
 	}
 }
-
-function hasChange() {
-	var user = session.getAttribute("User");
-	var attribute = document.getElementById("name");
-	if (!attribute.equal(user.getName())) {
-		return false;
-	}
-
-	attribute = document.getElementById("surname");
-	if (!attribute.equal(user.getSurname())) {
-		return false;
-	}
-
-	attribute = document.getElementById("username");
-	if (!attribute.equal(user.getUsername())) {
-		return false;
-	}
-
-	attribute = document.getElementById("email");
-	if (!attribute.equal(user.getEmail())) {
-		return false;
-	}
-
-	attribute = document.getElementById("city");
-	if (!attribute.equal(user.getCity())) {
-		return false;
-	}
-
-	attribute = document.getElementById("phone");
-	if (!attribute.equal(user.getPhone())) {
-		return false;
-	}
-
-	return true;
-}

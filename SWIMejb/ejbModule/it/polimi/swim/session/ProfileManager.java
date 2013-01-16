@@ -1,4 +1,5 @@
 package it.polimi.swim.session;
+
 import it.polimi.swim.enums.UserType;
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.User;
@@ -18,7 +19,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 
 @Stateless
 public class ProfileManager implements ProfileManagerRemote,
@@ -57,16 +57,12 @@ public class ProfileManager implements ProfileManagerRemote,
 
 	@Override
 	public User updateProfile(User user, Hashtable<String, String> params) {
-		// TODO ricevuti i parametri aggiorna user se new!=old, poi fa
-		// manager.merge(user)
-
 		user.setName(params.get("name"));
 		user.setSurname(params.get("surname"));
 		user.setUsername(params.get("username"));
 		user.setEmail(params.get("email"));
 		user.setCity(params.get("city"));
 		user.setPhone(Integer.parseInt(params.get("phone")));
-		// user.setPassword(params.get("password"));
 		manager.merge(user);
 		return user;
 	}
