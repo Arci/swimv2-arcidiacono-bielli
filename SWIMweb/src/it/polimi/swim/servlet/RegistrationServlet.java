@@ -1,7 +1,6 @@
 package it.polimi.swim.servlet;
 
-import it.polimi.swim.servlet.exception.DuplicatedRegistrationParameterException;
-import it.polimi.swim.servlet.exception.MissingRegistrationParametersException;
+import it.polimi.swim.servlet.exception.RegistrationParametersException;
 import it.polimi.swim.session.ProfileManagerRemote;
 
 import java.io.IOException;
@@ -22,6 +21,7 @@ public class RegistrationServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
+	 * 
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request,
@@ -71,12 +71,8 @@ public class RegistrationServlet extends HttpServlet {
 
 		} catch (NamingException e) {
 			e.printStackTrace();
-		} catch (MissingRegistrationParametersException e) {
+		} catch (RegistrationParametersException e) {
 			request.setAttribute("missingParameters", e.getMissingParameters());
-			getServletConfig().getServletContext()
-					.getRequestDispatcher("/registration.jsp")
-					.forward(request, response);
-		} catch (DuplicatedRegistrationParameterException e) {
 			request.setAttribute("duplicatedParameters",
 					e.getDuplicatedParameters());
 			getServletConfig().getServletContext()
@@ -87,48 +83,46 @@ public class RegistrationServlet extends HttpServlet {
 
 	private void checkParameters(HttpServletRequest request,
 			HttpServletResponse response, ProfileManagerRemote profileManager)
-			throws MissingRegistrationParametersException,
-			DuplicatedRegistrationParameterException {
+			throws RegistrationParametersException {
 
-		MissingRegistrationParametersException e1 = new MissingRegistrationParametersException();
-		DuplicatedRegistrationParameterException e2 = new DuplicatedRegistrationParameterException();
+		RegistrationParametersException rpe = new RegistrationParametersException();
 
 		if (request.getParameter("name") == null
 				|| request.getParameter("name") == "") {
-			e1.addMissingParameter("name");
+			rpe.addMissingParameter("name");
 		}
 
 		if (request.getParameter("username") == null
 				|| request.getParameter("username") == "") {
-			e1.addMissingParameter("username");
+			rpe.addMissingParameter("username");
 		} else if (!profileManager.isUsernameUnique(request
 				.getParameter("username"))) {
-			e2.addDuplicatedParameter("username");
+			rpe.addDuplicatedParameter("username");
 		}
 
 		if (request.getParameter("email") == null
 				|| request.getParameter("email") == "") {
-			e1.addMissingParameter("email");
+			rpe.addMissingParameter("email");
 		} else if (!profileManager.isEmailUnique(request.getParameter("email"))) {
-			e2.addDuplicatedParameter("email");
+			rpe.addDuplicatedParameter("email");
 		}
 
 		if (request.getParameter("password") == null
 				|| request.getParameter("password") == "") {
-			e1.addMissingParameter("password");
+			rpe.addMissingParameter("password");
 		}
 
 		if (request.getParameter("checkPassword") == null
 				|| request.getParameter("checkPassword") == "") {
-			e1.addMissingParameter("checkPassword");
+			rpe.addMissingParameter("checkPassword");
 		}
 
-		if (e1.hasMissingParameters()) {
-			throw e1;
+		if (rpe.hasMissingParameters()) {
+			throw rpe;
 		}
 
-		if (e2.hasDuplicatedParameters()) {
-			throw e2;
+		if (rpe.hasDuplicatedParameters()) {
+			throw rpe;
 		}
 	}
 }

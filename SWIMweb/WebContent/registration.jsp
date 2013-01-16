@@ -7,6 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 <link rel="stylesheet" type="text/css" href="css/style.css" >
+<script type="text/javascript" src="js/mail.js"></script>
 <title>SWIM - SignIn</title>
 </head>
 <body>
@@ -56,15 +57,16 @@
 				<%if(hasMissingParameters || hasDuplicatedParameters || hasPasswordError){%>
 				value='<%=request.getParameter("surname")%>'<%}%>/><br>
 				 
-				<label for='email'>Email Address*:</label><br/>
-				<input type='text' name='email' id='email'
-				<%if(hasMissingParameters || hasDuplicatedParameters || hasPasswordError){%>
-				value='<%=request.getParameter("email")%>'<%}%> /> 
-				<%if(hasMissingParameters && missingParameters.contains("email")){%>
-				<span class='error'>&#9;*you must insert the email.</span><%}%>
-				<%if(hasDuplicatedParameters && duplicatedParameters.contains("email")){ %>
-				<span class='error'>&#9;*this email is already used.</span><%} %>
-				<br>
+				<div id="emailContainer">
+					<label for='email'>Email Address*:</label><br/>
+					<input type='text' id="email" name='email' onkeypress="checkMail();" onchange="checkMail();"
+					<%if(hasMissingParameters || hasDuplicatedParameters || hasPasswordError){%>
+					value='<%=request.getParameter("email")%>'<%}%> /> 
+					<%if(hasMissingParameters && missingParameters.contains("email")){%>
+					<span class='error'>&#9;*you must insert the email.</span><%}%>
+					<%if(hasDuplicatedParameters && duplicatedParameters.contains("email")){ %>
+					<span class='error'>&#9;*this email is already used.</span><%} %>
+				</div>
 				
 				<label for='username'>Username*:</label><br/>
 				<input type='text' name='username' id='username'

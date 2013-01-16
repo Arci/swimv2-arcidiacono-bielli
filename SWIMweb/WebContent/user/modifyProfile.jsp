@@ -8,6 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 <link rel="stylesheet" type="text/css" href="../css/style.css" >
 <script type="text/javascript" src="../js/modifyProfile.js"></script>
+<script type="text/javascript" src="../js/mail.js"></script>
 <title>SWIM - Profilo</title>
 </head>
 <body>
@@ -38,7 +39,7 @@
 						<p class="first"><label for="name">Name: </label><input type="text" id="name" name="name" value="<%=user.getName() %>" /></p>
 						<p><label for="surname">Surname: </label><input type="text" id="surname" name="surname" value="<%=user.getSurname() %>" /></p>
 						<p><label for="username">Username: </label><input type="text" id="username" name="username" value="<%=user.getUsername() %>" /></p>
-						<br/><div id="emailContainer"><label for="email">Email: </label><input type="text" id="email" name="email" value="<%=user.getEmail() %>" onchange="checkMail();"/>  </div>
+						<br/><div id="emailContainer"><label for="email">Email: </label><input type="text" id="email" name="email" value="<%=user.getEmail() %>" onkeypress="checkMail();" onchange="checkMail();"/>  </div>
 						<p><label for="city">City: </label><input type="text" id="city" name="city" value=<%
 						if (user.getCity() == null) {
 							out.println("\"insert your city.\" onfocus=\"this.value='';\"");
