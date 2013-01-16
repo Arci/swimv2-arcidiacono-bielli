@@ -17,24 +17,23 @@
 			%> </span>
 			<span class="extended">"Small World hypotesIs Machine"</span>
 		</div>
+		<span class="headerError">
+				<%
+					if (request.getAttribute("headerError") != null
+							&& request.getAttribute("headerError") != "") {
+						out.println(request.getAttribute("headerError"));
+					}
+				%>
+		</span>
 		<div class="access">
-			<div class="headerError">
-				<span class="error">
-					<%
-						if (request.getAttribute("headerError") != null
-								&& request.getAttribute("headerError") != "") {
-							out.println(request.getAttribute("headerError"));
-						}
-					%>
-				</span>
-			</div>
 			<%
 				if (session.getAttribute("User") == null) {
 			%>
-				
-				<form action="accessManager" method="post">
-					Username: <input type="text" name="username" class="textinput" />
-					Password: <input type="password" name="password" class="textinput" /> 
+				<form name="accessManager" action="accessManager" method="post">
+					<input type="text" name="username" class="textinput" value="username" onfocus="this.value=''; this.style.color='black';" 
+						onBlur="if(this.value==''){this.value='username'; this.style.color='#C0C0C0';}"/>
+					<input type="password" name="password" class="textinput" value="password" onfocus="this.value=''; this.style.color='black';" 
+						onBlur="if(this.value==''){this.value='password'; this.style.color='#C0C0C0';}"/>
 					<input type="submit" class="submit" value="Login" />
 				</form>
 			<%

@@ -10,7 +10,6 @@
 	background-color: black;
 	color: white;
 	line-height: 2.5;
-	margin-bottom: 0;
 }
 
 #top a {
@@ -31,6 +30,14 @@
 .access {
 	float: right;
 	margin-right: 3px;
+}
+
+form[name=accessManager] input[type=text]{
+	color: #C0C0C0;
+}
+
+form[name=accessManager] input[type=password]{
+	color: #C0C0C0;
 }
 
 /* FOOTER */
@@ -118,10 +125,7 @@
 	margin: 20px 40px;
 	margin-top: 5px;
 	border: 3px solid #D10000;
-	padding-bottom: 20px;
-	padding-left: 15px;
-	padding-top: 10px;
-	padding-right: 15px;
+	padding: 10px 15px 20px 10px;
 }
 
 ul {
@@ -157,7 +161,7 @@ fieldset {
 #messages {
 	margin-top: 5px;
 	width: 340px;
-	text-align: center; margin-right : auto;
+	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -224,7 +228,6 @@ select[name=city] {
 
 #helpInformation {
 	margin-top: 15px;
-	margin-left: 5px;
 }
 
 #helpAsHelpers .warning {
@@ -264,6 +267,8 @@ select[name=city] {
 .headerError {
 	padding-right: 5px;
 	float: right;
+	color: #D10000;
+	font-style: italic;
 }
 
 /* TEXT STYLES */
