@@ -99,18 +99,20 @@ public class ProfileServlet extends HttpServlet {
 
 			User user = (User) request.getSession().getAttribute("User");
 
-			Hashtable<String, String> params = new Hashtable<String, String>();
-			params.put("name", request.getParameter("name"));
-			params.put("surname", request.getParameter("surname"));
-			params.put("username", request.getParameter("username"));
-			params.put("email", request.getParameter("email"));
-			params.put("city", request.getParameter("city"));
-			params.put("phone", request.getParameter("phone"));
-			// params.put("password", request.getParameter("password"));
+			if (request.getParameter("password").equals(user.getPassword())) {
 
-			request.getSession().removeAttribute("User");
-			request.getSession().setAttribute("User",
-					profileManager.updateProfile(user, params));
+				Hashtable<String, String> params = new Hashtable<String, String>();
+				params.put("name", request.getParameter("name"));
+				params.put("surname", request.getParameter("surname"));
+				params.put("username", request.getParameter("username"));
+				params.put("email", request.getParameter("email"));
+				params.put("city", request.getParameter("city"));
+				params.put("phone", request.getParameter("phone"));
+
+				request.getSession().removeAttribute("User");
+				request.getSession().setAttribute("User",
+						profileManager.updateProfile(user, params));
+			}
 			getServletConfig().getServletContext()
 					.getRequestDispatcher("/user/modifyProfile.jsp")
 					.forward(request, response);

@@ -166,7 +166,7 @@ fieldset {
 	margin-right: auto;
 }
 
-#searchFormContainer,#requestFormContainer {
+#searchFormContainer,#requestFormContainer,#newAbility {
 	width: 315px;
 	margin-right: auto;
 	margin-left: auto;

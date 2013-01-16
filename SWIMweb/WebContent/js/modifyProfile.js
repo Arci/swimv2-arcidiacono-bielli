@@ -113,3 +113,25 @@ function removeHidden(action, abilityName) {
 		form.removeChild(hidden);
 	}
 }
+
+function validEmail(email) {
+	return /^[_a-z0-9+-]+(\.[_a-z0-9+-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)+$/
+			.test(email);
+}
+
+function checkMail() {
+	var email = document.getElementById("email").value;
+	if (validEmail(email)) {
+		console.log("email correct.");
+		var image = document.createElement("img");
+		image.setAttribute("src", "../img/fullStar.png");
+		var container = document.getElementById("emailContainer");
+		container.appendChild(image);
+	} else {
+		console.log("email incorrect.");
+		var image = document.createElement("img");
+		image.setAttribute("src", "../img/emptyStar.png");
+		var container = document.getElementById("emailContainer");
+		container.appendChild(image);
+	}
+}

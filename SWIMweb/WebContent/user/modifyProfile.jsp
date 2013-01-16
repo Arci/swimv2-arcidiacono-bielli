@@ -38,12 +38,21 @@
 						<p><label for="name">Name: </label><input type="text" id="name" name="name" value="<%=user.getName() %>" /></p>
 						<p><label for="surname">Surname: </label><input type="text" id="surname" name="surname" value="<%=user.getSurname() %>" /></p>
 						<p><label for="username">Username: </label><input type="text" id="username" name="username" value="<%=user.getUsername() %>" /></p>
-						<p><label for="email">Email: </label><input type="text" id="email" name="email" value="<%=user.getEmail() %>" /></p>
-						<p><label for="city">City: </label><input type="text" id="city" name="city" value="<%=user.getCity() %>" /></p>
-						<p><label for="phone">Phone: </label><input type="text" id="phone" name="phone" value="<%=user.getPhone() %>" /></p>
-						
+						<p id="emailContainer"><label for="email">Email: </label><input type="text" id="email" name="email" value="<%=user.getEmail() %>" onchange="checkMail();"/></p>
+						<p><label for="city">City: </label><input type="text" id="city" name="city" value=<%
+						if (user.getCity() == null) {
+							out.println("\"insert your city.\" onfocus=\"this.value='';\"");
+						} else {
+							out.println(user.getCity());
+						} %> /></p>
+						<p><label for="phone">Phone: </label><input type="text" id="phone" name="phone" value=<%
+						if (user.getPhone() == 0) {
+							out.println("\"insert your phone number.\" onfocus=\"this.value='';\"");
+						} else {
+							out.println(user.getPhone());
+						}
+						%> /></p>
 						<p><label for="password">Password*: </label><input type="password" id="password" name="password" /></p>
-						<p><label for="checkPassword">Check Password*: </label><input type="password" id="checkPassword" name="checkPassword" /></p>
 						* required to validate modifications<br/>
 						<input type='submit' name='Submit' value='Submit' />
 					</form>
@@ -100,6 +109,6 @@
 	<% } %>
 
 	<jsp:include page="/common/footer.jsp"></jsp:include>
-
+	
 </body>
 </html>
