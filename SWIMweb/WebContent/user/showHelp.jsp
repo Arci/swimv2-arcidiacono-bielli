@@ -23,7 +23,7 @@
 					<% for(int i=1; i<6; i++){
 						%><a href="helps?help=<%=help.getId()%>&vote=<%=i%>&state=close" 
 						 onMouseOver="changeToFull('<%=i%>');" onMouseOut="backToEmpty('vote<%=i%>');">
-						<img src="/SWIMweb/img/emptyStar.png" id="vote<%=i%>" class="rating"/></a> <%
+						<img src="/SWIMweb/img/emptyStar.png" id="vote<%=i%>" class="images"/></a> <%
 					} %>
 				</div>
 		<% } %>
@@ -49,7 +49,7 @@
 	if (help.getVote() > 0) {	
 		%><p><span class="text">Feedback: </span><%
 		for (int i = 0; i < help.getVote(); i++) {
-			%><img src="/SWIMweb/img/fullStar.png" class="rating" /> <%;
+			%><img src="/SWIMweb/img/fullStar.png" class="images" /> <%;
 		}
 	}
 	%>
