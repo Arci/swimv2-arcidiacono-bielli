@@ -117,13 +117,17 @@ public class ProfileServlet extends HttpServlet {
 							"your password was wrong, insert the correct password to make the changes.");
 				}
 			}
-			getServletConfig().getServletContext()
-					.getRequestDispatcher("/user/modifyProfile.jsp")
-					.forward(request, response);
 
 		} catch (NamingException e) {
 			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			request.setAttribute("error",
+					"the phone must be composed only by numbers");
 		}
+
+		getServletConfig().getServletContext()
+				.getRequestDispatcher("/user/modifyProfile.jsp")
+				.forward(request, response);
 	}
 
 	private void getUserInformation(User user, HttpServletRequest request,

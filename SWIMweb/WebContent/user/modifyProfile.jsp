@@ -43,7 +43,7 @@
 						if (user.getCity() == null) {
 							out.println("\"insert your city.\" onfocus=\"this.value='';\"");
 						} else {
-							out.println(user.getCity());
+							out.println("'"+user.getCity()+"'");
 						} %> /></p>
 						<p><label for="phone">Phone: </label><input type="text" id="phone" name="phone" value=<%
 						if (user.getPhone() == 0) {
