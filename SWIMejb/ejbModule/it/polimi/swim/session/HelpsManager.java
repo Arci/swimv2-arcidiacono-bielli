@@ -1,4 +1,5 @@
 package it.polimi.swim.session;
+
 import it.polimi.swim.enums.HelpState;
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.HelpRequest;
@@ -22,7 +23,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 
 @Stateless
 public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {

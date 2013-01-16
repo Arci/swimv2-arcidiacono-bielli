@@ -1,6 +1,6 @@
 package it.polimi.swim.session;
-import javax.ejb.Remote;
 
+import javax.ejb.Remote;
 
 @Remote
 public interface InitializationManagerRemote {

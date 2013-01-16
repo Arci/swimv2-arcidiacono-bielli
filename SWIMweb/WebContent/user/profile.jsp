@@ -99,7 +99,7 @@
 							out.println("<span class=\"warning\">no rating yet</span></li>");
 						}
 					%></p>
-					<p>
+					<p id="abilities">
 					<span class="text">You have the following abilities:</span><br/>
 					<%
 						Set<Ability> abilities = user.getAbilities();

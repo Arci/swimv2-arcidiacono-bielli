@@ -1,4 +1,5 @@
 package it.polimi.swim.session;
+
 import it.polimi.swim.enums.HelpState;
 import it.polimi.swim.enums.RequestState;
 import it.polimi.swim.enums.UserType;
@@ -17,7 +18,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 
 @Stateless
 public class InitializationManager implements InitializationManagerLocal,

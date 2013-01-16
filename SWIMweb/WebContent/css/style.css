@@ -189,11 +189,15 @@ fieldset {
 	margin-top: 10px;
 	margin-left: auto;
 	margin-right: auto;
-	width:750px;
+	width: 750px;
 }
 
 #contactInformation fieldset {
 	width: 330px;
+}
+
+#abilities .warning {
+	margin-left: 10px;
 }
 
 #profileError {

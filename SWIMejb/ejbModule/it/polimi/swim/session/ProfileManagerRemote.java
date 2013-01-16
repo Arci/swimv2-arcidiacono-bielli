@@ -1,4 +1,5 @@
 package it.polimi.swim.session;
+
 import it.polimi.swim.model.Ability;
 import it.polimi.swim.model.User;
 import it.polimi.swim.session.exceptions.AbilityException;
@@ -8,7 +9,6 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import javax.ejb.Remote;
-
 
 @Remote
 public interface ProfileManagerRemote {
