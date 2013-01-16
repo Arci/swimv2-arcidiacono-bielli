@@ -124,14 +124,51 @@ function checkMail() {
 	if (validEmail(email)) {
 		console.log("email correct.");
 		var image = document.createElement("img");
-		image.setAttribute("src", "../img/fullStar.png");
+		image.setAttribute("src", "../img/vi.png");
+		image.setAttribute("id", "images");
 		var container = document.getElementById("emailContainer");
 		container.appendChild(image);
 	} else {
 		console.log("email incorrect.");
 		var image = document.createElement("img");
-		image.setAttribute("src", "../img/emptyStar.png");
+		image.setAttribute("src", "../img/ics.png");
+		image.setAttribute("id", "images");
 		var container = document.getElementById("emailContainer");
 		container.appendChild(image);
 	}
+}
+
+function hasChange() {
+	var user = session.getAttribute("User");
+	var attribute = document.getElementById("name");
+	if (!attribute.equal(user.getName())) {
+		return false;
+	}
+
+	attribute = document.getElementById("surname");
+	if (!attribute.equal(user.getSurname())) {
+		return false;
+	}
+
+	attribute = document.getElementById("username");
+	if (!attribute.equal(user.getUsername())) {
+		return false;
+	}
+
+	attribute = document.getElementById("email");
+	if (!attribute.equal(user.getEmail())) {
+		return false;
+	}
+
+	attribute = document.getElementById("city");
+	if (!attribute.equal(user.getCity())) {
+		return false;
+	}
+
+	attribute = document.getElementById("phone");
+	if (!attribute.equal(user.getPhone())) {
+		return false;
+	}
+
+	return true;
 }

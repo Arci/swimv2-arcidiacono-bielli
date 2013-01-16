@@ -112,6 +112,10 @@ public class ProfileServlet extends HttpServlet {
 				request.getSession().removeAttribute("User");
 				request.getSession().setAttribute("User",
 						profileManager.updateProfile(user, params));
+				request.setAttribute("result", "your modifies has had success.");
+			} else {
+				request.setAttribute("error",
+						"your password was wrong, insert the correct password to make the changes.");
 			}
 			getServletConfig().getServletContext()
 					.getRequestDispatcher("/user/modifyProfile.jsp")
