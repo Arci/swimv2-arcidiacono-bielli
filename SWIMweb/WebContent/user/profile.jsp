@@ -93,7 +93,7 @@
 						int rating = (Integer) request.getAttribute("rating");
 						if (rating > 0) {	
 							for (int i = 0; i < rating; i++) {
-								%><img src="/SWIMweb/img/fullStar.png" class="rating" /> <%
+								%><img src="/SWIMweb/img/fullStar.png" class="images" /> <%
 							}
 						} else {
 							out.println("<span class=\"warning\">no rating yet</span></li>");
@@ -113,7 +113,7 @@
 								if (abilityRating > 0) {
 									out.println("<li>" + a.getName() + " ");
 									for (int i = 0; i < abilityRating; i++) {
-										%><img src="/SWIMweb/img/fullStar.png" class="rating" /> <%
+										%><img src="/SWIMweb/img/fullStar.png" class="images" /> <%
 									}
 									out.println("</li>");
 								} else {

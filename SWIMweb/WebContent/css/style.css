@@ -32,11 +32,11 @@
 	margin-right: 3px;
 }
 
-form[name=accessManager] input[type=text]{
+form[name=accessManager] input[type=text] {
 	color: #C0C0C0;
 }
 
-form[name=accessManager] input[type=password]{
+form[name=accessManager] input[type=password] {
 	color: #C0C0C0;
 }
 
@@ -172,17 +172,22 @@ fieldset {
 	margin-left: auto;
 }
 
-#register input[type=text]{
+#register input[type=text] {
 	width: 200px !important;
 }
 
-#register input[type=password]{
+#register input[type=password] {
 	width: 200px !important;
 }
 
 /* PROFILE */
 #profile {
 	margin-top: -10px;
+}
+
+.images {
+	width: 13px;
+	height: 13px;
 }
 
 /* ABILITY SUGGESTION */
@@ -324,10 +329,4 @@ select[name=city] {
 
 .right {
 	float: right;
-}
-
-/* RATING */
-.rating {
-	width: 13px;
-	height: 13px;
 }
