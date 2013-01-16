@@ -20,7 +20,7 @@
 			User user = (User) session.getAttribute("User");
 	%>
 	<div id="pageContent">
-		<div>
+		<div id="profileError">
 			<% if (request.getAttribute("error") != null) {
 				String error= (String) request.getAttribute("error");
 				out.println("<span class=\"error\">" + error + "</span>");
@@ -30,15 +30,15 @@
 				out.println("<span class=\"message\">" + result + "</span>"); 
 			} %>
 		</div>
-		<div>
+		<div id="modifyContainer">
 			<div id="contactInformation" class="left">
 				<fieldset>
-					<legend>Manage your contact information:</legend>
+					<legend class="text">Manage your contact information:</legend>
 					<form id="modifyProfile" action='profile' method='post' accept-charset='UTF-8'>
-						<p><label for="name">Name: </label><input type="text" id="name" name="name" value="<%=user.getName() %>" /></p>
+						<p class="first"><label for="name">Name: </label><input type="text" id="name" name="name" value="<%=user.getName() %>" /></p>
 						<p><label for="surname">Surname: </label><input type="text" id="surname" name="surname" value="<%=user.getSurname() %>" /></p>
 						<p><label for="username">Username: </label><input type="text" id="username" name="username" value="<%=user.getUsername() %>" /></p>
-						<p id="emailContainer"><label for="email">Email: </label><input type="text" id="email" name="email" value="<%=user.getEmail() %>" onchange="checkMail();"/></p>
+						<br/><div id="emailContainer"><label for="email">Email: </label><input type="text" id="email" name="email" value="<%=user.getEmail() %>" onchange="checkMail();"/>  </div>
 						<p><label for="city">City: </label><input type="text" id="city" name="city" value=<%
 						if (user.getCity() == null) {
 							out.println("\"insert your city.\" onfocus=\"this.value='';\"");
@@ -60,11 +60,15 @@
 			</div>
 			<div id="abilitiesManager" class="right">
 				<fieldset>
-					<legend>Manage your abilities:</legend>
+					<legend class="text">Manage your abilities:</legend>
 					<form id="modifyAbilities" action='ability' method='post' accept-charset='UTF-8'>			
 						<% 
 							try {	
-								InitialContext jndiContext = new InitialContext();
+								Hashtable<String, String> env = new Hashtable<String, String>();
+								env.put(Context.INITIAL_CONTEXT_FACTORY,
+										"org.jnp.interfaces.NamingContextFactory");
+								env.put(Context.PROVIDER_URL, "localhost:1099");
+								InitialContext jndiContext = new InitialContext(env);
 								Object ref = jndiContext.lookup("AbilityManager/remote");
 								AbilityManagerRemote abilityManager = (AbilityManagerRemote) ref;
 								

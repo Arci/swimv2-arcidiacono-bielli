@@ -158,6 +158,10 @@ fieldset {
 	width: 300px;
 }
 
+#pageContent input[type=password] {
+	width: 300px;
+}
+
 #messages {
 	margin-top: 5px;
 	width: 340px;
@@ -181,8 +185,30 @@ fieldset {
 }
 
 /* PROFILE */
+#modifyContainer {
+	margin-left: auto;
+	margin-right: auto;
+	width:750px;
+}
+
+#contactInformation fieldset {
+	width: 330px;
+}
+
+#profileError {
+	text-align: center;
+}
+
 #profile {
 	margin-top: -10px;
+}
+
+#modifyAbilities ul {
+	margin-bottom: 0;
+}
+
+.first {
+	margin-top: 0;
 }
 
 .images {

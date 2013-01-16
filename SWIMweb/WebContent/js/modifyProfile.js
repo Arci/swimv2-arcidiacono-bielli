@@ -122,18 +122,19 @@ function validEmail(email) {
 function checkMail() {
 	var email = document.getElementById("email").value;
 	if (validEmail(email)) {
-		console.log("email correct.");
-		var image = document.createElement("img");
-		image.setAttribute("src", "../img/vi.png");
-		image.setAttribute("id", "images");
-		var container = document.getElementById("emailContainer");
-		container.appendChild(image);
+		addImage("../img/vi.png");
 	} else {
-		console.log("email incorrect.");
-		var image = document.createElement("img");
-		image.setAttribute("src", "../img/ics.png");
-		image.setAttribute("id", "images");
-		var container = document.getElementById("emailContainer");
-		container.appendChild(image);
+		addImage("../img/ics.png");
 	}
+}
+
+function addImage(imagePath) {
+	var container = document.getElementById("emailContainer");
+	if (container.getElementsByTagName("img")[0]) {
+		container.removeChild(container.getElementsByTagName("img")[0]);
+	}
+	var image = document.createElement("img");
+	image.setAttribute("src", imagePath);
+	image.setAttribute("class", "images");
+	container.appendChild(image);
 }
