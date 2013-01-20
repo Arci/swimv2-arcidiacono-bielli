@@ -56,8 +56,9 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 			ProfileManagerLocal profileManager = (ProfileManagerLocal) ref;
 			User helperUser = profileManager.getUserByUsername(helper);
 
-			ref = jndiContext.lookup("AbilityManager/local");
-			AbilityManagerLocal abilityManager = (AbilityManagerLocal) ref;
+			// TODO problema remote
+			ref = jndiContext.lookup("AbilityManager/remote");
+			AbilityManagerRemote abilityManager = (AbilityManagerRemote) ref;
 			Ability helpAbility = abilityManager.getAbilityByName(ability);
 
 			if (!helpAlreadyExist(user, helperUser, helpAbility)) {

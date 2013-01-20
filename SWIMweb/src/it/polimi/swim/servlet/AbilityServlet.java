@@ -1,6 +1,7 @@
 package it.polimi.swim.servlet;
 
 import it.polimi.swim.session.AbilityManagerRemote;
+import it.polimi.swim.session.exceptions.AbilityException;
 
 import java.io.IOException;
 
@@ -16,35 +17,45 @@ public class AbilityServlet extends HttpServlet {
 	private static final long serialVersionUID = 2790612978510800588L;
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		try {
 			InitialContext jndiContext = new InitialContext();
 
 			Object ref = jndiContext.lookup("AbilityManager/remote");
 			AbilityManagerRemote abilityManager = (AbilityManagerRemote) ref;
 
-			if (hasNewAbility(req, resp)) {
-				String name = req.getParameter("newAbility");
-				abilityManager.insertNewAbility(name);
-				resp.sendRedirect("/SWIMweb/admin/newAbility");
-				return;
+			if (hasNewAbility(request, response)) {
+				if (request.getParameter("newAbility").length() > 0) {
+					try {
+						abilityManager.getAbilityByName(request
+								.getParameter("newAbility"));
+						request.setAttribute("error",
+								"you have already inserted this ability.");
+
+					} catch (AbilityException e) {
+						String name = request.getParameter("newAbility");
+						abilityManager.insertNewAbility(name);
+						request.setAttribute("message",
+								"ability inserted successfully.");
+					}
+				}
 			}
 
-			req.setAttribute("abilities", abilityManager.getAbilityList());
+			request.setAttribute("abilities", abilityManager.getAbilityList());
 
 			getServletConfig().getServletContext()
 					.getRequestDispatcher("/admin/newAbility.jsp")
-					.forward(req, resp);
+					.forward(request, response);
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		super.doPost(req, resp);
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		super.doPost(request, response);
 	}
 
 	private boolean hasNewAbility(HttpServletRequest req,

@@ -61,7 +61,11 @@ public class ProfileManager implements ProfileManagerRemote,
 		user.setSurname(params.get("surname"));
 		user.setUsername(params.get("username"));
 		user.setEmail(params.get("email"));
-		user.setCity(params.get("city"));
+		if (params.get("city").equals("") || params.get("city").equals(" ")) {
+			user.setCity(null);
+		} else {
+			user.setCity(params.get("city"));
+		}
 		user.setPhone(Integer.parseInt(params.get("phone")));
 		manager.merge(user);
 		return user;
@@ -188,8 +192,9 @@ public class ProfileManager implements ProfileManagerRemote,
 			env.put(Context.PROVIDER_URL, "localhost:1099");
 			InitialContext jndiContext;
 			jndiContext = new InitialContext(env);
-			Object ref = jndiContext.lookup("AbilityManager/local");
-			AbilityManagerLocal abilityManager = (AbilityManagerLocal) ref;
+			// TODO problema remote da parlarne
+			Object ref = jndiContext.lookup("AbilityManager/remote");
+			AbilityManagerRemote abilityManager = (AbilityManagerRemote) ref;
 
 			Ability ability = abilityManager.getAbilityByName(abilityName);
 
@@ -219,8 +224,9 @@ public class ProfileManager implements ProfileManagerRemote,
 			env.put(Context.PROVIDER_URL, "localhost:1099");
 			InitialContext jndiContext;
 			jndiContext = new InitialContext(env);
-			Object ref = jndiContext.lookup("AbilityManager/local");
-			AbilityManagerLocal abilityManager = (AbilityManagerLocal) ref;
+			// TODO PROBLEMA REMOTE
+			Object ref = jndiContext.lookup("AbilityManager/remote");
+			AbilityManagerRemote abilityManager = (AbilityManagerRemote) ref;
 
 			Ability ability = abilityManager.getAbilityByName(abilityName);
 

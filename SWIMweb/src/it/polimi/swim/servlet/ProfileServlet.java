@@ -99,19 +99,28 @@ public class ProfileServlet extends HttpServlet {
 			if (hasChange(request, response)) {
 				if (request.getParameter("password").equals(user.getPassword())) {
 
-					Hashtable<String, String> params = new Hashtable<String, String>();
-					params.put("name", request.getParameter("name"));
-					params.put("surname", request.getParameter("surname"));
-					params.put("username", request.getParameter("username"));
-					params.put("email", request.getParameter("email"));
-					params.put("city", request.getParameter("city"));
-					params.put("phone", request.getParameter("phone"));
+					if ((8 < Integer.parseInt(request.getParameter("phone")) && Integer
+							.parseInt(request.getParameter("phone")) < 15)
+							|| Integer.parseInt(request.getParameter("phone")) == 0) {
 
-					request.getSession().removeAttribute("User");
-					request.getSession().setAttribute("User",
-							profileManager.updateProfile(user, params));
-					request.setAttribute("result",
-							"your modifies has had success.");
+						Hashtable<String, String> params = new Hashtable<String, String>();
+						params.put("name", request.getParameter("name"));
+						params.put("surname", request.getParameter("surname"));
+						params.put("username", request.getParameter("username"));
+						params.put("email", request.getParameter("email"));
+						params.put("city", request.getParameter("city"));
+						params.put("phone", request.getParameter("phone"));
+
+						request.getSession().removeAttribute("User");
+						request.getSession().setAttribute("User",
+								profileManager.updateProfile(user, params));
+						request.setAttribute("result",
+								"your modifies has had success.");
+					} else {
+						request.setAttribute("error",
+								"your phone number must be consistent.");
+
+					}
 				} else {
 					request.setAttribute("error",
 							"your password was wrong, insert the correct password to make the changes.");

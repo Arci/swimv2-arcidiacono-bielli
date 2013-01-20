@@ -39,6 +39,7 @@ public class SuggestServlet extends HttpServlet {
 			}
 
 			if (abilityRequests != null && abilityRequests.size() > 0) {
+
 				req.setAttribute("suggests", abilityRequests);
 				System.out
 						.println("*** [SuggestServlet] suspended abilities catched under the attribute 'suggests' ***");

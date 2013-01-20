@@ -13,6 +13,15 @@ import javax.ejb.Remote;
 public interface AbilityManagerRemote {
 
 	/**
+	 * Search for an ability starting from the name passed
+	 * 
+	 * @param name
+	 * @return null if no ability exist, the ability otherwise
+	 * @throws AbilityException
+	 */
+	public Ability getAbilityByName(String name) throws AbilityException;
+
+	/**
 	 * Insert a new suggestion for the specified user
 	 * 
 	 * @param user
