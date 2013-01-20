@@ -10,6 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+/**
+ * This class define Ability entity bean
+ * 
+ * @author Arcidiacono Fabio, Bielli Stefano
+ * 
+ */
 @Entity
 @Table(name = "ability")
 public class Ability implements Serializable {

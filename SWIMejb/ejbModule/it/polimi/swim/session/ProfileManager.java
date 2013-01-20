@@ -20,6 +20,12 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+/**
+ * Implementation of stateless bean ProfileManager
+ * 
+ * @author Arcidiacono Fabio, Bielli Stefano
+ * 
+ */
 @Stateless
 public class ProfileManager implements ProfileManagerRemote,
 		ProfileManagerLocal {
@@ -56,17 +62,15 @@ public class ProfileManager implements ProfileManagerRemote,
 	}
 
 	@Override
-	public User updateProfile(User user, Hashtable<String, String> params) {
-		user.setName(params.get("name"));
-		user.setSurname(params.get("surname"));
-		user.setUsername(params.get("username"));
-		user.setEmail(params.get("email"));
-		if (params.get("city").equals("") || params.get("city").equals(" ")) {
-			user.setCity(null);
-		} else {
-			user.setCity(params.get("city"));
+	public User updateProfile(User user, Hashtable<String, Object> params) {
+		user.setName((String) params.get("name"));
+		user.setSurname((String) params.get("surname"));
+		user.setUsername((String) params.get("username"));
+		user.setEmail((String) params.get("email"));
+		user.setCity((String) params.get("city"));
+		if (params.get("phone") != null) {
+			user.setPhone((Integer) params.get("phone"));
 		}
-		user.setPhone(Integer.parseInt(params.get("phone")));
 		manager.merge(user);
 		return user;
 	}
@@ -173,13 +177,16 @@ public class ProfileManager implements ProfileManagerRemote,
 			normal.setUsername(normalUsername);
 			normal.setEmail((String) params.get("email"));
 			normal.setPassword((String) params.get("password"));
-			// normal.setCity((String) params.get("city"));
-			// normal.setPhone((int) params.get("phone"));
 			manager.persist(normal);
 			System.out.println("*** [ProfileManager] NORMAL user inserted ***");
 			return normal;
 		}
 		return null;
+	}
+
+	@Override
+	public void insertNewUser(User user) {
+		manager.persist(user);
 	}
 
 	@Override
@@ -192,9 +199,8 @@ public class ProfileManager implements ProfileManagerRemote,
 			env.put(Context.PROVIDER_URL, "localhost:1099");
 			InitialContext jndiContext;
 			jndiContext = new InitialContext(env);
-			// TODO problema remote da parlarne
-			Object ref = jndiContext.lookup("AbilityManager/remote");
-			AbilityManagerRemote abilityManager = (AbilityManagerRemote) ref;
+			Object ref = jndiContext.lookup("AbilityManager/local");
+			AbilityManagerLocal abilityManager = (AbilityManagerLocal) ref;
 
 			Ability ability = abilityManager.getAbilityByName(abilityName);
 
@@ -224,9 +230,8 @@ public class ProfileManager implements ProfileManagerRemote,
 			env.put(Context.PROVIDER_URL, "localhost:1099");
 			InitialContext jndiContext;
 			jndiContext = new InitialContext(env);
-			// TODO PROBLEMA REMOTE
-			Object ref = jndiContext.lookup("AbilityManager/remote");
-			AbilityManagerRemote abilityManager = (AbilityManagerRemote) ref;
+			Object ref = jndiContext.lookup("AbilityManager/local");
+			AbilityManagerLocal abilityManager = (AbilityManagerLocal) ref;
 
 			Ability ability = abilityManager.getAbilityByName(abilityName);
 

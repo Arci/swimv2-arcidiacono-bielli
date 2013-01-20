@@ -40,19 +40,19 @@
 						<p><label for="surname">Surname: </label><input type="text" id="surname" name="surname" value="<%=user.getSurname() %>" /></p>
 						<p><label for="username">Username: </label><input type="text" id="username" name="username" value="<%=user.getUsername() %>" /></p>
 						<br/><div id="emailContainer"><label for="email">Email: </label><input type="text" id="email" name="email" value="<%=user.getEmail() %>" onkeypress="checkMail();" onchange="checkMail();"/>  </div>
-						<p><label for="city">City: </label><input type="text" id="city" name="city" value=<%
-						if (user.getCity() == null) {
-							out.println("\"insert your city.\" onfocus=\"this.value='';\"");
-						} else {
-							out.println("'"+user.getCity()+"'");
-						} %> /></p>
-						<p><label for="phone">Phone: </label><input type="text" id="phone" name="phone" value=<%
-						if (user.getPhone() == 0) {
-							out.println("\"insert your phone number.\" onfocus=\"this.value='';\"");
-						} else {
+						<p><label for="city">City: </label><input type="text" id="city" name="city" value='<%
+						if (user.getCity() != null) {
+							out.println(user.getCity());
+						}else if (request.getParameter("city") != null) {
+							out.println(request.getParameter("city"));
+						} %>' /></p>
+						<p><label for="phone">Phone: </label><input type="text" id="phone" name="phone" value='<%
+						if (user.getPhone() != 0) {
 							out.println(user.getPhone());
+						}else if (request.getParameter("phone") != null) {
+							out.println(request.getParameter("phone"));
 						}
-						%> /></p>
+						%>' /></p>
 						<p><label for="password">Password*: </label><input type="password" id="password" name="password" /></p>
 						* required to validate modifications<br/>
 						<input type='submit' name='Submit' value='Submit' />

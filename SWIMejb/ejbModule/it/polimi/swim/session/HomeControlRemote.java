@@ -4,6 +4,12 @@ import it.polimi.swim.model.User;
 
 import javax.ejb.Remote;
 
+/**
+ * Remote interface for HomeControl bean
+ * 
+ * @author Arcidiacono Fabio, Bielli Stefano
+ * 
+ */
 @Remote
 public interface HomeControlRemote {
 

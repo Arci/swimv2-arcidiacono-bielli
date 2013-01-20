@@ -10,6 +10,12 @@ import java.util.Map;
 
 import javax.ejb.Remote;
 
+/**
+ * Remote interface for ProfileManager bean
+ * 
+ * @author Arcidiacono Fabio, Bielli Stefano
+ * 
+ */
 @Remote
 public interface ProfileManagerRemote {
 
@@ -48,6 +54,14 @@ public interface ProfileManagerRemote {
 	public User insertNewUser(Map<String, Object> params);
 
 	/**
+	 * insert new user give a user object
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public void insertNewUser(User user);
+
+	/**
 	 * 
 	 * @param username
 	 * @return the user with the username passed
@@ -65,7 +79,7 @@ public interface ProfileManagerRemote {
 	 *            hashtable with (paramName, value)
 	 * @return the updated user
 	 */
-	public User updateProfile(User user, Hashtable<String, String> params);
+	public User updateProfile(User user, Hashtable<String, Object> params);
 
 	/**
 	 * 

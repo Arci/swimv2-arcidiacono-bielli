@@ -5,6 +5,12 @@ import it.polimi.swim.session.exceptions.UserException;
 
 import javax.ejb.Local;
 
+/**
+ * Local interface for ProfileManager bean
+ * 
+ * @author Arcidiacono Fabio, Bielli Stefano
+ * 
+ */
 @Local
 public interface ProfileManagerLocal {
 

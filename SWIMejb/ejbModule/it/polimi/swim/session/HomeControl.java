@@ -9,6 +9,12 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+/**
+ * Implementation of stateless bean HomeControl
+ * 
+ * @author Arcidiacono Fabio, Bielli Stefano
+ * 
+ */
 @Stateless
 public class HomeControl implements HomeControlRemote, HomeControlLocal {
 	@PersistenceContext(unitName = "SwimPU")

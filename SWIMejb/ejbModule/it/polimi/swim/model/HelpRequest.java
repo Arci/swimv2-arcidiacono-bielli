@@ -20,6 +20,12 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+/**
+ * This class define Help Request entity bean
+ * 
+ * @author Arcidiacono Fabio, Bielli Stefano
+ * 
+ */
 @Entity
 @Table(name = "help_request")
 public class HelpRequest implements Serializable {

@@ -6,6 +6,12 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
+/**
+ * Remote interface for SearchManager bean
+ * 
+ * @author Arcidiacono Fabio, Bielli Stefano
+ * 
+ */
 @Remote
 public interface SearchManagerRemote {
 

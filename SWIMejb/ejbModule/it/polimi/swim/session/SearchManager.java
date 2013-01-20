@@ -11,6 +11,12 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+/**
+ * Implementation of stateless bean SearchManager
+ * 
+ * @author Arcidiacono Fabio, Bielli Stefano
+ * 
+ */
 @Stateless
 public class SearchManager implements SearchManagerRemote, SearchManagerLocal {
 	@PersistenceContext(unitName = "SwimPU")

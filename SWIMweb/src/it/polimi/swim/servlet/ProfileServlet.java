@@ -99,39 +99,54 @@ public class ProfileServlet extends HttpServlet {
 			if (hasChange(request, response)) {
 				if (request.getParameter("password").equals(user.getPassword())) {
 
-					if ((8 < Integer.parseInt(request.getParameter("phone")) && Integer
-							.parseInt(request.getParameter("phone")) < 15)
-							|| Integer.parseInt(request.getParameter("phone")) == 0) {
+					Hashtable<String, Object> params = new Hashtable<String, Object>();
 
-						Hashtable<String, String> params = new Hashtable<String, String>();
-						params.put("name", request.getParameter("name"));
-						params.put("surname", request.getParameter("surname"));
-						params.put("username", request.getParameter("username"));
-						params.put("email", request.getParameter("email"));
-						params.put("city", request.getParameter("city"));
-						params.put("phone", request.getParameter("phone"));
+					params.put("name", request.getParameter("name"));
+					params.put("surname", request.getParameter("surname"));
+					params.put("username", request.getParameter("username"));
+					params.put("email", request.getParameter("email"));
+					params.put("city", request.getParameter("city"));
+
+					if (request.getParameter("phone") != null) {
+						try {
+							if (request.getParameter("phone").length() > 8
+									&& request.getParameter("phone").length() < 15) {
+								params.put("phone", Integer.parseInt(request
+										.getParameter("phone")));
+
+								request.getSession().removeAttribute("User");
+								request.getSession().setAttribute(
+										"User",
+										profileManager.updateProfile(user,
+												params));
+								request.setAttribute("result",
+										"your cheanges has been registered.");
+							} else {
+								request.setAttribute("error",
+										"your phone number must be consistent.");
+
+							}
+						} catch (NumberFormatException e) {
+							request.setAttribute("error",
+									"the phone must be composed only by numbers");
+						}
+					} else {
 
 						request.getSession().removeAttribute("User");
 						request.getSession().setAttribute("User",
 								profileManager.updateProfile(user, params));
 						request.setAttribute("result",
-								"your modifies has had success.");
-					} else {
-						request.setAttribute("error",
-								"your phone number must be consistent.");
-
+								"your cheanges has been registered.");
 					}
+
 				} else {
 					request.setAttribute("error",
-							"your password was wrong, insert the correct password to make the changes.");
+							"your password is wrong, insert the correct password to apply the changes.");
 				}
 			}
 
 		} catch (NamingException e) {
 			e.printStackTrace();
-		} catch (NumberFormatException e) {
-			request.setAttribute("error",
-					"the phone must be composed only by numbers");
 		}
 
 		getServletConfig().getServletContext()
@@ -178,33 +193,39 @@ public class ProfileServlet extends HttpServlet {
 			HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute("User");
 		String attribute = request.getParameter("name");
-		if (!attribute.equals(user.getName())) {
+		if (attribute != null && !attribute.equals(user.getName())) {
 			return true;
 		}
 
 		attribute = request.getParameter("surname");
-		if (!attribute.equals(user.getSurname())) {
+		if (attribute != null && !attribute.equals(user.getSurname())) {
 			return true;
 		}
 
 		attribute = request.getParameter("username");
-		if (!attribute.equals(user.getUsername())) {
+		if (attribute != null && !attribute.equals(user.getUsername())) {
 			return true;
 		}
 
 		attribute = request.getParameter("email");
-		if (!attribute.equals(user.getEmail())) {
+		if (attribute != null && !attribute.equals(user.getEmail())) {
 			return true;
 		}
 
 		attribute = request.getParameter("city");
-		if (!attribute.equals(user.getCity())) {
+		if (attribute != null && !attribute.equals(user.getCity())) {
 			return true;
 		}
 
 		attribute = request.getParameter("phone");
-		if (Integer.parseInt(attribute) != user.getPhone()) {
-			return true;
+		if (attribute != null) {
+			try {
+				if (Integer.parseInt(attribute) != user.getPhone()) {
+					return true;
+				}
+			} catch (NumberFormatException e) {
+			}
+			return false;
 		}
 
 		return false;

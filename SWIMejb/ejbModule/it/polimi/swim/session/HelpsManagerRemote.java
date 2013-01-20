@@ -13,6 +13,12 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
+/**
+ * Remote interface for HelpsManager bean
+ * 
+ * @author Arcidiacono Fabio, Bielli Stefano
+ * 
+ */
 @Remote
 public interface HelpsManagerRemote {
 

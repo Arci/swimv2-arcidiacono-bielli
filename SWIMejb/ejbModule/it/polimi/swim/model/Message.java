@@ -13,6 +13,12 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+/**
+ * This class define Message entity bean
+ * 
+ * @author Arcidiacono Fabio, Bielli Stefano
+ * 
+ */
 @Entity
 @Table(name = "message")
 public class Message implements Serializable, Comparable<Message> {

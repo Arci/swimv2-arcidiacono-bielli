@@ -14,6 +14,12 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+/**
+ * Implementation of stateless bean AbilityManager
+ * 
+ * @author Arcidiacono Fabio, Bielli Stefano
+ * 
+ */
 @Stateless
 public class AbilityManager implements AbilityManagerRemote,
 		AbilityManagerLocal {

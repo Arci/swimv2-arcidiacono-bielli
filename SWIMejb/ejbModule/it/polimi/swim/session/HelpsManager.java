@@ -24,6 +24,12 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+/**
+ * Implementation of stateless bean HelpsManager
+ * 
+ * @author Arcidiacono Fabio, Bielli Stefano
+ * 
+ */
 @Stateless
 public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 	@PersistenceContext(unitName = "SwimPU")
@@ -56,9 +62,8 @@ public class HelpsManager implements HelpsManagerRemote, HelpsManagerLocal {
 			ProfileManagerLocal profileManager = (ProfileManagerLocal) ref;
 			User helperUser = profileManager.getUserByUsername(helper);
 
-			// TODO problema remote
-			ref = jndiContext.lookup("AbilityManager/remote");
-			AbilityManagerRemote abilityManager = (AbilityManagerRemote) ref;
+			ref = jndiContext.lookup("AbilityManager/local");
+			AbilityManagerLocal abilityManager = (AbilityManagerLocal) ref;
 			Ability helpAbility = abilityManager.getAbilityByName(ability);
 
 			if (!helpAlreadyExist(user, helperUser, helpAbility)) {

@@ -153,7 +153,7 @@
 						<div id="helpDiv">
 							<%
 								if(user.getAbilities().isEmpty()){
-									out.println("<span class=\"message\">This user doesn't have abilities, you cannot ask him for help</span>");
+									out.println("<span class=\"error\">This user doesn't have abilities, you cannot ask him for help</span>");
 								}else{
 									%><select id="helperAbilities"><%
 										for(Ability ability : user.getAbilities()){

@@ -16,6 +16,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+/**
+ * This class define Ability Request entity bean
+ * 
+ * @author Arcidiacono Fabio, Bielli Stefano
+ * 
+ */
 @Entity
 @Table(name = "ability_request")
 public class AbilityRequest implements Serializable {

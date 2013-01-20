@@ -5,10 +5,20 @@
 	id="WebApp_ID" version="2.5">
 	<display-name>SWIMweb</display-name>
 	<welcome-file-list>
-		<welcome-file>home.jsp</welcome-file>
+		<welcome-file>search.jsp</welcome-file>
 	</welcome-file-list>
-	
-	<!--  common pages -->
+
+	<!-- initialization page -->
+	<servlet>
+		<servlet-name>initializationServlet</servlet-name>
+		<servlet-class>it.polimi.swim.servlet.InitializationServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>initializationServlet</servlet-name>
+		<url-pattern>/initialization</url-pattern>
+	</servlet-mapping>
+
+	<!-- common pages -->
 	<servlet>
 		<servlet-name>registrationServlet</servlet-name>
 		<servlet-class>it.polimi.swim.servlet.RegistrationServlet</servlet-class>
@@ -16,8 +26,8 @@
 	<servlet-mapping>
 		<servlet-name>registrationServlet</servlet-name>
 		<url-pattern>/registrationManager</url-pattern>
-	</servlet-mapping>	
-		<servlet>
+	</servlet-mapping>
+	<servlet>
 		<servlet-name>searchServlet</servlet-name>
 		<servlet-class>it.polimi.swim.servlet.SearchServlet</servlet-class>
 	</servlet>
@@ -25,7 +35,7 @@
 		<servlet-name>searchServlet</servlet-name>
 		<url-pattern>/search</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- registered user pages -->
 	<servlet>
 		<servlet-name>accessServlet</servlet-name>
@@ -75,22 +85,22 @@
 		<servlet-name>userAbilityServlet</servlet-name>
 		<url-pattern>/user/ability</url-pattern>
 	</servlet-mapping>
-	
-	<!--  admin pages -->
+
+	<!-- admin pages -->
 	<servlet>
 		<servlet-name>suggestServlet</servlet-name>
-		<servlet-class>it.polimi.swim.servlet.SuggestServlet</servlet-class>
+		<servlet-class>it.polimi.swim.servlet.AdminSuggestServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>suggestServlet</servlet-name>
 		<url-pattern>/admin/suspended</url-pattern>
-	</servlet-mapping>	
-		<servlet>
+	</servlet-mapping>
+	<servlet>
 		<servlet-name>abilities</servlet-name>
 		<servlet-class>it.polimi.swim.servlet.AbilityServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>abilities</servlet-name>
 		<url-pattern>/admin/newAbility</url-pattern>
-	</servlet-mapping>	
+	</servlet-mapping>
 </web-app>

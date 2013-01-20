@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class SuggestServlet extends HttpServlet {
+public class AdminSuggestServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -2736959968486863204L;
 

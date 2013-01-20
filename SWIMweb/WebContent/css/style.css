@@ -434,6 +434,10 @@ select[name=city] {
 	font-size: xx-small;
 }
 
+.last{
+	padding-bottom: 20px;
+}
+
 /* FLOATING */
 .left {
 	float: left;

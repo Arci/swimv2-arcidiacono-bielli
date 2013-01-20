@@ -16,6 +16,12 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+/**
+ * This class define Friendship entity bean
+ * 
+ * @author Arcidiacono Fabio, Bielli Stefano
+ * 
+ */
 @Entity
 @Table(name = "friendship")
 public class Friendship implements Serializable {
