@@ -92,7 +92,7 @@
 				<span class='error'>&#9;*you must insert the check password.</span><%}%>
 				<br>
 				* required<br>
-				<input type='submit' name='Submit' value='Submit' />
+				<input type='submit' name='Submit' value='Register' />
 			</form>
 			<%
 			if(hasMissingParameters)

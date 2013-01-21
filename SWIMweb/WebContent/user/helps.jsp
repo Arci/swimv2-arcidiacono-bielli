@@ -126,12 +126,23 @@
 					} else {
 						out.println("<ul>");
 						for (HelpRequest help : closed) {
-							out.println("<li>You have helped <span class=\"italic\">"
-									+ help.getUser().getName() + " "
-									+ help.getUser().getSurname() + "</span> for <span class=\"italic\">"
-									+ help.getAbility().getName()
-									+ "</span> <a href=\"helps?show=" +
-									+ help.getId() +"\">Show</a></li>");
+							if(help.getHelper().equals(user)){
+								//user is helper	
+								out.println("<li>You have helped <span class=\"italic\">"
+										+ help.getUser().getName() + " "
+										+ help.getUser().getSurname() + "</span> for <span class=\"italic\">"
+										+ help.getAbility().getName()
+										+ "</span> <a href=\"helps?show=" +
+										+ help.getId() +"\">Show</a></li>");
+							}else{
+								//user is applicant
+								out.println("<li><span class=\"italic\">"
+										+ help.getHelper().getName() + " "
+										+ help.getHelper().getSurname() + "</span> helped you for <span class=\"italic\">"
+										+ help.getAbility().getName()
+										+ "</span> <a href=\"helps?show=" +
+										+ help.getId() +"\">Show</a></li>");
+							}
 						}
 						out.println("</ul>");
 					}
