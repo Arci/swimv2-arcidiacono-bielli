@@ -70,20 +70,17 @@ public class InitializationServlet extends HttpServlet {
 			Object ref = jndiContext.lookup("ProfileManager/remote");
 			ProfileManagerRemote profileManager = (ProfileManagerRemote) ref;
 			try {
-				profileManager.getUserByUsername("duck");
-				initError.add("user 'duck' already exists");
+				profileManager.getUserByUsername("admin");
+				initError.add("user 'admin' already exists");
 			} catch (UserException e) {
 				User admin = new User();
 				admin.setType(UserType.ADMIN);
-				admin.setName("donald");
-				admin.setSurname("duck");
-				admin.setUsername("duck");
-				admin.setEmail("papera@fattoria.com");
-				admin.setPassword("duck");
-				admin.setCity("Torino");
-				admin.setPhone(1234567890);
+				admin.setName("admin");
+				admin.setUsername("admin");
+				admin.setEmail("admin@admin.com");
+				admin.setPassword("admin");
 				profileManager.insertNewUser(admin);
-				initMessage.add("user 'duck' inserted");
+				initMessage.add("user 'admin' inserted");
 			}
 			try {
 				profileManager.getUserByUsername("mouse");
