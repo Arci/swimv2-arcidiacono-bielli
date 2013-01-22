@@ -31,10 +31,10 @@ public class SearchManager implements SearchManagerRemote, SearchManagerLocal {
 	public List<User> searchPerson(String pattern) {
 		try {
 			Query q = manager
-					.createQuery("FROM User u WHERE (u.username=:pattern OR "
-							+ "u.name=:pattern OR u.surname=:pattern OR u.email=:pattern) "
+					.createQuery("FROM User u WHERE (u.username LIKE :pattern OR "
+							+ "u.name LIKE :pattern OR u.surname LIKE :pattern OR u.email LIKE :pattern ) "
 							+ "AND u.type=:normal");
-			q.setParameter("pattern", pattern);
+			q.setParameter("pattern", "%" + pattern + "%");
 			q.setParameter("normal", UserType.NORMAL);
 			List<User> result = q.getResultList();
 			return result;
@@ -48,8 +48,9 @@ public class SearchManager implements SearchManagerRemote, SearchManagerLocal {
 	public List<User> searchAbility(String pattern) {
 		try {
 			Query q = manager
-					.createQuery("SELECT OBJECT(u) FROM User u JOIN u.abilities AS a WHERE a.name=:pattern AND u.type=:normal");
-			q.setParameter("pattern", pattern);
+					.createQuery("SELECT OBJECT(u) FROM User u JOIN u.abilities AS a WHERE a.name LIKE :pattern  AND u.type=:normal");
+			q.setParameter("pattern", "%" + pattern + "%");
+
 			q.setParameter("normal", UserType.NORMAL);
 			List<User> result = q.getResultList();
 			return result;
@@ -63,10 +64,11 @@ public class SearchManager implements SearchManagerRemote, SearchManagerLocal {
 	public List<User> searchPerson(String pattern, String cityPattern) {
 		try {
 			Query q = manager
-					.createQuery("FROM User u WHERE (u.username=:pattern OR "
-							+ "u.name=:pattern OR u.surname=:pattern OR u.email=:pattern) "
+					.createQuery("FROM User u WHERE (u.username LIKE :pattern OR "
+							+ "u.name LIKE :pattern OR u.surname LIKE :pattern OR u.email LIKE :pattern ) "
 							+ "AND u.type=:normal AND u.city=:city");
-			q.setParameter("pattern", pattern);
+			q.setParameter("pattern", "%" + pattern + "%");
+
 			q.setParameter("city", cityPattern);
 			q.setParameter("normal", UserType.NORMAL);
 			List<User> result = q.getResultList();
@@ -81,8 +83,9 @@ public class SearchManager implements SearchManagerRemote, SearchManagerLocal {
 	public List<User> searchAbility(String pattern, String cityPattern) {
 		try {
 			Query q = manager
-					.createQuery("SELECT OBJECT(u) FROM User u JOIN u.abilities AS a WHERE a.name=:pattern AND u.type=:normal AND u.city=:city");
-			q.setParameter("pattern", pattern);
+					.createQuery("SELECT OBJECT(u) FROM User u JOIN u.abilities AS a WHERE a.name LIKE :pattern AND u.type=:normal AND u.city=:city");
+			q.setParameter("pattern", "%" + pattern + "%");
+
 			q.setParameter("city", cityPattern);
 			q.setParameter("normal", UserType.NORMAL);
 			List<User> result = q.getResultList();
