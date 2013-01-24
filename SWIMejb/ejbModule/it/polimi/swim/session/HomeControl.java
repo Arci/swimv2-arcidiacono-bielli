@@ -9,6 +9,9 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.jboss.ejb3.annotation.LocalBinding;
+import org.jboss.ejb3.annotation.RemoteBinding;
+
 /**
  * Implementation of stateless bean HomeControl
  * 
@@ -16,6 +19,8 @@ import javax.persistence.Query;
  * 
  */
 @Stateless
+@RemoteBinding(jndiBinding = "HomeControl/remote")
+@LocalBinding(jndiBinding = "HomeControl/local")
 public class HomeControl implements HomeControlRemote, HomeControlLocal {
 	@PersistenceContext(unitName = "SwimPU")
 	EntityManager manager;

@@ -20,6 +20,9 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.jboss.ejb3.annotation.LocalBinding;
+import org.jboss.ejb3.annotation.RemoteBinding;
+
 /**
  * Implementation of stateless bean ProfileManager
  * 
@@ -27,6 +30,8 @@ import javax.persistence.Query;
  * 
  */
 @Stateless
+@RemoteBinding(jndiBinding = "ProfileManager/remote")
+@LocalBinding(jndiBinding = "ProfileManager/local")
 public class ProfileManager implements ProfileManagerRemote,
 		ProfileManagerLocal {
 	@PersistenceContext(unitName = "SwimPU")

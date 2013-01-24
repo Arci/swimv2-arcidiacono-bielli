@@ -11,6 +11,9 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.jboss.ejb3.annotation.LocalBinding;
+import org.jboss.ejb3.annotation.RemoteBinding;
+
 /**
  * Implementation of stateless bean SearchManager
  * 
@@ -18,6 +21,8 @@ import javax.persistence.Query;
  * 
  */
 @Stateless
+@RemoteBinding(jndiBinding = "SearchManager/remote")
+@LocalBinding(jndiBinding = "SearchManager/local")
 public class SearchManager implements SearchManagerRemote, SearchManagerLocal {
 	@PersistenceContext(unitName = "SwimPU")
 	EntityManager manager;

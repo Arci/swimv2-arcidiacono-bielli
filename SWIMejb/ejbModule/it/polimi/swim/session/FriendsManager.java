@@ -19,6 +19,9 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.jboss.ejb3.annotation.LocalBinding;
+import org.jboss.ejb3.annotation.RemoteBinding;
+
 /**
  * Implementation of stateless bean FriendshipManager
  * 
@@ -26,6 +29,8 @@ import javax.persistence.Query;
  * 
  */
 @Stateless
+@RemoteBinding(jndiBinding = "FriendsManager/remote")
+@LocalBinding(jndiBinding = "FriendsManager/local")
 public class FriendsManager implements FriendsManagerRemote,
 		FriendsManagerLocal {
 	@PersistenceContext(unitName = "SwimPU")

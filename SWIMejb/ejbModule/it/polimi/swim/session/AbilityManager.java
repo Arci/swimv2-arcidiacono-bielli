@@ -14,6 +14,9 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.jboss.ejb3.annotation.LocalBinding;
+import org.jboss.ejb3.annotation.RemoteBinding;
+
 /**
  * Implementation of stateless bean AbilityManager
  * 
@@ -21,6 +24,8 @@ import javax.persistence.Query;
  * 
  */
 @Stateless
+@RemoteBinding(jndiBinding = "AbilityManager/remote")
+@LocalBinding(jndiBinding = "AbilityManager/local")
 public class AbilityManager implements AbilityManagerRemote,
 		AbilityManagerLocal {
 	@PersistenceContext(unitName = "SwimPU")
