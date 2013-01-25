@@ -48,20 +48,25 @@ public class InitializationServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		initDatabase(request, response);
+		response.sendRedirect("/SWIMweb");
 	}
 
 	private void initDatabase(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		List<String> initError = new ArrayList<String>();
-		List<String> initMessage = new ArrayList<String>();
-		addUsers(initMessage, initError);
-		addAbilities(initMessage, initError);
-		request.setAttribute("initError", initError);
-		request.setAttribute("initMessage", initMessage);
-		getServletConfig().getServletContext()
-				.getRequestDispatcher("/initialization/initialization.jsp")
-				.forward(request, response);
+		if (request.getParameter("pwd") != null
+				&& request.getParameter("pwd").equals("admin")) {
+			List<String> initError = new ArrayList<String>();
+			List<String> initMessage = new ArrayList<String>();
+			addUsers(initMessage, initError);
+			addAbilities(initMessage, initError);
+			request.setAttribute("initError", initError);
+			request.setAttribute("initMessage", initMessage);
+			getServletConfig().getServletContext()
+					.getRequestDispatcher("/initialization/initialization.jsp")
+					.forward(request, response);
+		} else {
+			response.sendRedirect("/SWIMweb");
+		}
 	}
 
 	private void addUsers(List<String> initMessage, List<String> initError) {
@@ -77,7 +82,7 @@ public class InitializationServlet extends HttpServlet {
 				admin.setType(UserType.ADMIN);
 				admin.setName("admin");
 				admin.setUsername("admin");
-				admin.setEmail("admin@admin.com");
+				admin.setEmail("admin@swim.com");
 				admin.setPassword("admin");
 				profileManager.insertNewUser(admin);
 				initMessage.add("user 'admin' inserted");
